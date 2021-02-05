@@ -1,0 +1,21 @@
+{
+  "name": "graphql-schema-parse",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "graphql": "^15.5.0",
+    "graphql-tag": "^2.11.0",
+    "lodash": "^4.17.20",
+    "prettier": "^2.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "gsp": "node ./src/index.js",
+    "build": "node ./src/index.js && npm run prettier",
+    "prettier": "npx prettier --write ./src/**/* && npx prettier --write ./graphql/**/*"
+  },
+  "author": "",
+  "license": "ISC"
+}

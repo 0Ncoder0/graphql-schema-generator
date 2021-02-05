@@ -1,0 +1,5 @@
+{
+  "remote": "http://localhost:3000/graphql",
+  "include": "./graphql/schema.graphql",
+  "exclude": "./graphql"
+}
