@@ -6,6 +6,7 @@ const fetch = require("./fetch/index");
 const gEnums = require("./generator/enum");
 const gFragment = require("./generator/fragment");
 const gInterface = require("./generator/interface");
+const gMethod = require("./generator/method");
 
 //  'OBJECT', 'SCALAR', 'ENUM', 'INPUT_OBJECT', 'UNION'
 
@@ -33,5 +34,11 @@ const booter = async function () {
 
   const interface = gInterface(schema.types);
   fs.writeFileSync(excludes.interface, interface);
+
+  const query = gMethod(schema.types.find(type => type.name === "Query"));
+  fs.writeFileSync(excludes.query, query);
+
+  const mutation = gMethod(schema.types.find(type => type.name === "Mutation"));
+  fs.writeFileSync(excludes.mutation, mutation);
 };
 booter();

@@ -48,6 +48,7 @@ export const user = gql`
     # 是否可以支付，修改支付密码后需要限制24小时
     canPay
   }
+
   ${userConfig}
 `;
 
@@ -211,14 +212,27 @@ export const account = gql`
     # type
     type
     # 账户费率
-    feeList
+    feeList {
+      ...accountFeeRate
+    }
     # balances
-    balances
+    balances {
+      ...balance
+    }
     # bankAccounts
-    bankAccounts
+    bankAccounts {
+      ...bankAccount
+    }
     # accountExtends
-    accountExtends
+    accountExtends {
+      ...accountExtend
+    }
   }
+
+  ${accountFeeRate}
+  ${balance}
+  ${bankAccount}
+  ${accountExtend}
 `;
 
 /** BankAccount */
@@ -277,7 +291,9 @@ export const bankAccount = gql`
     # 提供方平台上的wallet id
     sourceWalletId
     # 附件
-    attachments
+    attachments {
+      ...attachment
+    }
     # 该银行账户和账户所有者的关系
     relationship
     # balance
@@ -289,7 +305,11 @@ export const bankAccount = gql`
       ...account
     }
   }
+
   ${address}
+
+  ${attachment}
+
   ${balance}
   ${account}
 `;
@@ -354,6 +374,7 @@ export const qbitCard = gql`
       ...balance
     }
   }
+
   ${balance}
 `;
 
@@ -391,6 +412,8 @@ export const referralCode = gql`
       ...user
     }
   }
+
+  ${user}
   ${user}
 `;
 
@@ -462,7 +485,9 @@ export const inboundTransfer = gql`
     # displayStatus
     displayStatus
     # 记录状态变化的时间
-    statusLog
+    statusLog {
+      ...statusLog
+    }
     # 交易时间
     transactionTime
     # 付款人名称
@@ -480,7 +505,11 @@ export const inboundTransfer = gql`
       ...account
     }
   }
+
+  ${statusLog}
+
   ${attachment}
+
   ${account}
 `;
 
@@ -528,6 +557,7 @@ export const qbitCardTransaction = gql`
       ...qbitCard
     }
   }
+
   ${qbitCard}
 `;
 
@@ -539,8 +569,12 @@ export const bankAccountsOutput = gql`
     # total
     total
     # data
-    data
+    data {
+      ...bankAccount
+    }
   }
+
+  ${bankAccount}
 `;
 
 /** AccountOutput */
@@ -551,8 +585,12 @@ export const accountOutput = gql`
     # total
     total
     # data
-    data
+    data {
+      ...account
+    }
   }
+
+  ${account}
 `;
 
 /** BalancesOutput */
@@ -563,8 +601,12 @@ export const balancesOutput = gql`
     # total
     total
     # data
-    data
+    data {
+      ...balance
+    }
   }
+
+  ${balance}
 `;
 
 /** UsersOutput */
@@ -575,8 +617,12 @@ export const usersOutput = gql`
     # total
     total
     # data
-    data
+    data {
+      ...user
+    }
   }
+
+  ${user}
 `;
 
 /** ReferralCodeOutput */
@@ -587,8 +633,12 @@ export const referralCodeOutput = gql`
     # total
     total
     # data
-    data
+    data {
+      ...referralCode
+    }
   }
+
+  ${referralCode}
 `;
 
 /** QbitCardOutput */
@@ -599,8 +649,12 @@ export const qbitCardOutput = gql`
     # total
     total
     # data
-    data
+    data {
+      ...qbitCard
+    }
   }
+
+  ${qbitCard}
 `;
 
 /** QbitCardTransactionOutput */
@@ -611,8 +665,12 @@ export const qbitCardTransactionOutput = gql`
     # total
     total
     # data
-    data
+    data {
+      ...qbitCardTransaction
+    }
   }
+
+  ${qbitCardTransaction}
 `;
 
 /** QbitCardTransactionStatisticsOutput */
@@ -699,8 +757,12 @@ export const inboundTransfersOutput = gql`
     # total
     total
     # data
-    data
+    data {
+      ...inboundTransfer
+    }
   }
+
+  ${inboundTransfer}
 `;
 
 /** OutboundTransfersOutput */
@@ -711,8 +773,12 @@ export const outboundTransfersOutput = gql`
     # total
     total
     # data
-    data
+    data {
+      ...outboundTransfer
+    }
   }
+
+  ${outboundTransfer}
 `;
 
 /** OutboundTransfer */
@@ -763,7 +829,9 @@ export const outboundTransfer = gql`
     # displayStatus
     displayStatus
     # 记录状态变化的时间
-    statusLog
+    statusLog {
+      ...statusLog
+    }
     # 交易时间
     transactionTime
     # 付款目的
@@ -773,12 +841,18 @@ export const outboundTransfer = gql`
     # 三方processor的order id
     processorOrderId
     # beneficiaries
-    beneficiaries
+    beneficiaries {
+      ...bankAccount
+    }
     # account
     account {
       ...account
     }
   }
+
+  ${statusLog}
+
+  ${bankAccount}
   ${account}
 `;
 
@@ -790,8 +864,28 @@ export const systemConfigOutput = gql`
     # total
     total
     # data
-    data
+    data {
+      ...systemConfig
+    }
   }
+
+  ${systemConfig}
+`;
+
+/** BatchCreateQbitCardOutput */
+export const batchCreateQbitCardOutput = gql`
+  fragment batchCreateQbitCardOutput on BatchCreateQbitCardOutput {
+    # QbitCard
+    ... on QbitCard {
+      ...qbitCard
+    }
+    # QbitBoolean
+    ... on QbitBoolean {
+      ...qbitBoolean
+    }
+  }
+  ${qbitCard}
+  ${qbitBoolean}
 `;
 
 /** 执行结果 */

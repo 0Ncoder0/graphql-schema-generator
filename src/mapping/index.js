@@ -1,5 +1,5 @@
 /** 内置类型映射 */
-exports.innerType = new Map([
+exports.scalarType = new Map([
   ["String", "string"],
   ["DateTime", "Date"],
   ["Float", "number"],

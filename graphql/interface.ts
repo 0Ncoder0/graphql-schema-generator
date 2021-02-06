@@ -9,51 +9,52 @@ import {
   ReduceTypeEnum,
   ActivationStatusEnum,
   QbitCardProviderEnum,
-  QbitCardTypeEnum
+  QbitCardTypeEnum,
+  SmsCodeEnum
 } from "./enum";
 
 /** UserConfig */
 export interface UserConfig {
   /** id */
-  id: string;
+  id?: string;
   /** 备注 */
-  remarks: string;
+  remarks?: string;
   /** createTime */
-  createTime: Date;
+  createTime?: Date;
   /** updateTime */
-  updateTime: Date;
+  updateTime?: Date;
   /** deleteTime */
-  deleteTime: Date;
+  deleteTime?: Date;
   /** version */
-  version: number;
+  version?: number;
 }
 
 /** User */
 export interface User {
   /** id */
-  id: string;
+  id?: string;
   /** 备注 */
-  remarks: string;
+  remarks?: string;
   /** createTime */
-  createTime: Date;
+  createTime?: Date;
   /** updateTime */
-  updateTime: Date;
+  updateTime?: Date;
   /** deleteTime */
-  deleteTime: Date;
+  deleteTime?: Date;
   /** version */
-  version: number;
+  version?: number;
   /** phone */
-  phone: string;
+  phone?: string;
   /** nickname */
-  nickname: string;
+  nickname?: string;
   /** email */
-  email: string;
+  email?: string;
   /** userConfig */
-  userConfig: UserConfig;
+  userConfig?: UserConfig;
   /** 是否有交易密码 */
-  hasPaymentPwd: boolean;
+  hasPaymentPwd?: boolean;
   /** 是否可以支付，修改支付密码后需要限制24小时 */
-  canPay: boolean;
+  canPay?: boolean;
 }
 
 /** StatusLog */
@@ -67,23 +68,23 @@ export interface StatusLog {
 /** Balance */
 export interface Balance {
   /** id */
-  id: string;
+  id?: string;
   /** 备注 */
-  remarks: string;
+  remarks?: string;
   /** createTime */
-  createTime: Date;
+  createTime?: Date;
   /** updateTime */
-  updateTime: Date;
+  updateTime?: Date;
   /** deleteTime */
-  deleteTime: Date;
+  deleteTime?: Date;
   /** version */
-  version: number;
+  version?: number;
   /** accountId */
-  accountId: string;
+  accountId?: string;
   /** walletType */
-  walletType: WalletTypeEnum;
+  walletType?: WalletTypeEnum;
   /** currency */
-  currency: CurrencyEnum;
+  currency?: CurrencyEnum;
   /** 可用金额 */
   available: number;
   /** 处理中金额 */
@@ -91,7 +92,7 @@ export interface Balance {
   /** 冻结中金额 */
   frozen: number;
   /** status */
-  status: string;
+  status?: string;
 }
 
 /** Attachment */
@@ -107,7 +108,7 @@ export interface Address {
   /** 地址栏第一行 */
   addressLine1: string;
   /** 地址栏第二行 */
-  addressLine2: string;
+  addressLine2?: string;
   /** 城市 */
   city: string;
   /** 州或省 */
@@ -115,47 +116,47 @@ export interface Address {
   /** ISO_3166-1 二位字母代码， 如CN, US等 */
   country: string;
   /** 邮编 */
-  postalCode: string;
+  postalCode?: string;
 }
 
 /** AccountExtend */
 export interface AccountExtend {
   /** id */
-  id: string;
+  id?: string;
   /** 备注 */
-  remarks: string;
+  remarks?: string;
   /** createTime */
-  createTime: Date;
+  createTime?: Date;
   /** updateTime */
-  updateTime: Date;
+  updateTime?: Date;
   /** deleteTime */
-  deleteTime: Date;
+  deleteTime?: Date;
   /** version */
-  version: number;
+  version?: number;
   /** kycStatus */
-  kycStatus: string;
+  kycStatus?: string;
   /** kybStatus */
-  kybStatus: string;
+  kybStatus?: string;
   /** accountId */
-  accountId: string;
+  accountId?: string;
 }
 
 /** AccountFeeRate */
 export interface AccountFeeRate {
   /** id */
-  id: string;
+  id?: string;
   /** 备注 */
-  remarks: string;
+  remarks?: string;
   /** createTime */
-  createTime: Date;
+  createTime?: Date;
   /** updateTime */
-  updateTime: Date;
+  updateTime?: Date;
   /** deleteTime */
-  deleteTime: Date;
+  deleteTime?: Date;
   /** version */
-  version: number;
+  version?: number;
   /** 账户id */
-  accountId: string;
+  accountId?: string;
   /** 币种 */
   currency: ExchangeCurrencyEnum;
   /** 计算模式 */
@@ -175,243 +176,243 @@ export interface AccountFeeRate {
 /** Account */
 export interface Account {
   /** id */
-  id: string;
+  id?: string;
   /** 备注 */
-  remarks: string;
+  remarks?: string;
   /** createTime */
-  createTime: Date;
+  createTime?: Date;
   /** updateTime */
-  updateTime: Date;
+  updateTime?: Date;
   /** deleteTime */
-  deleteTime: Date;
+  deleteTime?: Date;
   /** version */
-  version: number;
+  version?: number;
   /** 认证名字 */
-  verifiedName: string;
+  verifiedName?: string;
   /** accountType */
-  accountType: string;
+  accountType?: string;
   /** 给用户分配的6位唯一数字ID */
-  displayId: string;
+  displayId?: string;
   /** status */
-  status: string;
+  status?: string;
   /** kycStatus */
-  kycStatus: string;
+  kycStatus?: string;
   /** kybStatus */
-  kybStatus: string;
+  kybStatus?: string;
   /** 账户来源邀请码 */
-  referralCodeId: string;
+  referralCodeId?: string;
   /** type */
-  type: string;
+  type?: string;
   /** 账户费率 */
-  feeList: null;
+  feeList: AccountFeeRate[];
   /** balances */
-  balances: null;
+  balances: Balance[];
   /** bankAccounts */
-  bankAccounts: null;
+  bankAccounts: BankAccount[];
   /** accountExtends */
-  accountExtends: null;
+  accountExtends: AccountExtend[];
 }
 
 /** BankAccount */
 export interface BankAccount {
   /** id */
-  id: string;
+  id?: string;
   /** 备注 */
-  remarks: string;
+  remarks?: string;
   /** createTime */
-  createTime: Date;
+  createTime?: Date;
   /** updateTime */
-  updateTime: Date;
+  updateTime?: Date;
   /** deleteTime */
-  deleteTime: Date;
+  deleteTime?: Date;
   /** version */
-  version: number;
+  version?: number;
   /** 全球账户的account id */
   accountId: string;
   /** 对应的balance Id */
-  balanceId: string;
+  balanceId?: string;
   /** 账户持有人姓名 */
   accountName: string;
   /** 账号 */
   accountNo: string;
   /** 银行名称 */
-  bankName: string;
+  bankName?: string;
   /** SWIFT/BIC */
-  swift: string;
+  swift?: string;
   /** Routing number */
-  routingNumber: string;
+  routingNumber?: string;
   /** 支行名称 */
-  branchName: string;
+  branchName?: string;
   /** 支行代码 */
-  branchCode: string;
+  branchCode?: string;
   /** 地址 */
-  accountAddress: Address;
+  accountAddress?: Address;
   /** 币种 */
   currency: string;
   /** 状态 */
-  status: string;
+  status?: string;
   /** 最后更新时间 */
-  lastUpdateTime: Date;
+  lastUpdateTime?: Date;
   /** 账户类型（对公、对私） */
-  type: string;
+  type?: string;
   /** 身份证号码 */
-  idNumber: string;
+  idNumber?: string;
   /** 用途种类，如用于提现withdraw, 还是付款payout */
-  category: string;
+  category?: string;
   /** 来源，账户的提供方， 如EE，CFSB */
-  source: string;
+  source?: string;
   /** 提供方平台上的id */
-  sourceId: string;
+  sourceId?: string;
   /** 提供方平台上的wallet id */
-  sourceWalletId: string;
+  sourceWalletId?: string;
   /** 附件 */
-  attachments: null;
+  attachments: Attachment[];
   /** 该银行账户和账户所有者的关系 */
-  relationship: string;
+  relationship?: string;
   /** balance */
-  balance: Balance;
+  balance?: Balance;
   /** account */
-  account: Account;
+  account?: Account;
 }
 
 /** QbitCard */
 export interface QbitCard {
   /** id */
-  id: string;
+  id?: string;
   /** 备注 */
-  remarks: string;
+  remarks?: string;
   /** createTime */
-  createTime: Date;
+  createTime?: Date;
   /** updateTime */
-  updateTime: Date;
+  updateTime?: Date;
   /** deleteTime */
-  deleteTime: Date;
+  deleteTime?: Date;
   /** version */
-  version: number;
+  version?: number;
   /** accountId */
-  accountId: string;
+  accountId?: string;
   /** userName */
-  userName: string;
+  userName?: string;
   /** firstName */
-  firstName: string;
+  firstName?: string;
   /** lastName */
-  lastName: string;
+  lastName?: string;
   /** currency */
-  currency: CurrencyEnum;
+  currency?: CurrencyEnum;
   /** status */
-  status: ActivationStatusEnum;
+  status?: ActivationStatusEnum;
   /** qbitCardNo */
-  qbitCardNo: string;
+  qbitCardNo?: string;
   /** qbitCardNoLastFour */
-  qbitCardNoLastFour: string;
+  qbitCardNoLastFour?: string;
   /** provider */
-  provider: QbitCardProviderEnum;
+  provider?: QbitCardProviderEnum;
   /** type */
-  type: QbitCardTypeEnum;
+  type?: QbitCardTypeEnum;
   /** expiryDate */
-  expiryDate: Date;
+  expiryDate?: Date;
   /** cvv */
-  cvv: string;
+  cvv?: string;
   /** useType */
-  useType: string;
+  useType?: string;
   /** token */
-  token: string;
+  token?: string;
   /** label */
-  label: string;
+  label?: string;
   /** cardholderInfo */
-  cardholderInfo: string;
+  cardholderInfo?: string;
   /** groupId */
-  groupId: string;
+  groupId?: string;
   /** userId */
-  userId: string;
+  userId?: string;
   /** balanceId */
-  balanceId: string;
+  balanceId?: string;
   /** apiBalance */
-  apiBalance: number;
+  apiBalance?: number;
   /** balanceInfo */
-  balanceInfo: Balance;
+  balanceInfo?: Balance;
 }
 
 /** ReferralCode */
 export interface ReferralCode {
   /** id */
-  id: string;
+  id?: string;
   /** 备注 */
-  remarks: string;
+  remarks?: string;
   /** createTime */
-  createTime: Date;
+  createTime?: Date;
   /** updateTime */
-  updateTime: Date;
+  updateTime?: Date;
   /** deleteTime */
-  deleteTime: Date;
+  deleteTime?: Date;
   /** version */
-  version: number;
+  version?: number;
   /** 用户userid或者渠道方userId */
-  userId: string;
+  userId?: string;
   /** 邀请码所属管理员(销售id) */
-  adminId: string;
+  adminId?: string;
   /** code */
-  code: string;
+  code?: string;
   /** 状态 */
-  status: string;
+  status?: string;
   /** 销售/用户 */
-  type: string;
+  type?: string;
   /** user */
-  user: User;
+  user?: User;
   /** admin */
-  admin: User;
+  admin?: User;
 }
 
 /** SystemConfig */
 export interface SystemConfig {
   /** createTime */
-  createTime: Date;
+  createTime?: Date;
   /** updateTime */
-  updateTime: Date;
+  updateTime?: Date;
   /** deleteTime */
-  deleteTime: Date;
+  deleteTime?: Date;
   /** version */
-  version: number;
+  version?: number;
   /** 备注 */
-  remarks: string;
+  remarks?: string;
   /** id */
-  id: number;
+  id?: number;
   /** 状态 */
-  status: string;
+  status?: string;
 }
 
 /** InboundTransfer */
 export interface InboundTransfer {
   /** id */
-  id: string;
+  id?: string;
   /** 备注 */
-  remarks: string;
+  remarks?: string;
   /** createTime */
-  createTime: Date;
+  createTime?: Date;
   /** updateTime */
-  updateTime: Date;
+  updateTime?: Date;
   /** deleteTime */
-  deleteTime: Date;
+  deleteTime?: Date;
   /** version */
-  version: number;
+  version?: number;
   /** 所属账户id */
   accountId: string;
   /** 源交易账号来源((Wallet, PayPal, 银行卡，银行账户的id)) */
   sender: string;
   /** 源交易类型(Wallet, PayPal, 银行卡，银行账户) */
-  senderType: string;
+  senderType?: string;
   /** 源的余额id */
-  senderBalanceId: string;
+  senderBalanceId?: string;
   /** 目标交易id(Wallet, PayPal, 银行卡，银行账户的id) */
   recipient: string;
   /** 目标交易类型 */
-  recipientType: string;
+  recipientType?: string;
   /** 源币种 */
-  senderCurrency: string;
+  senderCurrency?: string;
   /** 目标的余额id */
-  recipientBalanceId: string;
+  recipientBalanceId?: string;
   /** 目标币种 */
-  recipientCurrency: string;
+  recipientCurrency?: string;
   /** senderFee */
   senderFee: number;
   /** recipientFee */
@@ -423,135 +424,135 @@ export interface InboundTransfer {
   /** recipientCost */
   recipientCost: number;
   /** status */
-  status: string;
+  status?: string;
   /** displayStatus */
   displayStatus: string;
   /** 记录状态变化的时间 */
-  statusLog: null;
+  statusLog: StatusLog[];
   /** 交易时间 */
-  transactionTime: Date;
+  transactionTime?: Date;
   /** 付款人名称 */
-  senderName: string;
+  senderName?: string;
   /** 充值截图 */
-  photos: Attachment;
+  photos?: Attachment;
   /** 流水号 */
-  fromOrderId: string;
+  fromOrderId?: string;
   /** 三方过来的原始数据 */
-  rawData: string;
+  rawData?: string;
   /** account */
-  account: Account;
+  account?: Account;
 }
 
 /** QbitCardTransaction */
 export interface QbitCardTransaction {
   /** id */
-  id: string;
+  id?: string;
   /** 备注 */
-  remarks: string;
+  remarks?: string;
   /** createTime */
-  createTime: Date;
+  createTime?: Date;
   /** updateTime */
-  updateTime: Date;
+  updateTime?: Date;
   /** deleteTime */
-  deleteTime: Date;
+  deleteTime?: Date;
   /** version */
-  version: number;
+  version?: number;
   /** accountId */
   accountId: string;
   /** 量子卡 id */
-  cardId: string;
+  cardId?: string;
   /** 币种：USD,CNY,EUR */
-  currency: string;
+  currency?: string;
   /** displayStatus */
-  displayStatus: string;
+  displayStatus?: string;
   /** 结算金额 */
-  platformType: string;
+  platformType?: string;
   /** 结算金额 */
-  settleAmount: number;
+  settleAmount?: number;
   /** 原始金额 */
-  originalAmount: number;
+  originalAmount?: number;
   /** 费用 */
-  fee: number;
+  fee?: number;
   /** 详情 */
-  detail: string;
+  detail?: string;
   /** businessType */
-  businessType: string;
+  businessType?: string;
   /** 三方订单Id */
-  sourceId: string;
+  sourceId?: string;
   /** 交易时间 */
-  transactionTime: Date;
+  transactionTime?: Date;
   /** qbitCardInfo */
-  qbitCardInfo: QbitCard;
+  qbitCardInfo?: QbitCard;
 }
 
 /** BankAccountsOutput */
 export interface BankAccountsOutput {
   /** pageTotal */
-  pageTotal: number;
+  pageTotal?: number;
   /** total */
-  total: number;
+  total?: number;
   /** data */
-  data: null;
+  data: BankAccount[];
 }
 
 /** AccountOutput */
 export interface AccountOutput {
   /** pageTotal */
-  pageTotal: number;
+  pageTotal?: number;
   /** total */
-  total: number;
+  total?: number;
   /** data */
-  data: null;
+  data: Account[];
 }
 
 /** BalancesOutput */
 export interface BalancesOutput {
   /** pageTotal */
-  pageTotal: number;
+  pageTotal?: number;
   /** total */
-  total: number;
+  total?: number;
   /** data */
-  data: null;
+  data: Balance[];
 }
 
 /** UsersOutput */
 export interface UsersOutput {
   /** pageTotal */
-  pageTotal: number;
+  pageTotal?: number;
   /** total */
-  total: number;
+  total?: number;
   /** data */
-  data: null;
+  data: User[];
 }
 
 /** ReferralCodeOutput */
 export interface ReferralCodeOutput {
   /** pageTotal */
-  pageTotal: number;
+  pageTotal?: number;
   /** total */
-  total: number;
+  total?: number;
   /** data */
-  data: null;
+  data: ReferralCode[];
 }
 
 /** QbitCardOutput */
 export interface QbitCardOutput {
   /** pageTotal */
-  pageTotal: number;
+  pageTotal?: number;
   /** total */
-  total: number;
+  total?: number;
   /** data */
-  data: null;
+  data: QbitCard[];
 }
 
 /** QbitCardTransactionOutput */
 export interface QbitCardTransactionOutput {
   /** pageTotal */
-  pageTotal: number;
+  pageTotal?: number;
   /** total */
-  total: number;
+  total?: number;
   /** data */
-  data: null;
+  data: QbitCardTransaction[];
 }
 
 /** QbitCardTransactionStatisticsOutput */
@@ -597,9 +598,9 @@ export interface QbitCardStatisticsOutput {
   /** 卡内总余额 */
   qbitCardApiBalanceAmountSum: number;
   /** 去重标签列表 */
-  labels: null;
+  labels: string[];
   /** 去重用户名列表 */
-  userNames: null;
+  userNames: string[];
 }
 
 /** QbitCardPrivateInfoOutput */
@@ -625,55 +626,55 @@ export interface BatchCreateQbitCardProcessOutput {
 /** InboundTransfersOutput */
 export interface InboundTransfersOutput {
   /** pageTotal */
-  pageTotal: number;
+  pageTotal?: number;
   /** total */
-  total: number;
+  total?: number;
   /** data */
-  data: null;
+  data: InboundTransfer[];
 }
 
 /** OutboundTransfersOutput */
 export interface OutboundTransfersOutput {
   /** pageTotal */
-  pageTotal: number;
+  pageTotal?: number;
   /** total */
-  total: number;
+  total?: number;
   /** data */
-  data: null;
+  data: OutboundTransfer[];
 }
 
 /** OutboundTransfer */
 export interface OutboundTransfer {
   /** id */
-  id: string;
+  id?: string;
   /** 备注 */
-  remarks: string;
+  remarks?: string;
   /** createTime */
-  createTime: Date;
+  createTime?: Date;
   /** updateTime */
-  updateTime: Date;
+  updateTime?: Date;
   /** deleteTime */
-  deleteTime: Date;
+  deleteTime?: Date;
   /** version */
-  version: number;
+  version?: number;
   /** 所属账户id */
   accountId: string;
   /** 源交易账号来源((Wallet, PayPal, 银行卡，银行账户的id)) */
   sender: string;
   /** 源交易类型(Wallet, PayPal, 银行卡，银行账户) */
-  senderType: string;
+  senderType?: string;
   /** 源的余额id */
-  senderBalanceId: string;
+  senderBalanceId?: string;
   /** 目标交易id(Wallet, PayPal, 银行卡，银行账户的id) */
   recipient: string;
   /** 目标交易类型 */
-  recipientType: string;
+  recipientType?: string;
   /** 源币种 */
-  senderCurrency: string;
+  senderCurrency?: string;
   /** 目标的余额id */
-  recipientBalanceId: string;
+  recipientBalanceId?: string;
   /** 目标币种 */
-  recipientCurrency: string;
+  recipientCurrency?: string;
   /** senderFee */
   senderFee: number;
   /** recipientFee */
@@ -685,37 +686,380 @@ export interface OutboundTransfer {
   /** recipientCost */
   recipientCost: number;
   /** status */
-  status: string;
+  status?: string;
   /** displayStatus */
   displayStatus: string;
   /** 记录状态变化的时间 */
-  statusLog: null;
+  statusLog: StatusLog[];
   /** 交易时间 */
-  transactionTime: Date;
+  transactionTime?: Date;
   /** 付款目的 */
-  reason: string;
+  reason?: string;
   /** 三方processor的名字 */
-  processor: string;
+  processor?: string;
   /** 三方processor的order id */
-  processorOrderId: string;
+  processorOrderId?: string;
   /** beneficiaries */
-  beneficiaries: null;
+  beneficiaries: BankAccount[];
   /** account */
-  account: Account;
+  account?: Account;
 }
 
 /** SystemConfigOutput */
 export interface SystemConfigOutput {
   /** pageTotal */
-  pageTotal: number;
+  pageTotal?: number;
   /** total */
-  total: number;
+  total?: number;
   /** data */
-  data: null;
+  data: SystemConfig[];
 }
+
+/** AttachmentInput */
+export interface AttachmentInput {
+  /** 文件名 */
+  filename: string;
+  /** 链接 */
+  fileUrl: string;
+}
+
+/** AddressInput */
+export interface AddressInput {
+  /** 地址栏第一行 */
+  addressLine1: string;
+  /** 地址栏第二行 */
+  addressLine2?: string;
+  /** 城市 */
+  city: string;
+  /** 州或省 */
+  state: string;
+  /** ISO_3166-1 二位字母代码， 如CN, US等 */
+  country: string;
+  /** 邮编 */
+  postalCode?: string;
+}
+
+/** PageInput */
+export interface PageInput {
+  /** 页 */
+  page?: number;
+  /** 条数 */
+  limit?: number;
+}
+
+/** QueryParams */
+export interface QueryParams {
+  /** filter */
+  filter?: string;
+  /** order */
+  order?: string;
+  /** pagination */
+  pagination?: PageInput;
+}
+
+/** 费率参数 */
+export interface OutboundTransfersFeeDto {
+  /** senderCurrency */
+  senderCurrency: string;
+  /** recipientCurrency */
+  recipientCurrency: string;
+  /** senderCost */
+  senderCost: number;
+}
+
+/** GetTermsAndConditionsInput */
+export interface GetTermsAndConditionsInput {
+  /** 平台(pennyCard/niumCard) */
+  provider: QbitCardProviderEnum;
+}
+
+/** 批量开卡进度 */
+export interface BatchCreateQbitCardProcessInput {
+  /** 卡的拥有者id */
+  accountId: string;
+  /** 平台(pennyCard/niumCard) */
+  provider: QbitCardProviderEnum;
+}
+
+/** QbitCardStatisticsInput */
+export interface QbitCardStatisticsInput {
+  /** 卡的提供者 */
+  providers: QbitCardProviderEnum[];
+  /** 账户ID */
+  accountId: string;
+}
+
+/** QbitCardTransactionStatisticsInput */
+export interface QbitCardTransactionStatisticsInput {
+  /** 账户ID */
+  accountId: string;
+  /** 平台类型列表 */
+  platformTypes: QbitCardProviderEnum[];
+}
+
+/** CreateBankAccountInput */
+export interface CreateBankAccountInput {
+  /** 全球账户的account id */
+  accountId: string;
+  /** 账户持有人姓名 */
+  accountName: string;
+  /** 账号 */
+  accountNo: string;
+  /** 银行名称 */
+  bankName?: string;
+  /** SWIFT/BIC */
+  swift?: string;
+  /** Routing number */
+  routingNumber?: string;
+  /** 支行名称 */
+  branchName?: string;
+  /** 支行代码 */
+  branchCode?: string;
+  /** 地址 */
+  accountAddress?: AddressInput;
+  /** 币种 */
+  currency: string;
+  /** 账户类型（对公、对私） */
+  type?: string;
+  /** 身份证号码 */
+  idNumber?: string;
+  /** 用途种类，如用于提现withdraw, 还是付款payout */
+  category?: string;
+  /** 附件 */
+  attachments: AttachmentInput[];
+  /** 该银行账户和账户所有者的关系 */
+  relationship?: string;
+}
+
+/** UpdateStatusDto */
+export interface UpdateStatusDto {
+  /** bankAccountId */
+  bankAccountId: string;
+  /** status */
+  status: string;
+  /** 备注 */
+  remarks: string;
+}
+
+/** SignUpDto */
+export interface SignUpDto {
+  /** phone */
+  phone?: string;
+  /** verifyCode */
+  verifyCode?: string;
+  /** password */
+  password?: string;
+  /** userSource */
+  userSource?: string;
+  /** inviteCode */
+  inviteCode?: string;
+}
+
+/** UserInputUpdate */
+export interface UserInputUpdate {
+  /** id */
+  id?: string;
+  /** password */
+  password?: string;
+  /** oldPassword */
+  oldPassword?: string;
+  /** 手机号验证码 */
+  verifyCodePhone?: string;
+  /** 邮箱验证码 */
+  verifyCodeEmail?: string;
+  /** email */
+  email?: string;
+  /** manageUserId */
+  manageUserId?: string;
+}
+
+/** UserInput */
+export interface UserInput {
+  /** id */
+  id?: string;
+  /** phone */
+  phone?: string;
+  /** password */
+  password?: string;
+  /** oldPassword */
+  oldPassword?: string;
+  /** paymentPassword */
+  paymentPassword?: string;
+  /** role */
+  role?: number;
+  /** verifyCode */
+  verifyCode?: string;
+  /** email */
+  email?: string;
+  /** manageUserId */
+  manageUserId?: string;
+  /** remarks */
+  remarks?: string;
+}
+
+/** VerCodeBase */
+export interface VerCodeBase {
+  /** emailPhone */
+  emailPhone: string;
+  /** codeType */
+  codeType: SmsCodeEnum;
+}
+
+/** CheckVerCode */
+export interface CheckVerCode {
+  /** emailPhone */
+  emailPhone: string;
+  /** codeType */
+  codeType: SmsCodeEnum;
+  /** code */
+  code: string;
+}
+
+/** SetPayPwdDto */
+export interface SetPayPwdDto {
+  /** code */
+  code: string;
+  /** password */
+  password: string;
+}
+
+/** UpdatePayPwdDto */
+export interface UpdatePayPwdDto {
+  /** code */
+  code: string;
+  /** lastPassword */
+  lastPassword: string;
+  /** password */
+  password: string;
+}
+
+/** InputInviteCode */
+export interface InputInviteCode {
+  /** id */
+  id?: string;
+  /** 手机号 */
+  phone: string;
+  /** 姓名 */
+  nickname: string;
+  /** 邀请码 */
+  code?: string;
+  /** 管理人 */
+  admin: string;
+  /** 备注 */
+  remarks: string;
+}
+
+/** CreateOutboundTransferInput */
+export interface CreateOutboundTransferInput {
+  /** 所属账户id */
+  accountId: string;
+  /** 源交易账号来源((Wallet, PayPal, 银行卡，银行账户的id)) */
+  sender: string;
+  /** 目标交易id(Wallet, PayPal, 银行卡，银行账户的id) */
+  recipient: string;
+  /** 源币种 */
+  senderCurrency?: string;
+  /** 目标币种 */
+  recipientCurrency?: string;
+  /** senderCost */
+  senderCost: number;
+  /** recipientCost */
+  recipientCost: number;
+  /** payPassword */
+  payPassword: string;
+}
+
+/** BatchCreateQbitCardOutput */
+export type BatchCreateQbitCardOutput = QbitCard | QbitBoolean;
 
 /** 执行结果 */
 export interface QbitBoolean {
   /** 执行结果 */
   result: boolean;
+}
+
+/** BatchCreateQbitCardInput */
+export interface BatchCreateQbitCardInput {
+  /** 批量的数量 */
+  batchCount: number;
+  /** 卡的拥有者id */
+  accountId: string;
+  /** 开卡金额，卡类型需要，共用额度的不需要用到此字段 */
+  cost?: number;
+  /** 平台(pennyCard/niumCard) */
+  provider: QbitCardProviderEnum;
+  /** 卡的自身验证地址 */
+  cardAddress?: AddressInput;
+  /** 持卡人名 */
+  firstName: string;
+  /** 持卡人姓 */
+  lastName: string;
+  /** 标签 */
+  label?: string;
+  /** 使用类别 */
+  useType: string;
+  /** 持卡人信息，当nium的时候不能为空 */
+  cardholderInfo?: CardholderInfo;
+  /** 组Id(nium 必须要传组id) */
+  groupId?: string;
+}
+
+/** CardholderInfo */
+export interface CardholderInfo {
+  /** TODO */
+  TODO: string;
+}
+
+/** IncreaseQbitCarLimitInput */
+export interface IncreaseQbitCarLimitInput {
+  /** 卡token */
+  cardId: string;
+  /** 金额，卡类型需要，共用额度的不需要用到此字段 */
+  cost: number;
+}
+
+/** DecreaseQbitCarLimitInput */
+export interface DecreaseQbitCarLimitInput {
+  /** 卡token列表 */
+  catdId: string;
+  /** 金额，卡类型需要，共用额度的不需要用到此字段 */
+  cost: number;
+}
+
+/** SuspendQbitCardInput */
+export interface SuspendQbitCardInput {
+  /** 卡ID */
+  cardIdList: string[];
+}
+
+/** EnableQbitCarLimitInput */
+export interface EnableQbitCarLimitInput {
+  /** 卡id */
+  cardIdList: string[];
+}
+
+/** UpdateQbitCardInput */
+export interface UpdateQbitCardInput {
+  /** 卡的用户id */
+  qbitCardId: string;
+  /** 卡的自身验证地址 */
+  cardAddress?: string;
+  /** 用户自定义的标签 */
+  label?: string;
+}
+
+/** UpdateTermsAndConditionsInput */
+export interface UpdateTermsAndConditionsInput {
+  /** 平台(pennyCard/niumCard) */
+  provider: QbitCardProviderEnum;
+  /** 账户ID */
+  accountId: string;
+}
+
+/** LoginDto */
+export interface LoginDto {
+  /** account */
+  account?: string;
+  /** password */
+  password?: string;
 }
