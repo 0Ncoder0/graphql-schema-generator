@@ -1,3 +1,4 @@
+/** WalletTypeEnum */
 export enum WalletTypeEnum {
   /** EasyEuro */
   EasyEuro = "EasyEuro",
@@ -8,6 +9,8 @@ export enum WalletTypeEnum {
   /** QbitWallet */
   QbitWallet = "QbitWallet"
 }
+
+/** CurrencyEnum */
 export enum CurrencyEnum {
   /** USD */
   USD = "USD",
@@ -18,6 +21,8 @@ export enum CurrencyEnum {
   /** GBP */
   GBP = "GBP"
 }
+
+/** ExchangeCurrencyEnum */
 export enum ExchangeCurrencyEnum {
   /** USD */
   USD = "USD",
@@ -36,6 +41,8 @@ export enum ExchangeCurrencyEnum {
   /** USD_EUR */
   USD_EUR = "USD_EUR"
 }
+
+/** FeeChannelEnum */
 export enum FeeChannelEnum {
   /** ACH */
   ACH = "ACH",
@@ -50,12 +57,16 @@ export enum FeeChannelEnum {
   /** BACS */
   BACS = "BACS"
 }
+
+/** FeeTypeEnum */
 export enum FeeTypeEnum {
   /** Rate */
   Rate = "Rate",
   /** Count */
   Count = "Count"
 }
+
+/** FeePayTypeEnum */
 export enum FeePayTypeEnum {
   /** EE_Exchange */
   EE_Exchange = "EE_Exchange",
@@ -68,18 +79,24 @@ export enum FeePayTypeEnum {
   /** QbitCard_Transfer_In */
   QbitCard_Transfer_In = "QbitCard_Transfer_In"
 }
+
+/** BusinessTypeEnum */
 export enum BusinessTypeEnum {
   /** EE */
   EE = "EE",
   /** QbitCard */
   QbitCard = "QbitCard"
 }
+
+/** ReduceTypeEnum */
 export enum ReduceTypeEnum {
   /** Balance */
   Balance = "Balance",
   /** Transfer */
   Transfer = "Transfer"
 }
+
+/** ActivationStatusEnum */
 export enum ActivationStatusEnum {
   /** Active */
   Active = "Active",
@@ -94,6 +111,8 @@ export enum ActivationStatusEnum {
   /** Other */
   Other = "Other"
 }
+
+/** QbitCardProviderEnum */
 export enum QbitCardProviderEnum {
   /** PrivacyCard */
   PrivacyCard = "PrivacyCard",
@@ -106,6 +125,8 @@ export enum QbitCardProviderEnum {
   /** WeexCard */
   WeexCard = "WeexCard"
 }
+
+/** QbitCardTypeEnum */
 export enum QbitCardTypeEnum {
   /** VISA */
   VISA = "VISA",
@@ -114,6 +135,8 @@ export enum QbitCardTypeEnum {
   /** Amex */
   Amex = "Amex"
 }
+
+/** SmsCodeEnum */
 export enum SmsCodeEnum {
   /** Register */
   Register = "Register",

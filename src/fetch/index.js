@@ -1,6 +1,6 @@
 const axios = require("axios");
 /** 获取远程的 schema */
-exports.fetch = async url => {
+module.exports = async url => {
   return await axios
     .post(url, {
       operationName: "IntrospectionQuery",

@@ -1,5 +1,5 @@
 /** 内置类型映射 */
-exports.mapping = new Map([
+exports.innerType = new Map([
   ["String", "string"],
   ["DateTime", "Date"],
   ["Float", "number"],

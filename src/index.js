@@ -2,58 +2,36 @@ const fs = require("fs");
 const path = require("path");
 const gql = require("graphql-tag");
 const config = require("../gspconfig.json");
-const { fetch } = require("./fetch-schema");
-const { gEnums } = require("./g-enum");
-const { gFragment } = require("./g-fragment");
+const fetch = require("./fetch/index");
+const gEnums = require("./generator/enum");
+const gFragment = require("./generator/fragment");
+const gInterface = require("./generator/interface");
+
 //  'OBJECT', 'SCALAR', 'ENUM', 'INPUT_OBJECT', 'UNION'
+
+const excludes = {
+  schema: path.join(__dirname, "../", config.exclude, "schema.json"),
+  interface: path.join(__dirname, "../", config.exclude, "interface.ts"),
+  enum: path.join(__dirname, "../", config.exclude, "enum.ts"),
+  fragment: path.join(__dirname, "../", config.exclude, "fragment.ts"),
+  query: path.join(__dirname, "../", config.exclude, "query.ts"),
+  mutation: path.join(__dirname, "../", config.exclude, "mutation.ts"),
+  index: path.join(__dirname, "../", config.exclude, "index.ts")
+};
+
 const booter = async function () {
   if (config.remote) {
     const schema = await fetch(config.remote);
-    fs.writeFileSync(path.join(__dirname, "../", config.exclude, "schema.json"), JSON.stringify(schema));
-
-    const enums = gEnums(schema.types);
-    fs.writeFileSync(path.join(__dirname, "../", config.exclude, "schema.enum.ts"), enums);
-
-    const fragment = gFragment(schema.types);
-    fs.writeFileSync(path.join(__dirname, "../", config.exclude, "schema.fragment.ts"), fragment);
+    fs.writeFileSync(excludes.schema, JSON.stringify(schema));
   }
+  const schema = require(excludes.schema);
+  const enums = gEnums(schema.types);
+  fs.writeFileSync(excludes.enum, enums);
+
+  const fragment = gFragment(schema.types);
+  fs.writeFileSync(excludes.fragment, fragment);
+
+  const interface = gInterface(schema.types);
+  fs.writeFileSync(excludes.interface, interface);
 };
 booter();
-
-// const include = path.join(__dirname, './schema.graphql')
-// const exclued = path.join(__dirname, './graphql')
-// const source = fs.readFileSync(include)
-
-// const schema = gql(`${source}`)
-// genarator
-// const kinds = {
-//   DirectiveDefinition: [],
-//   ObjectTypeDefinition: [],
-//   EnumTypeDefinition: [],
-//   InputObjectTypeDefinition: [],
-//   UnionTypeDefinition: [],
-//   ScalarTypeDefinition: []
-// }
-
-// schema.definitions.forEach(definition => {
-//   kinds[definition.kind].push(definition)
-// })
-// try {
-//   fs.rmdirSync(exclued)
-// } finally {
-//   fs.mkdirSync(exclued)
-// }
-// /** 枚举类型 */
-// {
-//   const enums = kinds.EnumTypeDefinition
-//   const output = enums
-//     .map(enumDefinition => {
-//       const data = enumDefinition
-//       const values = data.values.map(value => `${value.name.value}="${value.name.value}"`).join(',\n\t')
-//       const output = `export enum ${data.name.value}{\n\t${values}\n}`
-//       return output
-//     })
-//     .join('\n')
-//   fs.writeFileSync(path.join(exclued, '/schema.enum.json'), JSON.stringify(enums))
-//   fs.writeFileSync(path.join(exclued, '/schema.enum.ts'), output)
-// }
