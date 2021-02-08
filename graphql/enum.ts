@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 /** WalletTypeEnum */
 export enum WalletTypeEnum {
   /** EasyEuro */
@@ -20,6 +23,22 @@ export enum CurrencyEnum {
   EUR = "EUR",
   /** GBP */
   GBP = "GBP"
+}
+
+/** ActivationStatusEnum */
+export enum ActivationStatusEnum {
+  /** Active */
+  Active = "Active",
+  /** Pending */
+  Pending = "Pending",
+  /** Inactive */
+  Inactive = "Inactive",
+  /** Frozen */
+  Frozen = "Frozen",
+  /** Processing */
+  Processing = "Processing",
+  /** Other */
+  Other = "Other"
 }
 
 /** ExchangeCurrencyEnum */
@@ -96,34 +115,12 @@ export enum ReduceTypeEnum {
   Transfer = "Transfer"
 }
 
-/** ActivationStatusEnum */
-export enum ActivationStatusEnum {
-  /** Active */
-  Active = "Active",
-  /** Pending */
-  Pending = "Pending",
-  /** Inactive */
-  Inactive = "Inactive",
-  /** Frozen */
-  Frozen = "Frozen",
-  /** Processing */
-  Processing = "Processing",
-  /** Other */
-  Other = "Other"
-}
-
 /** QbitCardProviderEnum */
 export enum QbitCardProviderEnum {
-  /** PrivacyCard */
-  PrivacyCard = "PrivacyCard",
   /** PennyCard */
   PennyCard = "PennyCard",
   /** NiumCard */
-  NiumCard = "NiumCard",
-  /** PaycertifyCard */
-  PaycertifyCard = "PaycertifyCard",
-  /** WeexCard */
-  WeexCard = "WeexCard"
+  NiumCard = "NiumCard"
 }
 
 /** QbitCardTypeEnum */
@@ -134,6 +131,20 @@ export enum QbitCardTypeEnum {
   Master = "Master",
   /** Amex */
   Amex = "Amex"
+}
+
+/** TransactionDisplayStatusEnum */
+export enum TransactionDisplayStatusEnum {
+  /** Pending */
+  Pending = "Pending",
+  /** Processing */
+  Processing = "Processing",
+  /** Closed */
+  Closed = "Closed",
+  /** Cancelled */
+  Cancelled = "Cancelled",
+  /** Rejected */
+  Rejected = "Rejected"
 }
 
 /** SmsCodeEnum */

@@ -349,7 +349,7 @@
           "name": "status",
           "description": null,
           "args": [],
-          "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+          "type": { "kind": "ENUM", "name": "ActivationStatusEnum", "ofType": null },
           "isDeprecated": false,
           "deprecationReason": null
         }
@@ -386,6 +386,23 @@
         { "name": "CNY", "description": null, "isDeprecated": false, "deprecationReason": null },
         { "name": "EUR", "description": null, "isDeprecated": false, "deprecationReason": null },
         { "name": "GBP", "description": null, "isDeprecated": false, "deprecationReason": null }
+      ],
+      "possibleTypes": null
+    },
+    {
+      "kind": "ENUM",
+      "name": "ActivationStatusEnum",
+      "description": null,
+      "fields": null,
+      "inputFields": null,
+      "interfaces": null,
+      "enumValues": [
+        { "name": "Active", "description": null, "isDeprecated": false, "deprecationReason": null },
+        { "name": "Pending", "description": null, "isDeprecated": false, "deprecationReason": null },
+        { "name": "Inactive", "description": null, "isDeprecated": false, "deprecationReason": null },
+        { "name": "Frozen", "description": null, "isDeprecated": false, "deprecationReason": null },
+        { "name": "Processing", "description": null, "isDeprecated": false, "deprecationReason": null },
+        { "name": "Other", "description": null, "isDeprecated": false, "deprecationReason": null }
       ],
       "possibleTypes": null
     },
@@ -1503,34 +1520,14 @@
     },
     {
       "kind": "ENUM",
-      "name": "ActivationStatusEnum",
-      "description": null,
-      "fields": null,
-      "inputFields": null,
-      "interfaces": null,
-      "enumValues": [
-        { "name": "Active", "description": null, "isDeprecated": false, "deprecationReason": null },
-        { "name": "Pending", "description": null, "isDeprecated": false, "deprecationReason": null },
-        { "name": "Inactive", "description": null, "isDeprecated": false, "deprecationReason": null },
-        { "name": "Frozen", "description": null, "isDeprecated": false, "deprecationReason": null },
-        { "name": "Processing", "description": null, "isDeprecated": false, "deprecationReason": null },
-        { "name": "Other", "description": null, "isDeprecated": false, "deprecationReason": null }
-      ],
-      "possibleTypes": null
-    },
-    {
-      "kind": "ENUM",
       "name": "QbitCardProviderEnum",
       "description": null,
       "fields": null,
       "inputFields": null,
       "interfaces": null,
       "enumValues": [
-        { "name": "PrivacyCard", "description": null, "isDeprecated": false, "deprecationReason": null },
         { "name": "PennyCard", "description": null, "isDeprecated": false, "deprecationReason": null },
-        { "name": "NiumCard", "description": null, "isDeprecated": false, "deprecationReason": null },
-        { "name": "PaycertifyCard", "description": null, "isDeprecated": false, "deprecationReason": null },
-        { "name": "WeexCard", "description": null, "isDeprecated": false, "deprecationReason": null }
+        { "name": "NiumCard", "description": null, "isDeprecated": false, "deprecationReason": null }
       ],
       "possibleTypes": null
     },
@@ -2088,7 +2085,7 @@
           "name": "currency",
           "description": "币种：USD,CNY,EUR",
           "args": [],
-          "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+          "type": { "kind": "ENUM", "name": "CurrencyEnum", "ofType": null },
           "isDeprecated": false,
           "deprecationReason": null
         },
@@ -2096,7 +2093,7 @@
           "name": "displayStatus",
           "description": null,
           "args": [],
-          "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+          "type": { "kind": "ENUM", "name": "TransactionDisplayStatusEnum", "ofType": null },
           "isDeprecated": false,
           "deprecationReason": null
         },
@@ -2104,7 +2101,7 @@
           "name": "platformType",
           "description": "结算金额",
           "args": [],
-          "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+          "type": { "kind": "ENUM", "name": "QbitCardProviderEnum", "ofType": null },
           "isDeprecated": false,
           "deprecationReason": null
         },
@@ -2176,6 +2173,22 @@
       "inputFields": null,
       "interfaces": [],
       "enumValues": null,
+      "possibleTypes": null
+    },
+    {
+      "kind": "ENUM",
+      "name": "TransactionDisplayStatusEnum",
+      "description": null,
+      "fields": null,
+      "inputFields": null,
+      "interfaces": null,
+      "enumValues": [
+        { "name": "Pending", "description": null, "isDeprecated": false, "deprecationReason": null },
+        { "name": "Processing", "description": null, "isDeprecated": false, "deprecationReason": null },
+        { "name": "Closed", "description": null, "isDeprecated": false, "deprecationReason": null },
+        { "name": "Cancelled", "description": null, "isDeprecated": false, "deprecationReason": null },
+        { "name": "Rejected", "description": null, "isDeprecated": false, "deprecationReason": null }
+      ],
       "possibleTypes": null
     },
     {
@@ -4282,15 +4295,7 @@
           "type": {
             "kind": "NON_NULL",
             "name": null,
-            "ofType": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": { "kind": "UNION", "name": "BatchCreateQbitCardOutput", "ofType": null }
-              }
-            }
+            "ofType": { "kind": "SCALAR", "name": "Boolean", "ofType": null }
           },
           "isDeprecated": false,
           "deprecationReason": null
@@ -5102,42 +5107,6 @@
         }
       ],
       "interfaces": null,
-      "enumValues": null,
-      "possibleTypes": null
-    },
-    {
-      "kind": "UNION",
-      "name": "BatchCreateQbitCardOutput",
-      "description": null,
-      "fields": null,
-      "inputFields": null,
-      "interfaces": null,
-      "enumValues": null,
-      "possibleTypes": [
-        { "kind": "OBJECT", "name": "QbitCard", "ofType": null },
-        { "kind": "OBJECT", "name": "QbitBoolean", "ofType": null }
-      ]
-    },
-    {
-      "kind": "OBJECT",
-      "name": "QbitBoolean",
-      "description": "执行结果",
-      "fields": [
-        {
-          "name": "result",
-          "description": "执行结果",
-          "args": [],
-          "type": {
-            "kind": "NON_NULL",
-            "name": null,
-            "ofType": { "kind": "SCALAR", "name": "Boolean", "ofType": null }
-          },
-          "isDeprecated": false,
-          "deprecationReason": null
-        }
-      ],
-      "inputFields": null,
-      "interfaces": [],
       "enumValues": null,
       "possibleTypes": null
     },

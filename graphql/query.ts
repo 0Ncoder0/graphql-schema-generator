@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { gql } from "@apollo/client/core";
 import { clients } from "@/apollo";
 
@@ -53,7 +56,7 @@ export const bankAccounts = async (queryParams: QueryParams): Promise<BankAccoun
         }
         ${fBankAccountsOutput}
       `,
-      variable: { queryParams }
+      variables: { queryParams }
     })
     .then(res => res.data.bankAccounts);
 };
@@ -70,7 +73,7 @@ export const accounts = async (queryParams: QueryParams): Promise<AccountOutput>
         }
         ${fAccountOutput}
       `,
-      variable: { queryParams }
+      variables: { queryParams }
     })
     .then(res => res.data.accounts);
 };
@@ -87,7 +90,7 @@ export const balances = async (queryParams: QueryParams): Promise<BalancesOutput
         }
         ${fBalancesOutput}
       `,
-      variable: { queryParams }
+      variables: { queryParams }
     })
     .then(res => res.data.balances);
 };
@@ -104,7 +107,7 @@ export const users = async (queryParams: QueryParams): Promise<UsersOutput> => {
         }
         ${fUsersOutput}
       `,
-      variable: { queryParams }
+      variables: { queryParams }
     })
     .then(res => res.data.users);
 };
@@ -121,7 +124,7 @@ export const getAdmins = async (queryParams: QueryParams): Promise<UsersOutput> 
         }
         ${fUsersOutput}
       `,
-      variable: { queryParams }
+      variables: { queryParams }
     })
     .then(res => res.data.getAdmins);
 };
@@ -135,7 +138,7 @@ export const isUserIn = async (phoneOrEmail: string): Promise<boolean> => {
           isUserIn(phoneOrEmail: $phoneOrEmail)
         }
       `,
-      variable: { phoneOrEmail }
+      variables: { phoneOrEmail }
     })
     .then(res => res.data.isUserIn);
 };
@@ -152,7 +155,7 @@ export const referralCodes = async (queryParams: QueryParams): Promise<ReferralC
         }
         ${fReferralCodeOutput}
       `,
-      variable: { queryParams }
+      variables: { queryParams }
     })
     .then(res => res.data.referralCodes);
 };
@@ -169,7 +172,7 @@ export const InboundTransfers = async (queryParams: QueryParams): Promise<Inboun
         }
         ${fInboundTransfersOutput}
       `,
-      variable: { queryParams }
+      variables: { queryParams }
     })
     .then(res => res.data.InboundTransfers);
 };
@@ -186,7 +189,7 @@ export const outboundTransfers = async (queryParams: QueryParams): Promise<Outbo
         }
         ${fOutboundTransfersOutput}
       `,
-      variable: { queryParams }
+      variables: { queryParams }
     })
     .then(res => res.data.outboundTransfers);
 };
@@ -200,7 +203,7 @@ export const outboundTransfersFee = async (data: OutboundTransfersFeeDto): Promi
           outboundTransfersFee(data: $data)
         }
       `,
-      variable: { data }
+      variables: { data }
     })
     .then(res => res.data.outboundTransfersFee);
 };
@@ -217,13 +220,13 @@ export const qbitCardList = async (queryParams: QueryParams): Promise<QbitCardOu
         }
         ${fQbitCardOutput}
       `,
-      variable: { queryParams }
+      variables: { queryParams }
     })
     .then(res => res.data.qbitCardList);
 };
 
 /** 获取量子卡平台条款 */
-export const getTermsAndConditions = async (data: GetTermsAndConditionsInput): Promise<string> => {
+export const getTermsAndConditions = async (data: GetTermsAndConditionsInput): Promise<any> => {
   return await clients.core
     .query({
       query: gql`
@@ -231,7 +234,7 @@ export const getTermsAndConditions = async (data: GetTermsAndConditionsInput): P
           getTermsAndConditions(data: $data)
         }
       `,
-      variable: { data }
+      variables: { data }
     })
     .then(res => res.data.getTermsAndConditions);
 };
@@ -248,7 +251,7 @@ export const getQbitCardPrivateInfo = async (cardId: string): Promise<QbitCardPr
         }
         ${fQbitCardPrivateInfoOutput}
       `,
-      variable: { cardId }
+      variables: { cardId }
     })
     .then(res => res.data.getQbitCardPrivateInfo);
 };
@@ -267,7 +270,7 @@ export const getBatchCreateQbitCardProcess = async (
         }
         ${fBatchCreateQbitCardProcessOutput}
       `,
-      variable: { data }
+      variables: { data }
     })
     .then(res => res.data.getBatchCreateQbitCardProcess);
 };
@@ -284,7 +287,7 @@ export const qbitCardTransactionList = async (queryParams: QueryParams): Promise
         }
         ${fQbitCardTransactionOutput}
       `,
-      variable: { queryParams }
+      variables: { queryParams }
     })
     .then(res => res.data.qbitCardTransactionList);
 };
@@ -301,7 +304,7 @@ export const getQbitCardStatistics = async (data: QbitCardStatisticsInput): Prom
         }
         ${fQbitCardStatisticsOutput}
       `,
-      variable: { data }
+      variables: { data }
     })
     .then(res => res.data.getQbitCardStatistics);
 };
@@ -320,7 +323,7 @@ export const getQbitCardTransactionStatistics = async (
         }
         ${fQbitCardTransactionStatisticsOutput}
       `,
-      variable: { data }
+      variables: { data }
     })
     .then(res => res.data.getQbitCardTransactionStatistics);
 };
@@ -337,7 +340,7 @@ export const systemConfigs = async (queryParams: QueryParams): Promise<SystemCon
         }
         ${fSystemConfigOutput}
       `,
-      variable: { queryParams }
+      variables: { queryParams }
     })
     .then(res => res.data.systemConfigs);
 };

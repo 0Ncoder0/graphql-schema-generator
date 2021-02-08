@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { gql } from "@apollo/client/core";
 import { clients } from "@/apollo";
 
@@ -5,7 +8,6 @@ import {
   bankAccount as fBankAccount,
   user as fUser,
   outboundTransfer as fOutboundTransfer,
-  batchCreateQbitCardOutput as fBatchCreateQbitCardOutput,
   qbitCard as fQbitCard
 } from "./fragment";
 
@@ -25,7 +27,6 @@ import {
   CreateOutboundTransferInput,
   OutboundTransfer,
   BatchCreateQbitCardInput,
-  BatchCreateQbitCardOutput,
   IncreaseQbitCarLimitInput,
   DecreaseQbitCarLimitInput,
   SuspendQbitCardInput,
@@ -48,7 +49,7 @@ export const bankAccount = async (data: CreateBankAccountInput): Promise<BankAcc
         }
         ${fBankAccount}
       `,
-      variable: { data }
+      variables: { data }
     })
     .then(res => res.data.bankAccount);
 };
@@ -62,7 +63,7 @@ export const updateBankAccountStatus = async (data: UpdateStatusDto): Promise<bo
           updateBankAccountStatus(data: $data)
         }
       `,
-      variable: { data }
+      variables: { data }
     })
     .then(res => res.data.updateBankAccountStatus);
 };
@@ -79,7 +80,7 @@ export const register = async (data: SignUpDto): Promise<User> => {
         }
         ${fUser}
       `,
-      variable: { data }
+      variables: { data }
     })
     .then(res => res.data.register);
 };
@@ -93,7 +94,7 @@ export const logout = async (): Promise<boolean> => {
           logout
         }
       `,
-      variable: {}
+      variables: {}
     })
     .then(res => res.data.logout);
 };
@@ -107,7 +108,7 @@ export const updateUser = async (data: UserInputUpdate): Promise<boolean> => {
           updateUser(data: $data)
         }
       `,
-      variable: { data }
+      variables: { data }
     })
     .then(res => res.data.updateUser);
 };
@@ -124,7 +125,7 @@ export const updateUserNoId = async (data: UserInput): Promise<User> => {
         }
         ${fUser}
       `,
-      variable: { data }
+      variables: { data }
     })
     .then(res => res.data.updateUserNoId);
 };
@@ -138,7 +139,7 @@ export const sendVerifCode = async (data: VerCodeBase): Promise<boolean> => {
           sendVerifCode(data: $data)
         }
       `,
-      variable: { data }
+      variables: { data }
     })
     .then(res => res.data.sendVerifCode);
 };
@@ -152,7 +153,7 @@ export const checkVerifCode = async (data: CheckVerCode): Promise<boolean> => {
           checkVerifCode(data: $data)
         }
       `,
-      variable: { data }
+      variables: { data }
     })
     .then(res => res.data.checkVerifCode);
 };
@@ -166,7 +167,7 @@ export const setPayPwd = async (data: SetPayPwdDto): Promise<boolean> => {
           setPayPwd(data: $data)
         }
       `,
-      variable: { data }
+      variables: { data }
     })
     .then(res => res.data.setPayPwd);
 };
@@ -180,7 +181,7 @@ export const updatePayPwd = async (data: UpdatePayPwdDto): Promise<boolean> => {
           updatePayPwd(data: $data)
         }
       `,
-      variable: { data }
+      variables: { data }
     })
     .then(res => res.data.updatePayPwd);
 };
@@ -194,7 +195,7 @@ export const creatInviteCode = async (data: InputInviteCode): Promise<boolean> =
           creatInviteCode(data: $data)
         }
       `,
-      variable: { data }
+      variables: { data }
     })
     .then(res => res.data.creatInviteCode);
 };
@@ -208,7 +209,7 @@ export const deleteInviteCode = async (codeId: string): Promise<boolean> => {
           deleteInviteCode(codeId: $codeId)
         }
       `,
-      variable: { codeId }
+      variables: { codeId }
     })
     .then(res => res.data.deleteInviteCode);
 };
@@ -225,24 +226,21 @@ export const outboundTransfer = async (data: CreateOutboundTransferInput): Promi
         }
         ${fOutboundTransfer}
       `,
-      variable: { data }
+      variables: { data }
     })
     .then(res => res.data.outboundTransfer);
 };
 
 /** 批量新开量子卡,接口商户和admin都能访问 */
-export const batchCreateQbitCard = async (data: BatchCreateQbitCardInput): Promise<BatchCreateQbitCardOutput[]> => {
+export const batchCreateQbitCard = async (data: BatchCreateQbitCardInput): Promise<boolean> => {
   return await clients.core
     .mutate({
       mutation: gql`
         mutation batchCreateQbitCard($data: BatchCreateQbitCardInput!) {
-          batchCreateQbitCard(data: $data) {
-            ...batchCreateQbitCardOutput
-          }
+          batchCreateQbitCard(data: $data)
         }
-        ${fBatchCreateQbitCardOutput}
       `,
-      variable: { data }
+      variables: { data }
     })
     .then(res => res.data.batchCreateQbitCard);
 };
@@ -256,7 +254,7 @@ export const increaseQbitCardLimit = async (data: IncreaseQbitCarLimitInput): Pr
           increaseQbitCardLimit(data: $data)
         }
       `,
-      variable: { data }
+      variables: { data }
     })
     .then(res => res.data.increaseQbitCardLimit);
 };
@@ -270,7 +268,7 @@ export const decreaseQbitCardLimit = async (data: DecreaseQbitCarLimitInput): Pr
           decreaseQbitCardLimit(data: $data)
         }
       `,
-      variable: { data }
+      variables: { data }
     })
     .then(res => res.data.decreaseQbitCardLimit);
 };
@@ -284,7 +282,7 @@ export const suspendQbitCard = async (data: SuspendQbitCardInput): Promise<strin
           suspendQbitCard(data: $data)
         }
       `,
-      variable: { data }
+      variables: { data }
     })
     .then(res => res.data.suspendQbitCard);
 };
@@ -298,7 +296,7 @@ export const enableQbitCard = async (data: EnableQbitCarLimitInput): Promise<boo
           enableQbitCard(data: $data)
         }
       `,
-      variable: { data }
+      variables: { data }
     })
     .then(res => res.data.enableQbitCard);
 };
@@ -315,13 +313,13 @@ export const updateQbitCard = async (data: UpdateQbitCardInput): Promise<QbitCar
         }
         ${fQbitCard}
       `,
-      variable: { data }
+      variables: { data }
     })
     .then(res => res.data.updateQbitCard);
 };
 
 /** 更新量子卡平台条款 */
-export const updateTermsAndConditions = async (data: UpdateTermsAndConditionsInput): Promise<string> => {
+export const updateTermsAndConditions = async (data: UpdateTermsAndConditionsInput): Promise<any> => {
   return await clients.core
     .mutate({
       mutation: gql`
@@ -329,7 +327,7 @@ export const updateTermsAndConditions = async (data: UpdateTermsAndConditionsInp
           updateTermsAndConditions(data: $data)
         }
       `,
-      variable: { data }
+      variables: { data }
     })
     .then(res => res.data.updateTermsAndConditions);
 };
@@ -343,7 +341,7 @@ export const updateKyInfo = async (): Promise<boolean> => {
           updateKyInfo
         }
       `,
-      variable: {}
+      variables: {}
     })
     .then(res => res.data.updateKyInfo);
 };
@@ -360,7 +358,7 @@ export const login = async (data: LoginDto): Promise<User> => {
         }
         ${fUser}
       `,
-      variable: { data }
+      variables: { data }
     })
     .then(res => res.data.login);
 };

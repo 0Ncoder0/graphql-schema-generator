@@ -4,6 +4,6 @@ exports.scalarType = new Map([
   ["DateTime", "Date"],
   ["Float", "number"],
   ["Boolean", "boolean"],
-  ["JSON", "string"],
+  ["JSON", "any"],
   ["Int", "number"]
 ]);

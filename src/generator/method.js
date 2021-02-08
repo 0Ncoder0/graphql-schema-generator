@@ -52,7 +52,7 @@ module.exports = method => {
           }
           ${oOutput.gOutput[1]}
          \`,
-         variable:{ ${args.map(arg => arg.name).join(",")} }
+         variables:{ ${args.map(arg => arg.name).join(",")} }
        }).then(res=>res.data.${name})
       }
       `;

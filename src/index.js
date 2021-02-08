@@ -7,6 +7,7 @@ const gEnums = require("./generator/enum");
 const gFragment = require("./generator/fragment");
 const gInterface = require("./generator/interface");
 const gMethod = require("./generator/method");
+const { getEslintDisable } = require("./generator/utils");
 
 //  'OBJECT', 'SCALAR', 'ENUM', 'INPUT_OBJECT', 'UNION'
 
@@ -27,18 +28,18 @@ const booter = async function () {
   }
   const schema = require(excludes.schema);
   const enums = gEnums(schema.types);
-  fs.writeFileSync(excludes.enum, enums);
+  fs.writeFileSync(excludes.enum, getEslintDisable() + enums);
 
   const fragment = gFragment(schema.types);
-  fs.writeFileSync(excludes.fragment, fragment);
+  fs.writeFileSync(excludes.fragment, getEslintDisable() + fragment);
 
   const interface = gInterface(schema.types);
-  fs.writeFileSync(excludes.interface, interface);
+  fs.writeFileSync(excludes.interface, getEslintDisable() + interface);
 
   const query = gMethod(schema.types.find(type => type.name === "Query"));
-  fs.writeFileSync(excludes.query, query);
+  fs.writeFileSync(excludes.query, getEslintDisable() + query);
 
   const mutation = gMethod(schema.types.find(type => type.name === "Mutation"));
-  fs.writeFileSync(excludes.mutation, mutation);
+  fs.writeFileSync(excludes.mutation, getEslintDisable() + mutation);
 };
 booter();

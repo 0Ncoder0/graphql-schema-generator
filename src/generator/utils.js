@@ -21,5 +21,13 @@ const gType = (type, prop = null) => {
     return gType(ofType, prop);
   }
 };
+/** 返回 eslint-disable */
+const getEslintDisable = () => {
+  return `
+  /* eslint-disable @typescript-eslint/camelcase */
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  `;
+};
 
 module.exports.gType = gType;
+module.exports.getEslintDisable = getEslintDisable;

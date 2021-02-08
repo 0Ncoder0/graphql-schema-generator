@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { gql } from "@apollo/client/core";
 
 /** UserConfig */
@@ -870,28 +872,4 @@ export const systemConfigOutput = gql`
   }
 
   ${systemConfig}
-`;
-
-/** BatchCreateQbitCardOutput */
-export const batchCreateQbitCardOutput = gql`
-  fragment batchCreateQbitCardOutput on BatchCreateQbitCardOutput {
-    # QbitCard
-    ... on QbitCard {
-      ...qbitCard
-    }
-    # QbitBoolean
-    ... on QbitBoolean {
-      ...qbitBoolean
-    }
-  }
-  ${qbitCard}
-  ${qbitBoolean}
-`;
-
-/** 执行结果 */
-export const qbitBoolean = gql`
-  fragment qbitBoolean on QbitBoolean {
-    # 执行结果
-    result
-  }
 `;

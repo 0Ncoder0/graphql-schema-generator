@@ -1,4 +1,6 @@
 const { camelCase, upperFirst } = require("lodash");
+// const { userConfig } = require("../../graphql/fragment");
+const config = require("../../gspconfig.json");
 const { scalarType } = require("../mapping");
 const { gType } = require("./utils");
 
@@ -13,6 +15,8 @@ module.exports = types => {
     return prop.get("OBJECT") || prop.get("UNION");
   });
   const gField = field => {
+    if (config.skipFields.includes(field.name)) return "";
+
     const { description, name } = field;
     const { name: tName, prop: tProp } = gType(field.type);
     const oField = [

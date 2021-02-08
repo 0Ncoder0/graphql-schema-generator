@@ -1,15 +1,18 @@
+/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   WalletTypeEnum,
   CurrencyEnum,
+  ActivationStatusEnum,
   ExchangeCurrencyEnum,
   FeeChannelEnum,
   FeeTypeEnum,
   FeePayTypeEnum,
   BusinessTypeEnum,
   ReduceTypeEnum,
-  ActivationStatusEnum,
   QbitCardProviderEnum,
   QbitCardTypeEnum,
+  TransactionDisplayStatusEnum,
   SmsCodeEnum
 } from "./enum";
 
@@ -92,7 +95,7 @@ export interface Balance {
   /** 冻结中金额 */
   frozen: number;
   /** status */
-  status?: string;
+  status?: ActivationStatusEnum;
 }
 
 /** Attachment */
@@ -320,7 +323,7 @@ export interface QbitCard {
   /** label */
   label?: string;
   /** cardholderInfo */
-  cardholderInfo?: string;
+  cardholderInfo?: any;
   /** groupId */
   groupId?: string;
   /** userId */
@@ -438,7 +441,7 @@ export interface InboundTransfer {
   /** 流水号 */
   fromOrderId?: string;
   /** 三方过来的原始数据 */
-  rawData?: string;
+  rawData?: any;
   /** account */
   account?: Account;
 }
@@ -462,11 +465,11 @@ export interface QbitCardTransaction {
   /** 量子卡 id */
   cardId?: string;
   /** 币种：USD,CNY,EUR */
-  currency?: string;
+  currency?: CurrencyEnum;
   /** displayStatus */
-  displayStatus?: string;
+  displayStatus?: TransactionDisplayStatusEnum;
   /** 结算金额 */
-  platformType?: string;
+  platformType?: QbitCardProviderEnum;
   /** 结算金额 */
   settleAmount?: number;
   /** 原始金额 */
@@ -750,9 +753,9 @@ export interface PageInput {
 /** QueryParams */
 export interface QueryParams {
   /** filter */
-  filter?: string;
+  filter?: any;
   /** order */
-  order?: string;
+  order?: any;
   /** pagination */
   pagination?: PageInput;
 }
@@ -969,15 +972,6 @@ export interface CreateOutboundTransferInput {
   payPassword: string;
 }
 
-/** BatchCreateQbitCardOutput */
-export type BatchCreateQbitCardOutput = QbitCard | QbitBoolean;
-
-/** 执行结果 */
-export interface QbitBoolean {
-  /** 执行结果 */
-  result: boolean;
-}
-
 /** BatchCreateQbitCardInput */
 export interface BatchCreateQbitCardInput {
   /** 批量的数量 */
@@ -1043,7 +1037,7 @@ export interface UpdateQbitCardInput {
   /** 卡的用户id */
   qbitCardId: string;
   /** 卡的自身验证地址 */
-  cardAddress?: string;
+  cardAddress?: any;
   /** 用户自定义的标签 */
   label?: string;
 }
