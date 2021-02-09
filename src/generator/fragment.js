@@ -1,8 +1,5 @@
-const { camelCase, upperFirst } = require("lodash");
-// const { userConfig } = require("../../graphql/fragment");
-const config = require("../../gspconfig.json");
-const { scalarType } = require("../mapping");
-const { gType } = require("./utils");
+const { camelCase } = require("lodash");
+const { gType, skipField } = require("./utils");
 
 /** 抽取 graphql 片段 */
 module.exports = types => {
@@ -15,7 +12,7 @@ module.exports = types => {
     return prop.get("OBJECT") || prop.get("UNION");
   });
   const gField = field => {
-    if ((config.skipFields || []).includes(field.name)) return "";
+    if (skipField(field)) return "";
 
     const { description, name } = field;
     const { name: tName, prop: tProp } = gType(field.type);
@@ -76,7 +73,8 @@ module.exports = types => {
         const valid = ele.fields.every(field => {
           const { name, prop } = gType(field.type);
 
-          if ((config.skipFields || []).includes(field.name)) return true;
+          if (skipField(field)) return true;
+
           return !prop.get("OBJECT") || ordered.includes(name);
         });
 

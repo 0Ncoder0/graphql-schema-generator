@@ -1,6 +1,6 @@
 const { camelCase, upperFirst } = require("lodash");
 const { scalarType } = require("../mapping/index");
-const { gType } = require("./utils");
+const { gType, skipField } = require("./utils");
 
 /** 抽取 graphql 片段 */
 module.exports = types => {
@@ -22,7 +22,7 @@ module.exports = types => {
     const { name: tName, prop: tProp } = gType(field.type);
 
     const oField = [
-      `/** ${description || name} */\n`,
+      `/** ${description || name} ${skipField(field) ? "skipped" : ""}*/\n`,
       name,
       tProp.get("NON_NULL") ? ":" : "?:",
       tProp.get("SCALAR") ? scalarType.get(tName) : tName,
