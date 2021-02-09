@@ -35,7 +35,9 @@ const getEslintDisable = () => {
 const skipField = (field, obj) => {
   const { name: typeName } = gType(field.type);
   return !!(config.skipFields || []).find(skip => {
-    if (typeof skip === "string") {
+    if ((skip.ignore || []).includes(field.name)) {
+      return false;
+    } else if (typeof skip === "string") {
       return skip === field.name;
     } else {
       Object.keys(skip).every(key => {
