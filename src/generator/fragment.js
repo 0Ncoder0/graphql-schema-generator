@@ -15,7 +15,7 @@ module.exports = types => {
     return prop.get("OBJECT") || prop.get("UNION");
   });
   const gField = field => {
-    if (config.skipFields.includes(field.name)) return "";
+    if ((config.skipFields || []).includes(field.name)) return "";
 
     const { description, name } = field;
     const { name: tName, prop: tProp } = gType(field.type);
@@ -64,7 +64,38 @@ module.exports = types => {
     return oFragment;
   };
 
+  /** 按照依赖情况排序 */
+  const order = (arr, ordered = [], dig = 9) => {
+    if (dig) dig--;
+    else throw new Error(`\n\n可能存在互相引用的情况:\n\n${arr.map(e => e.name).join("\n")}\n\n`);
+
+    if (!arr.length) return ordered;
+
+    return order(
+      arr.filter(ele => {
+        const valid = ele.fields.every(field => {
+          const { name, prop } = gType(field.type);
+
+          if ((config.skipFields || []).includes(field.name)) return true;
+          return !prop.get("OBJECT") || ordered.includes(name);
+        });
+
+        if (valid) {
+          ordered.push(ele.name);
+          return false;
+        } else {
+          return true;
+        }
+      }),
+      ordered,
+      dig
+    );
+  };
+
+  const ordered = order(fragments);
+
   const output = fragments
+    .sort((a, b) => ordered.indexOf(a.name) - ordered.indexOf(b.name))
     .map(iFragment => {
       switch (iFragment.kind) {
         case "OBJECT":
