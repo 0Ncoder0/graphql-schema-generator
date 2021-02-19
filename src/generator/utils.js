@@ -33,9 +33,6 @@ const getEslintDisable = () => {
 /** 是否跳过此字段 */
 const skipField = (field, obj) => {
   const { name: typeName } = gType(field.type);
-  if (field.name === "key") {
-    console.log(typeName);
-  }
   return !!(config.skipFields || []).find(skip => {
     if ((skip.ignore || []).includes(field.name)) {
       return false;
