@@ -1,6 +1,6 @@
 {
   "remote": "http://localhost:3000/graphql",
-  "exclude": "../qbit-web/src/graphql/schema",
+  "outDir": "C:/Users/edz/Desktop/codes/qbit-web/src/graphql/schema",
   "skipFields": [
     { "type": "User", "ignore": ["data"] },
     { "type": "Account", "ignore": ["data"] },

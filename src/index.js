@@ -11,35 +11,39 @@ const { getEslintDisable } = require("./generator/utils");
 
 //  'OBJECT', 'SCALAR', 'ENUM', 'INPUT_OBJECT', 'UNION'
 
-const excludes = {
-  schema: path.join(__dirname, "../", config.exclude, "schema.json"),
-  interface: path.join(__dirname, "../", config.exclude, "interface.ts"),
-  enum: path.join(__dirname, "../", config.exclude, "enum.ts"),
-  fragment: path.join(__dirname, "../", config.exclude, "fragment.ts"),
-  query: path.join(__dirname, "../", config.exclude, "query.ts"),
-  mutation: path.join(__dirname, "../", config.exclude, "mutation.ts"),
-  index: path.join(__dirname, "../", config.exclude, "index.ts")
+const joinPath = (dir, fileName) => {
+  return /^\./.test(dir) ? path.join(__dirname, "../", dir, fileName) : path.join(dir, fileName);
+};
+
+const output = {
+  schema: joinPath(config.outDir, "schema.json"),
+  interface: joinPath(config.outDir, "interface.ts"),
+  enum: joinPath(config.outDir, "enum.ts"),
+  fragment: joinPath(config.outDir, "fragment.ts"),
+  query: joinPath(config.outDir, "query.ts"),
+  mutation: joinPath(config.outDir, "mutation.ts"),
+  index: joinPath(config.outDir, "index.ts")
 };
 
 const booter = async function () {
   if (config.remote) {
     const schema = await fetch(config.remote);
-    fs.writeFileSync(excludes.schema, JSON.stringify(schema));
+    fs.writeFileSync(output.schema, JSON.stringify(schema));
   }
-  const schema = require(excludes.schema);
+  const schema = require(output.schema);
   const enums = gEnums(schema.types);
-  fs.writeFileSync(excludes.enum, getEslintDisable() + enums);
+  fs.writeFileSync(output.enum, getEslintDisable() + enums);
 
   const fragment = gFragment(schema.types);
-  fs.writeFileSync(excludes.fragment, getEslintDisable() + fragment);
+  fs.writeFileSync(output.fragment, getEslintDisable() + fragment);
 
   const interface = gInterface(schema.types);
-  fs.writeFileSync(excludes.interface, getEslintDisable() + interface);
+  fs.writeFileSync(output.interface, getEslintDisable() + interface);
 
   const query = gMethod(schema.types.find(type => type.name === "Query"));
-  fs.writeFileSync(excludes.query, getEslintDisable() + query);
+  fs.writeFileSync(output.query, getEslintDisable() + query);
 
   const mutation = gMethod(schema.types.find(type => type.name === "Mutation"));
-  fs.writeFileSync(excludes.mutation, getEslintDisable() + mutation);
+  fs.writeFileSync(output.mutation, getEslintDisable() + mutation);
 };
 booter();
