@@ -13,6 +13,7 @@ import {
   QbitCardProviderEnum,
   QbitCardTypeEnum,
   TransactionDisplayStatusEnum,
+  QbitCardTransactionTypeEnum,
   SmsCodeEnum
 } from "./enum";
 
@@ -208,9 +209,9 @@ export interface Account {
   type?: string;
   /** 账户费率 */
   feeList: AccountFeeRate[];
-  /** balances */
+  /** balances skipped*/
   balances: Balance[];
-  /** bankAccounts */
+  /** bankAccounts skipped*/
   bankAccounts: BankAccount[];
   /** accountExtends */
   accountExtends: AccountExtend[];
@@ -272,9 +273,9 @@ export interface BankAccount {
   attachments: Attachment[];
   /** 该银行账户和账户所有者的关系 */
   relationship?: string;
-  /** balance */
+  /** balance skipped*/
   balance?: Balance;
-  /** account */
+  /** account skipped*/
   account?: Account;
 }
 
@@ -312,10 +313,6 @@ export interface QbitCard {
   provider?: QbitCardProviderEnum;
   /** type */
   type?: QbitCardTypeEnum;
-  /** expiryDate */
-  expiryDate?: Date;
-  /** cvv */
-  cvv?: string;
   /** useType */
   useType?: string;
   /** token */
@@ -332,8 +329,8 @@ export interface QbitCard {
   balanceId?: string;
   /** apiBalance */
   apiBalance?: number;
-  /** balanceInfo */
-  balanceInfo?: Balance;
+  /** balanceInfo skipped*/
+  balanceInfo: Balance;
 }
 
 /** ReferralCode */
@@ -360,9 +357,9 @@ export interface ReferralCode {
   status?: string;
   /** 销售/用户 */
   type?: string;
-  /** user */
+  /** user skipped*/
   user?: User;
-  /** admin */
+  /** admin skipped*/
   admin?: User;
 }
 
@@ -442,7 +439,7 @@ export interface InboundTransfer {
   fromOrderId?: string;
   /** 三方过来的原始数据 */
   rawData?: any;
-  /** account */
+  /** account skipped*/
   account?: Account;
 }
 
@@ -469,7 +466,7 @@ export interface QbitCardTransaction {
   /** displayStatus */
   displayStatus?: TransactionDisplayStatusEnum;
   /** 结算金额 */
-  platformType?: QbitCardProviderEnum;
+  provider?: QbitCardProviderEnum;
   /** 结算金额 */
   settleAmount?: number;
   /** 原始金额 */
@@ -479,13 +476,41 @@ export interface QbitCardTransaction {
   /** 详情 */
   detail?: string;
   /** businessType */
-  businessType?: string;
+  businessType?: QbitCardTransactionTypeEnum;
   /** 三方订单Id */
   sourceId?: string;
   /** 交易时间 */
   transactionTime?: Date;
-  /** qbitCardInfo */
-  qbitCardInfo?: QbitCard;
+  /** 交易数据获取量子卡 skipped*/
+  qbitCardInfo: QbitCard;
+}
+
+/** QbitCardGroup */
+export interface QbitCardGroup {
+  /** id */
+  id?: string;
+  /** 备注 */
+  remarks?: string;
+  /** createTime */
+  createTime?: Date;
+  /** updateTime */
+  updateTime?: Date;
+  /** deleteTime */
+  deleteTime?: Date;
+  /** version */
+  version?: number;
+  /** 组钱包id */
+  balanceId?: string;
+  /** 分组名称 */
+  groupName: string;
+  /** 有限期 */
+  expiryDate: Date;
+  /** 组状态 */
+  status: ActivationStatusEnum;
+  /** 卡信息 skipped*/
+  qbitCardList: QbitCard[];
+  /** 组钱包 skipped*/
+  balanceInfo: Balance;
 }
 
 /** BankAccountsOutput */
@@ -494,7 +519,7 @@ export interface BankAccountsOutput {
   pageTotal?: number;
   /** total */
   total?: number;
-  /** data */
+  /** data skipped*/
   data: BankAccount[];
 }
 
@@ -504,7 +529,7 @@ export interface AccountOutput {
   pageTotal?: number;
   /** total */
   total?: number;
-  /** data */
+  /** data skipped*/
   data: Account[];
 }
 
@@ -514,7 +539,7 @@ export interface BalancesOutput {
   pageTotal?: number;
   /** total */
   total?: number;
-  /** data */
+  /** data skipped*/
   data: Balance[];
 }
 
@@ -524,7 +549,7 @@ export interface UsersOutput {
   pageTotal?: number;
   /** total */
   total?: number;
-  /** data */
+  /** data skipped*/
   data: User[];
 }
 
@@ -544,8 +569,18 @@ export interface QbitCardOutput {
   pageTotal?: number;
   /** total */
   total?: number;
-  /** data */
+  /** data skipped*/
   data: QbitCard[];
+}
+
+/** QbitCardGroupOutput */
+export interface QbitCardGroupOutput {
+  /** pageTotal */
+  pageTotal?: number;
+  /** total */
+  total?: number;
+  /** data */
+  data: QbitCardGroup[];
 }
 
 /** QbitCardTransactionOutput */
@@ -579,7 +614,7 @@ export interface QbitCardTransactionStatisticsOutput {
   /** 拒付笔数 */
   declinedCount: number;
   /** 平台类型 */
-  platformType: QbitCardProviderEnum;
+  provider: QbitCardProviderEnum;
 }
 
 /** QbitCardStatisticsOutput */
@@ -702,9 +737,9 @@ export interface OutboundTransfer {
   processor?: string;
   /** 三方processor的order id */
   processorOrderId?: string;
-  /** beneficiaries */
+  /** beneficiaries skipped*/
   beneficiaries: BankAccount[];
-  /** account */
+  /** account skipped*/
   account?: Account;
 }
 
@@ -784,20 +819,10 @@ export interface BatchCreateQbitCardProcessInput {
   provider: QbitCardProviderEnum;
 }
 
-/** QbitCardStatisticsInput */
-export interface QbitCardStatisticsInput {
-  /** 卡的提供者 */
-  providers: QbitCardProviderEnum[];
-  /** 账户ID */
-  accountId: string;
-}
-
-/** QbitCardTransactionStatisticsInput */
-export interface QbitCardTransactionStatisticsInput {
-  /** 账户ID */
-  accountId: string;
-  /** 平台类型列表 */
-  platformTypes: QbitCardProviderEnum[];
+/** StatisticsParams */
+export interface StatisticsParams {
+  /** filter */
+  filter?: any;
 }
 
 /** CreateBankAccountInput */
@@ -1015,7 +1040,7 @@ export interface IncreaseQbitCarLimitInput {
 /** DecreaseQbitCarLimitInput */
 export interface DecreaseQbitCarLimitInput {
   /** 卡token列表 */
-  catdId: string;
+  cardId: string;
   /** 金额，卡类型需要，共用额度的不需要用到此字段 */
   cost: number;
 }
@@ -1023,13 +1048,13 @@ export interface DecreaseQbitCarLimitInput {
 /** SuspendQbitCardInput */
 export interface SuspendQbitCardInput {
   /** 卡ID */
-  cardIdList: string[];
+  cardId: string;
 }
 
 /** EnableQbitCarLimitInput */
 export interface EnableQbitCarLimitInput {
   /** 卡id */
-  cardIdList: string[];
+  cardId: string;
 }
 
 /** UpdateQbitCardInput */
@@ -1048,6 +1073,20 @@ export interface UpdateTermsAndConditionsInput {
   provider: QbitCardProviderEnum;
   /** 账户ID */
   accountId: string;
+}
+
+/** 量子卡组 */
+export interface AddQbitCardGroupInput {
+  /** accountId */
+  accountId: string;
+  /** userId */
+  userId: string;
+  /** 币种 */
+  currency?: CurrencyEnum;
+  /** 分组名称 */
+  groupName: string;
+  /** 有限期 */
+  expiryDate: Date;
 }
 
 /** LoginDto */

@@ -8,7 +8,8 @@ import {
   bankAccount as fBankAccount,
   user as fUser,
   outboundTransfer as fOutboundTransfer,
-  qbitCard as fQbitCard
+  qbitCard as fQbitCard,
+  qbitCardGroup as fQbitCardGroup
 } from "./fragment";
 
 import {
@@ -34,6 +35,8 @@ import {
   UpdateQbitCardInput,
   QbitCard,
   UpdateTermsAndConditionsInput,
+  AddQbitCardGroupInput,
+  QbitCardGroup,
   LoginDto
 } from "./interface";
 
@@ -274,7 +277,7 @@ export const decreaseQbitCardLimit = async (data: DecreaseQbitCarLimitInput): Pr
 };
 
 /** 冻结卡 */
-export const suspendQbitCard = async (data: SuspendQbitCardInput): Promise<string[]> => {
+export const suspendQbitCard = async (data: SuspendQbitCardInput): Promise<boolean> => {
   return await clients.core
     .mutate({
       mutation: gql`
@@ -301,6 +304,20 @@ export const enableQbitCard = async (data: EnableQbitCarLimitInput): Promise<boo
     .then(res => res.data.enableQbitCard);
 };
 
+/** 删除量子卡 */
+export const deleteQbitCard = async (qbitCardId: string): Promise<boolean> => {
+  return await clients.core
+    .mutate({
+      mutation: gql`
+        mutation deleteQbitCard($qbitCardId: String!) {
+          deleteQbitCard(qbitCardId: $qbitCardId)
+        }
+      `,
+      variables: { qbitCardId }
+    })
+    .then(res => res.data.deleteQbitCard);
+};
+
 /** 更新量子卡 */
 export const updateQbitCard = async (data: UpdateQbitCardInput): Promise<QbitCard> => {
   return await clients.core
@@ -319,7 +336,7 @@ export const updateQbitCard = async (data: UpdateQbitCardInput): Promise<QbitCar
 };
 
 /** 更新量子卡平台条款 */
-export const updateTermsAndConditions = async (data: UpdateTermsAndConditionsInput): Promise<any> => {
+export const updateTermsAndConditions = async (data: UpdateTermsAndConditionsInput): Promise<boolean> => {
   return await clients.core
     .mutate({
       mutation: gql`
@@ -344,6 +361,37 @@ export const updateKyInfo = async (): Promise<boolean> => {
       variables: {}
     })
     .then(res => res.data.updateKyInfo);
+};
+
+/** 新增卡组 */
+export const addQbitCardGroup = async (data: AddQbitCardGroupInput): Promise<QbitCardGroup> => {
+  return await clients.core
+    .mutate({
+      mutation: gql`
+        mutation addQbitCardGroup($data: AddQbitCardGroupInput!) {
+          addQbitCardGroup(data: $data) {
+            ...qbitCardGroup
+          }
+        }
+        ${fQbitCardGroup}
+      `,
+      variables: { data }
+    })
+    .then(res => res.data.addQbitCardGroup);
+};
+
+/** 修改卡组 */
+export const updateQbitCardGroup = async (data: AddQbitCardGroupInput): Promise<boolean> => {
+  return await clients.core
+    .mutate({
+      mutation: gql`
+        mutation updateQbitCardGroup($data: AddQbitCardGroupInput!) {
+          updateQbitCardGroup(data: $data)
+        }
+      `,
+      variables: { data }
+    })
+    .then(res => res.data.updateQbitCardGroup);
 };
 
 /** 登录 */

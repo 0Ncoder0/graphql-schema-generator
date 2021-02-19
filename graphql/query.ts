@@ -18,6 +18,7 @@ import {
   qbitCardTransactionOutput as fQbitCardTransactionOutput,
   qbitCardStatisticsOutput as fQbitCardStatisticsOutput,
   qbitCardTransactionStatisticsOutput as fQbitCardTransactionStatisticsOutput,
+  qbitCardGroupOutput as fQbitCardGroupOutput,
   systemConfigOutput as fSystemConfigOutput
 } from "./fragment";
 
@@ -37,10 +38,10 @@ import {
   BatchCreateQbitCardProcessInput,
   BatchCreateQbitCardProcessOutput,
   QbitCardTransactionOutput,
-  QbitCardStatisticsInput,
+  StatisticsParams,
   QbitCardStatisticsOutput,
-  QbitCardTransactionStatisticsInput,
   QbitCardTransactionStatisticsOutput,
+  QbitCardGroupOutput,
   SystemConfigOutput
 } from "./interface";
 
@@ -276,12 +277,12 @@ export const getBatchCreateQbitCardProcess = async (
 };
 
 /** 获取量子卡交易列表 */
-export const qbitCardTransactionList = async (queryParams: QueryParams): Promise<QbitCardTransactionOutput> => {
+export const getQbitCardTransactionList = async (queryParams: QueryParams): Promise<QbitCardTransactionOutput> => {
   return await clients.core
     .query({
       query: gql`
-        query qbitCardTransactionList($queryParams: QueryParams!) {
-          qbitCardTransactionList(queryParams: $queryParams) {
+        query getQbitCardTransactionList($queryParams: QueryParams!) {
+          getQbitCardTransactionList(queryParams: $queryParams) {
             ...qbitCardTransactionOutput
           }
         }
@@ -289,15 +290,15 @@ export const qbitCardTransactionList = async (queryParams: QueryParams): Promise
       `,
       variables: { queryParams }
     })
-    .then(res => res.data.qbitCardTransactionList);
+    .then(res => res.data.getQbitCardTransactionList);
 };
 
 /** 获取量子卡余额和卡数量 */
-export const getQbitCardStatistics = async (data: QbitCardStatisticsInput): Promise<QbitCardStatisticsOutput[]> => {
+export const getQbitCardStatistics = async (data: StatisticsParams): Promise<QbitCardStatisticsOutput[]> => {
   return await clients.core
     .query({
       query: gql`
-        query getQbitCardStatistics($data: QbitCardStatisticsInput!) {
+        query getQbitCardStatistics($data: StatisticsParams!) {
           getQbitCardStatistics(data: $data) {
             ...qbitCardStatisticsOutput
           }
@@ -311,21 +312,66 @@ export const getQbitCardStatistics = async (data: QbitCardStatisticsInput): Prom
 
 /** 获取账户交易信息 */
 export const getQbitCardTransactionStatistics = async (
-  data: QbitCardTransactionStatisticsInput
+  queryParams: StatisticsParams
 ): Promise<QbitCardTransactionStatisticsOutput[]> => {
   return await clients.core
     .query({
       query: gql`
-        query getQbitCardTransactionStatistics($data: QbitCardTransactionStatisticsInput!) {
-          getQbitCardTransactionStatistics(data: $data) {
+        query getQbitCardTransactionStatistics($queryParams: StatisticsParams!) {
+          getQbitCardTransactionStatistics(queryParams: $queryParams) {
             ...qbitCardTransactionStatisticsOutput
           }
         }
         ${fQbitCardTransactionStatisticsOutput}
       `,
-      variables: { data }
+      variables: { queryParams }
     })
     .then(res => res.data.getQbitCardTransactionStatistics);
+};
+
+/** 导出储值卡列表 */
+export const exportStoredValueCardList = async (queryParams: QueryParams): Promise<boolean> => {
+  return await clients.core
+    .query({
+      query: gql`
+        query exportStoredValueCardList($queryParams: QueryParams!) {
+          exportStoredValueCardList(queryParams: $queryParams)
+        }
+      `,
+      variables: { queryParams }
+    })
+    .then(res => res.data.exportStoredValueCardList);
+};
+
+/** 导出额度卡列表 */
+export const exportCreditCardList = async (queryParams: QueryParams): Promise<boolean> => {
+  return await clients.core
+    .query({
+      query: gql`
+        query exportCreditCardList($queryParams: QueryParams!) {
+          exportCreditCardList(queryParams: $queryParams)
+        }
+      `,
+      variables: { queryParams }
+    })
+    .then(res => res.data.exportCreditCardList);
+};
+
+/** 查询卡组 */
+export const getQbitCardGroupList = async (queryParams: QueryParams): Promise<QbitCardGroupOutput> => {
+  return await clients.core
+    .query({
+      query: gql`
+        query getQbitCardGroupList($queryParams: QueryParams!) {
+          getQbitCardGroupList(queryParams: $queryParams) {
+            ...qbitCardGroupOutput
+          }
+        }
+        ${fQbitCardGroupOutput}
+      `,
+      variables: { queryParams }
+    })
+    .then(res => res.data.getQbitCardGroupList);
 };
 
 /** 查询用户可见配置表数据 */

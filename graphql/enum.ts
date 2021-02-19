@@ -10,7 +10,9 @@ export enum WalletTypeEnum {
   /** PennyCardWallet */
   PennyCardWallet = "PennyCardWallet",
   /** QbitWallet */
-  QbitWallet = "QbitWallet"
+  QbitWallet = "QbitWallet",
+  /** GroupWallet */
+  GroupWallet = "GroupWallet"
 }
 
 /** CurrencyEnum */
@@ -145,6 +147,28 @@ export enum TransactionDisplayStatusEnum {
   Cancelled = "Cancelled",
   /** Rejected */
   Rejected = "Rejected"
+}
+
+/** QbitCardTransactionTypeEnum */
+export enum QbitCardTransactionTypeEnum {
+  /** Credit */
+  Credit = "Credit",
+  /** Consumption */
+  Consumption = "Consumption",
+  /** TransferIn */
+  TransferIn = "TransferIn",
+  /** TransferOut */
+  TransferOut = "TransferOut",
+  /** Refund */
+  Refund = "Refund",
+  /** UnKnow */
+  UnKnow = "UnKnow",
+  /** DeleteCardRefund */
+  DeleteCardRefund = "DeleteCardRefund",
+  /** Fee_CreateCard */
+  Fee_CreateCard = "Fee_CreateCard",
+  /** Fee_Credit */
+  Fee_Credit = "Fee_Credit"
 }
 
 /** SmsCodeEnum */

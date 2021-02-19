@@ -370,7 +370,8 @@
         { "name": "EasyEuro", "description": null, "isDeprecated": false, "deprecationReason": null },
         { "name": "QbitCardWallet", "description": null, "isDeprecated": false, "deprecationReason": null },
         { "name": "PennyCardWallet", "description": null, "isDeprecated": false, "deprecationReason": null },
-        { "name": "QbitWallet", "description": null, "isDeprecated": false, "deprecationReason": null }
+        { "name": "QbitWallet", "description": null, "isDeprecated": false, "deprecationReason": null },
+        { "name": "GroupWallet", "description": null, "isDeprecated": false, "deprecationReason": null }
       ],
       "possibleTypes": null
     },
@@ -1425,22 +1426,6 @@
           "deprecationReason": null
         },
         {
-          "name": "expiryDate",
-          "description": null,
-          "args": [],
-          "type": { "kind": "SCALAR", "name": "DateTime", "ofType": null },
-          "isDeprecated": false,
-          "deprecationReason": null
-        },
-        {
-          "name": "cvv",
-          "description": null,
-          "args": [],
-          "type": { "kind": "SCALAR", "name": "String", "ofType": null },
-          "isDeprecated": false,
-          "deprecationReason": null
-        },
-        {
           "name": "useType",
           "description": null,
           "args": [],
@@ -1508,7 +1493,11 @@
           "name": "balanceInfo",
           "description": null,
           "args": [],
-          "type": { "kind": "OBJECT", "name": "Balance", "ofType": null },
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+            "ofType": { "kind": "OBJECT", "name": "Balance", "ofType": null }
+          },
           "isDeprecated": false,
           "deprecationReason": null
         }
@@ -2098,7 +2087,7 @@
           "deprecationReason": null
         },
         {
-          "name": "platformType",
+          "name": "provider",
           "description": "结算金额",
           "args": [],
           "type": { "kind": "ENUM", "name": "QbitCardProviderEnum", "ofType": null },
@@ -2141,7 +2130,7 @@
           "name": "businessType",
           "description": null,
           "args": [],
-          "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+          "type": { "kind": "ENUM", "name": "QbitCardTransactionTypeEnum", "ofType": null },
           "isDeprecated": false,
           "deprecationReason": null
         },
@@ -2163,9 +2152,13 @@
         },
         {
           "name": "qbitCardInfo",
-          "description": null,
+          "description": "交易数据获取量子卡",
           "args": [],
-          "type": { "kind": "OBJECT", "name": "QbitCard", "ofType": null },
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+            "ofType": { "kind": "OBJECT", "name": "QbitCard", "ofType": null }
+          },
           "isDeprecated": false,
           "deprecationReason": null
         }
@@ -2189,6 +2182,161 @@
         { "name": "Cancelled", "description": null, "isDeprecated": false, "deprecationReason": null },
         { "name": "Rejected", "description": null, "isDeprecated": false, "deprecationReason": null }
       ],
+      "possibleTypes": null
+    },
+    {
+      "kind": "ENUM",
+      "name": "QbitCardTransactionTypeEnum",
+      "description": null,
+      "fields": null,
+      "inputFields": null,
+      "interfaces": null,
+      "enumValues": [
+        { "name": "Credit", "description": null, "isDeprecated": false, "deprecationReason": null },
+        { "name": "Consumption", "description": null, "isDeprecated": false, "deprecationReason": null },
+        { "name": "TransferIn", "description": null, "isDeprecated": false, "deprecationReason": null },
+        { "name": "TransferOut", "description": null, "isDeprecated": false, "deprecationReason": null },
+        { "name": "Refund", "description": null, "isDeprecated": false, "deprecationReason": null },
+        { "name": "UnKnow", "description": null, "isDeprecated": false, "deprecationReason": null },
+        { "name": "DeleteCardRefund", "description": null, "isDeprecated": false, "deprecationReason": null },
+        { "name": "Fee_CreateCard", "description": null, "isDeprecated": false, "deprecationReason": null },
+        { "name": "Fee_Credit", "description": null, "isDeprecated": false, "deprecationReason": null }
+      ],
+      "possibleTypes": null
+    },
+    {
+      "kind": "OBJECT",
+      "name": "QbitCardGroup",
+      "description": null,
+      "fields": [
+        {
+          "name": "id",
+          "description": null,
+          "args": [],
+          "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "remarks",
+          "description": "备注",
+          "args": [],
+          "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "createTime",
+          "description": null,
+          "args": [],
+          "type": { "kind": "SCALAR", "name": "DateTime", "ofType": null },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "updateTime",
+          "description": null,
+          "args": [],
+          "type": { "kind": "SCALAR", "name": "DateTime", "ofType": null },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "deleteTime",
+          "description": null,
+          "args": [],
+          "type": { "kind": "SCALAR", "name": "DateTime", "ofType": null },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "version",
+          "description": null,
+          "args": [],
+          "type": { "kind": "SCALAR", "name": "Float", "ofType": null },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "balanceId",
+          "description": "组钱包id",
+          "args": [],
+          "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "groupName",
+          "description": "分组名称",
+          "args": [],
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+            "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "expiryDate",
+          "description": "有限期",
+          "args": [],
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+            "ofType": { "kind": "SCALAR", "name": "DateTime", "ofType": null }
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "status",
+          "description": "组状态",
+          "args": [],
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+            "ofType": { "kind": "ENUM", "name": "ActivationStatusEnum", "ofType": null }
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "qbitCardList",
+          "description": "卡信息",
+          "args": [],
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+            "ofType": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": { "kind": "OBJECT", "name": "QbitCard", "ofType": null }
+              }
+            }
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "balanceInfo",
+          "description": "组钱包",
+          "args": [],
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+            "ofType": { "kind": "OBJECT", "name": "Balance", "ofType": null }
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        }
+      ],
+      "inputFields": null,
+      "interfaces": [],
+      "enumValues": null,
       "possibleTypes": null
     },
     {
@@ -2475,6 +2623,53 @@
     },
     {
       "kind": "OBJECT",
+      "name": "QbitCardGroupOutput",
+      "description": null,
+      "fields": [
+        {
+          "name": "pageTotal",
+          "description": "pageTotal",
+          "args": [],
+          "type": { "kind": "SCALAR", "name": "Float", "ofType": null },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "total",
+          "description": "total",
+          "args": [],
+          "type": { "kind": "SCALAR", "name": "Float", "ofType": null },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "data",
+          "description": null,
+          "args": [],
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+            "ofType": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": { "kind": "OBJECT", "name": "QbitCardGroup", "ofType": null }
+              }
+            }
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        }
+      ],
+      "inputFields": null,
+      "interfaces": [],
+      "enumValues": null,
+      "possibleTypes": null
+    },
+    {
+      "kind": "OBJECT",
       "name": "QbitCardTransactionOutput",
       "description": null,
       "fields": [
@@ -2598,7 +2793,7 @@
           "deprecationReason": null
         },
         {
-          "name": "platformType",
+          "name": "provider",
           "description": "平台类型",
           "args": [],
           "type": {
@@ -3691,7 +3886,7 @@
           "deprecationReason": null
         },
         {
-          "name": "qbitCardTransactionList",
+          "name": "getQbitCardTransactionList",
           "description": "获取量子卡交易列表",
           "args": [
             {
@@ -3723,7 +3918,7 @@
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
-                "ofType": { "kind": "INPUT_OBJECT", "name": "QbitCardStatisticsInput", "ofType": null }
+                "ofType": { "kind": "INPUT_OBJECT", "name": "StatisticsParams", "ofType": null }
               },
               "defaultValue": null
             }
@@ -3749,12 +3944,12 @@
           "description": "获取账户交易信息",
           "args": [
             {
-              "name": "data",
+              "name": "queryParams",
               "description": null,
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
-                "ofType": { "kind": "INPUT_OBJECT", "name": "QbitCardTransactionStatisticsInput", "ofType": null }
+                "ofType": { "kind": "INPUT_OBJECT", "name": "StatisticsParams", "ofType": null }
               },
               "defaultValue": null
             }
@@ -3771,6 +3966,75 @@
                 "ofType": { "kind": "OBJECT", "name": "QbitCardTransactionStatisticsOutput", "ofType": null }
               }
             }
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "exportStoredValueCardList",
+          "description": "导出储值卡列表",
+          "args": [
+            {
+              "name": "queryParams",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": { "kind": "INPUT_OBJECT", "name": "QueryParams", "ofType": null }
+              },
+              "defaultValue": null
+            }
+          ],
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+            "ofType": { "kind": "SCALAR", "name": "Boolean", "ofType": null }
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "exportCreditCardList",
+          "description": "导出额度卡列表",
+          "args": [
+            {
+              "name": "queryParams",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": { "kind": "INPUT_OBJECT", "name": "QueryParams", "ofType": null }
+              },
+              "defaultValue": null
+            }
+          ],
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+            "ofType": { "kind": "SCALAR", "name": "Boolean", "ofType": null }
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "getQbitCardGroupList",
+          "description": "查询卡组",
+          "args": [
+            {
+              "name": "queryParams",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": { "kind": "INPUT_OBJECT", "name": "QueryParams", "ofType": null }
+              },
+              "defaultValue": null
+            }
+          ],
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+            "ofType": { "kind": "OBJECT", "name": "QbitCardGroupOutput", "ofType": null }
           },
           "isDeprecated": false,
           "deprecationReason": null
@@ -3924,67 +4188,14 @@
     },
     {
       "kind": "INPUT_OBJECT",
-      "name": "QbitCardStatisticsInput",
+      "name": "StatisticsParams",
       "description": null,
       "fields": null,
       "inputFields": [
         {
-          "name": "providers",
-          "description": "卡的提供者",
-          "type": {
-            "kind": "LIST",
-            "name": null,
-            "ofType": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": { "kind": "ENUM", "name": "QbitCardProviderEnum", "ofType": null }
-            }
-          },
-          "defaultValue": null
-        },
-        {
-          "name": "accountId",
-          "description": "账户ID",
-          "type": {
-            "kind": "NON_NULL",
-            "name": null,
-            "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
-          },
-          "defaultValue": null
-        }
-      ],
-      "interfaces": null,
-      "enumValues": null,
-      "possibleTypes": null
-    },
-    {
-      "kind": "INPUT_OBJECT",
-      "name": "QbitCardTransactionStatisticsInput",
-      "description": null,
-      "fields": null,
-      "inputFields": [
-        {
-          "name": "accountId",
-          "description": "账户ID",
-          "type": {
-            "kind": "NON_NULL",
-            "name": null,
-            "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
-          },
-          "defaultValue": null
-        },
-        {
-          "name": "platformTypes",
-          "description": "平台类型列表",
-          "type": {
-            "kind": "LIST",
-            "name": null,
-            "ofType": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": { "kind": "ENUM", "name": "QbitCardProviderEnum", "ofType": null }
-            }
-          },
+          "name": "filter",
+          "description": null,
+          "type": { "kind": "SCALAR", "name": "JSON", "ofType": null },
           "defaultValue": null
         }
       ],
@@ -4364,15 +4575,7 @@
           "type": {
             "kind": "NON_NULL",
             "name": null,
-            "ofType": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
-              }
-            }
+            "ofType": { "kind": "SCALAR", "name": "Boolean", "ofType": null }
           },
           "isDeprecated": false,
           "deprecationReason": null
@@ -4388,6 +4591,29 @@
                 "kind": "NON_NULL",
                 "name": null,
                 "ofType": { "kind": "INPUT_OBJECT", "name": "EnableQbitCarLimitInput", "ofType": null }
+              },
+              "defaultValue": null
+            }
+          ],
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+            "ofType": { "kind": "SCALAR", "name": "Boolean", "ofType": null }
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "deleteQbitCard",
+          "description": "删除量子卡",
+          "args": [
+            {
+              "name": "qbitCardId",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
               },
               "defaultValue": null
             }
@@ -4438,7 +4664,11 @@
               "defaultValue": null
             }
           ],
-          "type": { "kind": "NON_NULL", "name": null, "ofType": { "kind": "SCALAR", "name": "JSON", "ofType": null } },
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+            "ofType": { "kind": "SCALAR", "name": "Boolean", "ofType": null }
+          },
           "isDeprecated": false,
           "deprecationReason": null
         },
@@ -4446,6 +4676,52 @@
           "name": "updateKyInfo",
           "description": "更新用户KY状态",
           "args": [],
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+            "ofType": { "kind": "SCALAR", "name": "Boolean", "ofType": null }
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "addQbitCardGroup",
+          "description": "新增卡组",
+          "args": [
+            {
+              "name": "data",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": { "kind": "INPUT_OBJECT", "name": "AddQbitCardGroupInput", "ofType": null }
+              },
+              "defaultValue": null
+            }
+          ],
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+            "ofType": { "kind": "OBJECT", "name": "QbitCardGroup", "ofType": null }
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "updateQbitCardGroup",
+          "description": "修改卡组",
+          "args": [
+            {
+              "name": "data",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": { "kind": "INPUT_OBJECT", "name": "AddQbitCardGroupInput", "ofType": null }
+              },
+              "defaultValue": null
+            }
+          ],
           "type": {
             "kind": "NON_NULL",
             "name": null,
@@ -5262,7 +5538,7 @@
       "fields": null,
       "inputFields": [
         {
-          "name": "catdId",
+          "name": "cardId",
           "description": "卡token列表",
           "type": {
             "kind": "NON_NULL",
@@ -5289,20 +5565,12 @@
       "fields": null,
       "inputFields": [
         {
-          "name": "cardIdList",
+          "name": "cardId",
           "description": "卡ID",
           "type": {
             "kind": "NON_NULL",
             "name": null,
-            "ofType": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
-              }
-            }
+            "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
           },
           "defaultValue": null
         }
@@ -5318,20 +5586,12 @@
       "fields": null,
       "inputFields": [
         {
-          "name": "cardIdList",
+          "name": "cardId",
           "description": "卡id",
           "type": {
             "kind": "NON_NULL",
             "name": null,
-            "ofType": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
-              }
-            }
+            "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
           },
           "defaultValue": null
         }
@@ -5396,6 +5656,63 @@
             "kind": "NON_NULL",
             "name": null,
             "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
+          },
+          "defaultValue": null
+        }
+      ],
+      "interfaces": null,
+      "enumValues": null,
+      "possibleTypes": null
+    },
+    {
+      "kind": "INPUT_OBJECT",
+      "name": "AddQbitCardGroupInput",
+      "description": "量子卡组",
+      "fields": null,
+      "inputFields": [
+        {
+          "name": "accountId",
+          "description": null,
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+            "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
+          },
+          "defaultValue": null
+        },
+        {
+          "name": "userId",
+          "description": null,
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+            "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
+          },
+          "defaultValue": null
+        },
+        {
+          "name": "currency",
+          "description": "币种",
+          "type": { "kind": "ENUM", "name": "CurrencyEnum", "ofType": null },
+          "defaultValue": null
+        },
+        {
+          "name": "groupName",
+          "description": "分组名称",
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+            "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
+          },
+          "defaultValue": null
+        },
+        {
+          "name": "expiryDate",
+          "description": "有限期",
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+            "ofType": { "kind": "SCALAR", "name": "DateTime", "ofType": null }
           },
           "defaultValue": null
         }

@@ -217,14 +217,7 @@ export const account = gql`
     feeList {
       ...accountFeeRate
     }
-    # balances
-    balances {
-      ...balance
-    }
-    # bankAccounts
-    bankAccounts {
-      ...bankAccount
-    }
+
     # accountExtends
     accountExtends {
       ...accountExtend
@@ -232,8 +225,7 @@ export const account = gql`
   }
 
   ${accountFeeRate}
-  ${balance}
-  ${bankAccount}
+
   ${accountExtend}
 `;
 
@@ -298,22 +290,11 @@ export const bankAccount = gql`
     }
     # 该银行账户和账户所有者的关系
     relationship
-    # balance
-    balance {
-      ...balance
-    }
-    # account
-    account {
-      ...account
-    }
   }
 
   ${address}
 
   ${attachment}
-
-  ${balance}
-  ${account}
 `;
 
 /** QbitCard */
@@ -351,10 +332,6 @@ export const qbitCard = gql`
     provider
     # type
     type
-    # expiryDate
-    expiryDate
-    # cvv
-    cvv
     # useType
     useType
     # token
@@ -371,13 +348,7 @@ export const qbitCard = gql`
     balanceId
     # apiBalance
     apiBalance
-    # balanceInfo
-    balanceInfo {
-      ...balance
-    }
   }
-
-  ${balance}
 `;
 
 /** ReferralCode */
@@ -405,18 +376,7 @@ export const referralCode = gql`
     status
     # 销售/用户
     type
-    # user
-    user {
-      ...user
-    }
-    # admin
-    admin {
-      ...user
-    }
   }
-
-  ${user}
-  ${user}
 `;
 
 /** SystemConfig */
@@ -502,17 +462,11 @@ export const inboundTransfer = gql`
     fromOrderId
     # 三方过来的原始数据
     rawData
-    # account
-    account {
-      ...account
-    }
   }
 
   ${statusLog}
 
   ${attachment}
-
-  ${account}
 `;
 
 /** QbitCardTransaction */
@@ -539,7 +493,7 @@ export const qbitCardTransaction = gql`
     # displayStatus
     displayStatus
     # 结算金额
-    platformType
+    provider
     # 结算金额
     settleAmount
     # 原始金额
@@ -554,13 +508,33 @@ export const qbitCardTransaction = gql`
     sourceId
     # 交易时间
     transactionTime
-    # qbitCardInfo
-    qbitCardInfo {
-      ...qbitCard
-    }
   }
+`;
 
-  ${qbitCard}
+/** QbitCardGroup */
+export const qbitCardGroup = gql`
+  fragment qbitCardGroup on QbitCardGroup {
+    # id
+    id
+    # 备注
+    remarks
+    # createTime
+    createTime
+    # updateTime
+    updateTime
+    # deleteTime
+    deleteTime
+    # version
+    version
+    # 组钱包id
+    balanceId
+    # 分组名称
+    groupName
+    # 有限期
+    expiryDate
+    # 组状态
+    status
+  }
 `;
 
 /** BankAccountsOutput */
@@ -570,13 +544,7 @@ export const bankAccountsOutput = gql`
     pageTotal
     # total
     total
-    # data
-    data {
-      ...bankAccount
-    }
   }
-
-  ${bankAccount}
 `;
 
 /** AccountOutput */
@@ -586,13 +554,7 @@ export const accountOutput = gql`
     pageTotal
     # total
     total
-    # data
-    data {
-      ...account
-    }
   }
-
-  ${account}
 `;
 
 /** BalancesOutput */
@@ -602,13 +564,7 @@ export const balancesOutput = gql`
     pageTotal
     # total
     total
-    # data
-    data {
-      ...balance
-    }
   }
-
-  ${balance}
 `;
 
 /** UsersOutput */
@@ -618,13 +574,7 @@ export const usersOutput = gql`
     pageTotal
     # total
     total
-    # data
-    data {
-      ...user
-    }
   }
-
-  ${user}
 `;
 
 /** ReferralCodeOutput */
@@ -650,13 +600,23 @@ export const qbitCardOutput = gql`
     pageTotal
     # total
     total
+  }
+`;
+
+/** QbitCardGroupOutput */
+export const qbitCardGroupOutput = gql`
+  fragment qbitCardGroupOutput on QbitCardGroupOutput {
+    # pageTotal
+    pageTotal
+    # total
+    total
     # data
     data {
-      ...qbitCard
+      ...qbitCardGroup
     }
   }
 
-  ${qbitCard}
+  ${qbitCardGroup}
 `;
 
 /** QbitCardTransactionOutput */
@@ -697,7 +657,7 @@ export const qbitCardTransactionStatisticsOutput = gql`
     # 拒付笔数
     declinedCount
     # 平台类型
-    platformType
+    provider
   }
 `;
 
@@ -767,22 +727,6 @@ export const inboundTransfersOutput = gql`
   ${inboundTransfer}
 `;
 
-/** OutboundTransfersOutput */
-export const outboundTransfersOutput = gql`
-  fragment outboundTransfersOutput on OutboundTransfersOutput {
-    # pageTotal
-    pageTotal
-    # total
-    total
-    # data
-    data {
-      ...outboundTransfer
-    }
-  }
-
-  ${outboundTransfer}
-`;
-
 /** OutboundTransfer */
 export const outboundTransfer = gql`
   fragment outboundTransfer on OutboundTransfer {
@@ -842,20 +786,9 @@ export const outboundTransfer = gql`
     processor
     # 三方processor的order id
     processorOrderId
-    # beneficiaries
-    beneficiaries {
-      ...bankAccount
-    }
-    # account
-    account {
-      ...account
-    }
   }
 
   ${statusLog}
-
-  ${bankAccount}
-  ${account}
 `;
 
 /** SystemConfigOutput */
@@ -872,4 +805,20 @@ export const systemConfigOutput = gql`
   }
 
   ${systemConfig}
+`;
+
+/** OutboundTransfersOutput */
+export const outboundTransfersOutput = gql`
+  fragment outboundTransfersOutput on OutboundTransfersOutput {
+    # pageTotal
+    pageTotal
+    # total
+    total
+    # data
+    data {
+      ...outboundTransfer
+    }
+  }
+
+  ${outboundTransfer}
 `;
