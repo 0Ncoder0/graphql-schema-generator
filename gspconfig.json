@@ -1,5 +1,5 @@
 {
-  "remote": "http://13.114.27.194:3000/graphql",
+  "remote": "http://localhost:3000/graphql",
   "exclude": "../qbit-web/src/graphql/schema",
   "skipFields": [
     { "type": "User", "ignore": ["data"] },
@@ -7,7 +7,7 @@
     { "type": "QbitCard", "ignore": ["data"] },
     { "type": "Balance", "ignore": ["data"] },
     { "type": "BankAccount", "ignore": ["data"] },
-
+    { "name": "key", "type": "FeeChannelEnum" },
     { "name": "updateTime" },
     { "name": "deleteTime" },
     { "name": "version" }
