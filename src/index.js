@@ -9,28 +9,25 @@ const gInterface = require("./generator/interface");
 const gMethod = require("./generator/method");
 const { getEslintDisable } = require("./generator/utils");
 
-//  'OBJECT', 'SCALAR', 'ENUM', 'INPUT_OBJECT', 'UNION'
-
-const joinPath = (dir, fileName) => {
-  return /^\./.test(dir) ? path.join(__dirname, "../", dir, fileName) : path.join(dir, fileName);
-};
+const outDir = path.join(__dirname, "../dist");
 
 const output = {
-  schema: joinPath(config.outDir, "schema.json"),
-  interface: joinPath(config.outDir, "interface.ts"),
-  enum: joinPath(config.outDir, "enum.ts"),
-  fragment: joinPath(config.outDir, "fragment.ts"),
-  query: joinPath(config.outDir, "query.ts"),
-  mutation: joinPath(config.outDir, "mutation.ts"),
-  index: joinPath(config.outDir, "index.ts")
+  schema: path.join(outDir, "schema.json"),
+  interface: path.join(outDir, "interface.ts"),
+  enum: path.join(outDir, "enum.ts"),
+  fragment: path.join(outDir, "fragment.ts"),
+  query: path.join(outDir, "query.ts"),
+  mutation: path.join(outDir, "mutation.ts"),
+  index: path.join(outDir, "index.ts")
 };
 
 const booter = async function () {
-  if (config.remote) {
-    const schema = await fetch(config.remote);
-    fs.writeFileSync(output.schema, JSON.stringify(schema));
+  if (!fs.existsSync(outDir)) {
+    fs.mkdirSync(outDir);
   }
-  const schema = require(output.schema);
+
+  const schema = await fetch(config.remote);
+
   const enums = gEnums(schema.types);
   fs.writeFileSync(output.enum, getEslintDisable() + enums);
 

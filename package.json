@@ -12,9 +12,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "gsp": "node ./src/index.js",
     "build": "node ./src/index.js && npm run prettier",
-    "prettier": "npx prettier --write ./src/**/* && npx prettier --write ./graphql/**/*"
+    "prettier": "npx prettier --write ./dist/**/*"
   },
   "author": "",
   "license": "ISC"

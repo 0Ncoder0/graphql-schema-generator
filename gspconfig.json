@@ -1,6 +1,5 @@
-{
-  "remote": "http://localhost:3000/graphql",
-  "outDir": "C:/Users/edz/Desktop/codes/qbit-web/src/graphql/schema",
+ {
+  "remote": "http://global.service.staging.qbitnetwork.com/graphql",
   "skipFields": [
     { "type": "User", "ignore": ["data"] },
     { "type": "Account", "ignore": ["data"] },
@@ -10,6 +9,7 @@
     { "name": "key", "type": "FeeChannelEnum" },
     { "name": "updateTime" },
     { "name": "deleteTime" },
-    { "name": "version" }
+    { "name": "version" },
+    { "name": "customerInfo" }
   ]
 }
