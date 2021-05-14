@@ -1,12 +1,10 @@
 const fs = require("fs");
 const path = require("path");
-const gql = require("graphql-tag");
-const config = require("../gspconfig.json");
-const fetch = require("./fetch/index");
 const gEnums = require("./generator/enum");
 const gFragment = require("./generator/fragment");
 const gInterface = require("./generator/interface");
 const gMethod = require("./generator/method");
+const schema = require("./schema.json").data.__schema;
 const { getEslintDisable } = require("./generator/utils");
 
 const outDir = path.join(__dirname, "../dist");
@@ -25,8 +23,6 @@ const booter = async function () {
   if (!fs.existsSync(outDir)) {
     fs.mkdirSync(outDir);
   }
-
-  const schema = await fetch(config.remote);
 
   const enums = gEnums(schema.types);
   fs.writeFileSync(output.enum, getEslintDisable() + enums);

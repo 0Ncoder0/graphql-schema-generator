@@ -1,5 +1,5 @@
 const { camelCase } = require("lodash");
-const { gType, skipField } = require("./utils");
+const { gType } = require("./utils");
 
 /** 抽取 graphql 片段 */
 module.exports = types => {
@@ -12,8 +12,6 @@ module.exports = types => {
     return prop.get("OBJECT") || prop.get("UNION");
   });
   const gField = field => {
-    if (skipField(field)) return "";
-
     const { description, name } = field;
     const { name: tName, prop: tProp } = gType(field.type);
     const oField = [
@@ -72,8 +70,6 @@ module.exports = types => {
       arr.filter(ele => {
         const valid = ele.fields.every(field => {
           const { name, prop } = gType(field.type);
-
-          if (skipField(field)) return true;
 
           return !prop.get("OBJECT") || ordered.includes(name);
         });

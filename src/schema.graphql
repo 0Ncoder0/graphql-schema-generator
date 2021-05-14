@@ -1,79 +1,76 @@
-# Exposes a URL that specifies the behaviour of this scalar.
-directive @specifiedBy(
-  # The URL that specifies the behaviour of this scalar.
-  url: String!
-) on SCALAR
-type Account {
+type UserConfig {
   id: String
-  # 备注
-  remarks: String
+
   createTime: DateTime
-  updateTime: DateTime
-  deleteTime: DateTime
-  version: Float
-  # 认证名字
-  verifiedName: String
-  accountType: String
-  # 给用户分配的6位唯一数字ID
-  displayId: String
-  status: String
-  kycStatus: String
-  kybStatus: String
-  # 账户来源邀请码
-  referralCodeId: String
-  type: String
-  # 账户费率
-  feeList: [AccountFeeRate!]
-  balances: [Balance!]
-  bankAccounts: [BankAccount!]
-  accountExtends: [AccountExtend!]
 }
 
-type AccountExtend {
+# A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+scalar DateTime
+
+type User {
   id: String
-  # 备注
-  remarks: String
+  anything: String
+
   createTime: DateTime
-  updateTime: DateTime
-  deleteTime: DateTime
-  version: Float
-  kycStatus: String
-  kybStatus: String
+  phone: String
+  nickname: String
+  email: String
+  userConfig: UserConfig
+
+  # 是否有交易密码
+  hasPaymentPwd: Boolean
+
+  # 是否可以支付，修改支付密码后需要限制24小时
+  canPay: Boolean
+
+  # 用户扩展表
+  userExtend: UserExtend!
+
+  # 用户最后登录时间
+  lastLoginTime: DateTime!
+}
+
+type StatusLog {
+  # 状态名
+  status: String!
+
+  # 更新时间
+  updatedAt: DateTime!
+}
+
+type Balance {
+  id: String
+
+  createTime: DateTime
   accountId: String
+  walletType: WalletTypeEnum
+  currency: CurrencyEnum
+
+  # 可用金额
+  available: Float!
+
+  # 处理中金额
+  pending: Float!
+
+  # 冻结中金额
+  frozen: Float!
+  status: ActivationStatusEnum
 }
 
-type AccountFeeRate {
-  id: String
-  # 备注
-  remarks: String
-  createTime: DateTime
-  updateTime: DateTime
-  deleteTime: DateTime
-  version: Float
-  # 账户id
-  accountId: String
-  # 币种
-  currency: ExchangeCurrencyEnum!
-  # 计算模式
-  key: FeeChannelEnum!
-  # 充值费
-  value: Float!
-  # 计算方式
-  mathType: FeeTypeEnum!
-  # 付款方式
-  payType: FeePayTypeEnum!
-  # 业务类型
-  businessType: BusinessTypeEnum!
-  # 扣源余额还是扣目标余额
-  reduceType: ReduceTypeEnum!
+enum WalletTypeEnum {
+  EasyEuro
+  QbitCardWallet
+  PennyCardWallet
+  QbitWallet
+  GroupWallet
+  CurrencyCloudWallet
 }
 
-type AccountOutput {
-  # pageTotal
-  pageTotal: Float
-  # total
-  total: Float
-  data: [Account!]!
+enum CurrencyEnum {
+  USD
+  CNY
+  EUR
+  GBP
 }
 
 enum ActivationStatusEnum {
@@ -85,266 +82,71 @@ enum ActivationStatusEnum {
   Other
 }
 
-type Address {
-  # 地址栏第一行
-  addressLine1: String!
-  # 地址栏第二行
-  addressLine2: String
-  # 城市
-  city: String!
-  # 州或省
-  state: String!
-  # ISO_3166-1 二位字母代码， 如CN, US等
-  country: String!
-  # 邮编
-  postalCode: String
-}
-
-input AddressInput {
-  # 地址栏第一行
-  addressLine1: String!
-  # 地址栏第二行
-  addressLine2: String
-  # 城市
-  city: String!
-  # 州或省
-  state: String!
-  # ISO_3166-1 二位字母代码， 如CN, US等
-  country: String!
-  # 邮编
-  postalCode: String
-}
-
 type Attachment {
   # 文件名
   filename: String!
+
   # 链接
   fileUrl: String!
 }
 
-input AttachmentInput {
-  # 文件名
-  filename: String!
-  # 链接
-  fileUrl: String!
+type Address {
+  # 地址栏第一行
+  addressLine1: String!
+
+  # 地址栏第二行
+  addressLine2: String
+
+  # 城市
+  city: String!
+
+  # 州或省
+  state: String!
+
+  # ISO_3166-1 二位字母代码， 如CN, US等
+  country: String!
+
+  # 邮编
+  postalCode: String
 }
 
-type Balance {
+type GlobalAccountCCSenderDetail {
+  name: String!
+  address: String!
+  country: String!
+  iban: String!
+  bic: String!
+  routing_code: String!
+}
+
+type AccountFeeRate {
   id: String
-  # 备注
-  remarks: String
+
   createTime: DateTime
-  updateTime: DateTime
-  deleteTime: DateTime
-  version: Float
+
+  # 账户id
   accountId: String
-  walletType: WalletTypeEnum
-  currency: CurrencyEnum
-  # 可用金额
-  available: Float!
-  # 处理中金额
-  pending: Float!
-  # 冻结中金额
-  frozen: Float!
-  status: String
-}
 
-type BalancesOutput {
-  # pageTotal
-  pageTotal: Float
-  # total
-  total: Float
-  data: [Balance!]!
-}
-
-type BankAccount {
-  id: String
-  # 备注
-  remarks: String
-  createTime: DateTime
-  updateTime: DateTime
-  deleteTime: DateTime
-  version: Float
-  # 全球账户的account id
-  accountId: String!
-  # 对应的balance Id
-  balanceId: String
-  # 账户持有人姓名
-  accountName: String!
-  # 账号
-  accountNo: String!
-  # 银行名称
-  bankName: String
-  # SWIFT/BIC
-  swift: String
-  # Routing number
-  routingNumber: String
-  # 支行名称
-  branchName: String
-  # 支行代码
-  branchCode: String
-  # 地址
-  accountAddress: Address
   # 币种
-  currency: String!
-  # 状态
-  status: String
-  # 最后更新时间
-  lastUpdateTime: DateTime
-  # 账户类型（对公、对私）
-  type: String
-  # 身份证号码
-  idNumber: String
-  # 用途种类，如用于提现withdraw, 还是付款payout
-  category: String
-  # 来源，账户的提供方， 如EE，CFSB
-  source: String
-  # 提供方平台上的id
-  sourceId: String
-  # 提供方平台上的wallet id
-  sourceWalletId: String
-  # 附件
-  attachments: [Attachment!]
-  # 该银行账户和账户所有者的关系
-  relationship: String
-  balance: Balance
-  account: Account
-}
+  currency: ExchangeCurrencyEnum!
 
-type BankAccountsOutput {
-  # pageTotal
-  pageTotal: Float
-  # total
-  total: Float
-  data: [BankAccount!]!
-}
+  # 计算模式
+  key: FeeChannelEnum!
 
-input BatchCreateQbitCardInput {
-  # 批量的数量
-  batchCount: Float!
-  # 卡的拥有者id
-  accountId: String!
-  # 开卡金额，卡类型需要，共用额度的不需要用到此字段
-  cost: Float
-  # 平台(pennyCard/niumCard)
-  provider: QbitCardProviderEnum!
-  # 卡的自身验证地址
-  cardAddress: AddressInput
-  # 持卡人名
-  firstName: String!
-  # 持卡人姓
-  lastName: String!
-  # 标签
-  label: String
-  # 使用类别
-  useType: String!
-  # 持卡人信息，当nium的时候不能为空
-  cardholderInfo: CardholderInfo
-  # 组Id(nium 必须要传组id)
-  groupId: String
-}
+  # 充值费
+  value: Float!
 
-union BatchCreateQbitCardOutput = QbitCard | QbitBoolean
-# 批量开卡进度
-input BatchCreateQbitCardProcessInput {
-  # 卡的拥有者id
-  accountId: String!
-  # 平台(pennyCard/niumCard)
-  provider: QbitCardProviderEnum!
-}
+  # 计算方式
+  mathType: FeeTypeEnum!
 
-# 批量开卡进度返回
-type BatchCreateQbitCardProcessOutput {
-  # 批量总数目
-  batchCount: Int!
-  # 当前数目
-  currentCount: Int!
-}
+  # 付款方式
+  payType: FeePayTypeEnum!
 
-enum BusinessTypeEnum {
-  EE
-  QbitCard
-}
+  # 业务类型
+  businessType: BusinessTypeEnum!
 
-input CardholderInfo {
-  TODO: String!
-}
-
-input CheckVerCode {
-  emailPhone: String!
-  codeType: SmsCodeEnum!
-  code: String!
-}
-
-input CreateBankAccountInput {
-  # 全球账户的account id
-  accountId: String!
-  # 账户持有人姓名
-  accountName: String!
-  # 账号
-  accountNo: String!
-  # 银行名称
-  bankName: String
-  # SWIFT/BIC
-  swift: String
-  # Routing number
-  routingNumber: String
-  # 支行名称
-  branchName: String
-  # 支行代码
-  branchCode: String
-  # 地址
-  accountAddress: AddressInput
-  # 币种
-  currency: String!
-  # 账户类型（对公、对私）
-  type: String
-  # 身份证号码
-  idNumber: String
-  # 用途种类，如用于提现withdraw, 还是付款payout
-  category: String
-  # 附件
-  attachments: [AttachmentInput!]
-  # 该银行账户和账户所有者的关系
-  relationship: String
-}
-
-input CreateOutboundTransferInput {
-  # 所属账户id
-  accountId: String!
-  # 源交易账号来源((Wallet, PayPal, 银行卡，银行账户的id))
-  sender: String!
-  # 目标交易id(Wallet, PayPal, 银行卡，银行账户的id)
-  recipient: String!
-  # 源币种
-  senderCurrency: String
-  # 目标币种
-  recipientCurrency: String
-  senderCost: Float!
-  recipientCost: Float!
-  payPassword: String!
-}
-
-enum CurrencyEnum {
-  USD
-  CNY
-  EUR
-  GBP
-}
-
-# A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-scalar DateTime
-
-input DecreaseQbitCarLimitInput {
-  # 卡token列表
-  catdId: String!
-  # 金额，卡类型需要，共用额度的不需要用到此字段
-  cost: Float!
-}
-
-input EnableQbitCarLimitInput {
-  # 卡id
-  cardIdList: [String!]!
+  # 扣源余额还是扣目标余额
+  reduceType: ReduceTypeEnum!
 }
 
 enum ExchangeCurrencyEnum {
@@ -367,6 +169,11 @@ enum FeeChannelEnum {
   BACS
 }
 
+enum FeeTypeEnum {
+  Rate
+  Count
+}
+
 enum FeePayTypeEnum {
   EE_Exchange
   EE_Outbound
@@ -375,231 +182,206 @@ enum FeePayTypeEnum {
   QbitCard_Transfer_In
 }
 
-enum FeeTypeEnum {
-  Rate
-  Count
+enum BusinessTypeEnum {
+  EE
+  QbitCard
 }
 
-input GetTermsAndConditionsInput {
-  # 平台(pennyCard/niumCard)
-  provider: QbitCardProviderEnum!
+enum ReduceTypeEnum {
+  Balance
+  Transfer
 }
 
-type InboundTransfer {
+type ReferralCode {
   id: String
-  # 备注
-  remarks: String
+
   createTime: DateTime
-  updateTime: DateTime
-  deleteTime: DateTime
-  version: Float
-  # 所属账户id
-  accountId: String!
-  # 源交易账号来源((Wallet, PayPal, 银行卡，银行账户的id))
-  sender: String!
-  # 源交易类型(Wallet, PayPal, 银行卡，银行账户)
-  senderType: String
-  # 源的余额id
-  senderBalanceId: String
-  # 目标交易id(Wallet, PayPal, 银行卡，银行账户的id)
-  recipient: String!
-  # 目标交易类型
-  recipientType: String
-  # 源币种
-  senderCurrency: String
-  # 目标的余额id
-  recipientBalanceId: String
-  # 目标币种
-  recipientCurrency: String
-  senderFee: Float!
-  recipientFee: Float!
-  recipientFeeType: String!
-  senderCost: Float!
-  recipientCost: Float!
-  status: String
-  displayStatus: String!
-  # 记录状态变化的时间
-  statusLog: [StatusLog!]
-  # 交易时间
-  transactionTime: DateTime
-  # 付款人名称
-  senderName: String
-  # 充值截图
-  photos: Attachment
-  # 流水号
-  fromOrderId: String
-  # 三方过来的原始数据
-  rawData: JSON
-  account: Account
-}
 
-type InboundTransfersOutput {
-  # pageTotal
-  pageTotal: Float
-  # total
-  total: Float
-  data: [InboundTransfer!]!
-}
+  # 用户userid或者渠道方userId
+  userId: String
 
-input IncreaseQbitCarLimitInput {
-  # 卡token
-  cardId: String!
-  # 金额，卡类型需要，共用额度的不需要用到此字段
-  cost: Float!
-}
-
-input InputInviteCode {
-  id: String
-  # 手机号
-  phone: String!
-  # 姓名
-  nickname: String!
-  # 邀请码
+  # 邀请码所属管理员(销售id)
+  adminId: String
   code: String
-  # 管理人
-  admin: String!
-  # 备注
-  remarks: String!
+
+  # 状态
+  status: String
+
+  # 销售/用户
+  type: String
+  user: User
+  admin: User
+}
+
+type AccountUser {
+  id: String
+
+  createTime: DateTime
+  status: String
+  paymentTime: Float!
+
+  # 这个是错误的，这里应该是1对1的状态
+  users: [User!]
+  user: User
+}
+
+type SalesAccountRelation {
+  id: String
+
+  createTime: DateTime
+
+  # 管理人id(销售id)
+  salesId: String
+
+  # 账户id
+  accountId: String
+  sale: User
+}
+
+type Account {
+  id: String
+
+  createTime: DateTime
+
+  # 认证名字
+  verifiedName: String
+  accountType: String
+
+  # 给用户分配的6位唯一数字ID
+  displayId: String
+  status: String
+  kycStatus: String
+  kybStatus: String
+
+  # 账户来源邀请码
+  referralCodeId: String
+
+  # 旧系统用户id
+  prevUserId: String
+  type: String
+
+  # 账户费率
+  feeList: [AccountFeeRate!]
+
+  # 使用数组兼容Admin接口，前端注意取数据问题ßß
+  accountExtends: AccountExtend
+
+  # 账户用户列表
+  userList: [User!]!
+
+  # 账户量子卡统计
+  qbitAccountStatistics: QbitAccountStatisticsOutput!
+
+  # 组状态统计
+  groupStatusStatistics: StatusCount!
+}
+
+type BankAccount {
+  id: String
+
+  createTime: DateTime
+
+  # 全球账户的account id
+  accountId: String!
+
+  # 对应的balance Id
+  balanceId: String
+
+  # 三方 AccountId
+  subAccountId: String
+
+  # 账户持有人姓名
+  accountName: String!
+
+  # 账号
+  accountNo: String!
+
+  # 银行名称
+  bankName: String
+
+  # 银行地址
+  bankAddress: String
+
+  # SWIFT/BIC
+  swift: String
+
+  # Routing number
+  routingNumber: String
+
+  # Routing type
+  routingType: GlobalAccountRoutingTypeEnum
+
+  # 支行名称
+  branchName: String
+
+  # 支行代码
+  branchCode: String
+
+  # 收款人地址
+  accountAddress: Address
+
+  # 币种
+  currency: String!
+
+  # 状态
+  status: String
+
+  # 最后更新时间
+  lastUpdateTime: DateTime
+
+  # 账户类型（对公、对私）
+  type: String
+
+  # 身份证号码
+  idNumber: String
+
+  # 用途种类，如用于提现withdraw, 还是付款payout
+  category: String
+
+  # 来源，账户的提供方， 如EE，CFSB
+  source: BankAccountSourceEnum
+
+  # 提供方平台上的id
+  sourceId: String
+
+  # 提供方平台上的wallet id
+  sourceWalletId: String
+
+  # 附件
+  attachments: [Attachment!]
+
+  # 该银行账户和账户所有者的关系
+  relationship: String
+
+  # 三方原始数据
+  metaData: JSON
+  # balance: Balance
+  # account: Account
+  kycInfo: JSON
+
+  # 三方可用金额
+  apiBalance: Float!
+}
+
+enum GlobalAccountRoutingTypeEnum {
+  ACH
+  WIRE
+  BIC_SWIFT
+}
+
+enum BankAccountSourceEnum {
+  EE
+  CFSB
+  CC
 }
 
 # The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 scalar JSON
 
-input LoginDto {
-  account: String
-  password: String
-}
-
-type Mutation {
-  # 创建收款人的银行账号
-  bankAccount(data: CreateBankAccountInput!): BankAccount!
-  # 提交收款方审核状态
-  updateBankAccountStatus(data: UpdateStatusDto!): Boolean!
-  # 注册
-  register(data: SignUpDto!): User!
-  # 登出
-  logout: Boolean!
-  # 更新用户部分字段
-  updateUser(data: UserInputUpdate!): Boolean!
-  # 更新用户部分字段
-  updateUserNoId(data: UserInput!): User!
-  # 发送注册验证码
-  sendVerifCode(data: VerCodeBase!): Boolean!
-  # 验证验证码
-  checkVerifCode(data: CheckVerCode!): Boolean!
-  # 设置交易密码
-  setPayPwd(data: SetPayPwdDto!): Boolean!
-  # 修改交易密码
-  updatePayPwd(data: UpdatePayPwdDto!): Boolean!
-  # 创建邀请码
-  creatInviteCode(data: InputInviteCode!): Boolean!
-  # 删除指定邀请码
-  deleteInviteCode(codeId: String!): Boolean!
-  # 创建出账交易记录
-  outboundTransfer(data: CreateOutboundTransferInput!): OutboundTransfer!
-  # 批量新开量子卡,接口商户和admin都能访问
-  batchCreateQbitCard(data: BatchCreateQbitCardInput!): [BatchCreateQbitCardOutput!]!
-  # 增加额度,共享的卡额度不需要
-  increaseQbitCardLimit(data: IncreaseQbitCarLimitInput!): Boolean!
-  # 减少额度
-  decreaseQbitCardLimit(data: DecreaseQbitCarLimitInput!): Boolean!
-  # 冻结卡
-  suspendQbitCard(data: SuspendQbitCardInput!): [String!]!
-  # 解冻卡
-  enableQbitCard(data: EnableQbitCarLimitInput!): Boolean!
-  # 更新量子卡
-  updateQbitCard(data: UpdateQbitCardInput!): QbitCard!
-  # 更新量子卡平台条款
-  updateTermsAndConditions(data: UpdateTermsAndConditionsInput!): JSON!
-  # 更新用户KY状态
-  updateKyInfo: Boolean!
-  # 登录
-  login(data: LoginDto!): User!
-}
-
-type OutboundTransfer {
-  id: String
-  # 备注
-  remarks: String
-  createTime: DateTime
-  updateTime: DateTime
-  deleteTime: DateTime
-  version: Float
-  # 所属账户id
-  accountId: String!
-  # 源交易账号来源((Wallet, PayPal, 银行卡，银行账户的id))
-  sender: String!
-  # 源交易类型(Wallet, PayPal, 银行卡，银行账户)
-  senderType: String
-  # 源的余额id
-  senderBalanceId: String
-  # 目标交易id(Wallet, PayPal, 银行卡，银行账户的id)
-  recipient: String!
-  # 目标交易类型
-  recipientType: String
-  # 源币种
-  senderCurrency: String
-  # 目标的余额id
-  recipientBalanceId: String
-  # 目标币种
-  recipientCurrency: String
-  senderFee: Float!
-  recipientFee: Float!
-  recipientFeeType: String!
-  senderCost: Float!
-  recipientCost: Float!
-  status: String
-  displayStatus: String!
-  # 记录状态变化的时间
-  statusLog: [StatusLog!]
-  # 交易时间
-  transactionTime: DateTime
-  # 付款目的
-  reason: String
-  # 三方processor的名字
-  processor: String
-  # 三方processor的order id
-  processorOrderId: String
-  beneficiaries: [BankAccount!]
-  account: Account
-}
-
-# 费率参数
-input OutboundTransfersFeeDto {
-  senderCurrency: String!
-  recipientCurrency: String!
-  senderCost: Float!
-}
-
-type OutboundTransfersOutput {
-  # pageTotal
-  pageTotal: Float
-  # total
-  total: Float
-  data: [OutboundTransfer!]!
-}
-
-input PageInput {
-  # 页
-  page: Float = 0
-  # 条数
-  limit: Float = 10
-}
-
-# 执行结果
-type QbitBoolean {
-  # 执行结果
-  result: Boolean!
-}
-
 type QbitCard {
   id: String
-  # 备注
-  remarks: String
+
   createTime: DateTime
-  updateTime: DateTime
-  deleteTime: DateTime
-  version: Float
   accountId: String
   userName: String
   firstName: String
@@ -610,144 +392,33 @@ type QbitCard {
   qbitCardNoLastFour: String
   provider: QbitCardProviderEnum
   type: QbitCardTypeEnum
-  expiryDate: DateTime
-  cvv: String
   useType: String
   token: String
   label: String
+
+  # 卡自身的验证地址
+  cardAddress: Address
   cardholderInfo: JSON
   groupId: String
   userId: String
   balanceId: String
   apiBalance: Float
+
+  # 卡的消费限额
+  lifeTimeAmountLimit: Float
   balanceInfo: Balance
-}
+  # accountInfo: Account
 
-type QbitCardOutput {
-  # pageTotal
-  pageTotal: Float
-  # total
-  total: Float
-  data: [QbitCard!]!
-}
-
-type QbitCardPrivateInfoOutput {
-  # 卡号
-  qbitCardNo: String!
-  # cvv
-  cvv: String!
-  # 过期年
-  expYear: String!
-  # 过期月
-  expMonth: String!
+  # 查询单卡的交易统计
+  cardTxStatistics: CardTxStatisticsOutput
+  customerInfo: QbitCardCustomer
+  cardAmountLimit: QbitCardLifeTimeAmountLimit
 }
 
 enum QbitCardProviderEnum {
-  PrivacyCard
   PennyCard
   NiumCard
-  PaycertifyCard
-  WeexCard
-}
-
-input QbitCardStatisticsInput {
-  # 卡的提供者
-  providers: [QbitCardProviderEnum!]
-  # 账户ID
-  accountId: String!
-}
-
-type QbitCardStatisticsOutput {
-  # 卡的提供者
-  provider: QbitCardProviderEnum!
-  # 激活的卡数量
-  activeCardsCount: Float!
-  # 关停的卡数量
-  inactiveCardsCount: Float!
-  # 冻结的卡数量
-  frozenCardsCount: Float!
-  # 删除处理中的卡数量
-  processingCardsCount: Float!
-  # 特殊情况的卡数量
-  otherCardsCount: Float!
-  # 所有卡数量
-  allCardsCount: Float!
-  # 卡内总余额
-  qbitCardApiBalanceAmountSum: Float!
-  # 去重标签列表
-  labels: [String!]!
-  # 去重用户名列表
-  userNames: [String!]!
-}
-
-type QbitCardTransaction {
-  id: String
-  # 备注
-  remarks: String
-  createTime: DateTime
-  updateTime: DateTime
-  deleteTime: DateTime
-  version: Float
-  accountId: String!
-  # 量子卡 id
-  cardId: String
-  # 币种：USD,CNY,EUR
-  currency: String
-  displayStatus: String
-  # 结算金额
-  platformType: String
-  # 结算金额
-  settleAmount: Float
-  # 原始金额
-  originalAmount: Float
-  # 费用
-  fee: Float
-  # 详情
-  detail: String
-  businessType: String
-  # 三方订单Id
-  sourceId: String
-  # 交易时间
-  transactionTime: DateTime
-  qbitCardInfo: QbitCard
-}
-
-type QbitCardTransactionOutput {
-  # pageTotal
-  pageTotal: Float
-  # total
-  total: Float
-  data: [QbitCardTransaction!]!
-}
-
-input QbitCardTransactionStatisticsInput {
-  # 账户ID
-  accountId: String!
-  # 平台类型列表
-  platformTypes: [QbitCardProviderEnum!]
-}
-
-type QbitCardTransactionStatisticsOutput {
-  # 账号资金转入
-  transferInAmountSum: Float!
-  # 账户资金转出
-  transferOutAmountSum: Float!
-  # 累计卡消费
-  consumptionSum: Float!
-  # 开卡费用
-  createCardFeeSum: Float!
-  # 卡消费总笔数
-  consumptionCount: Float!
-  # 已完成笔数
-  successCount: Float!
-  # 处理中笔数
-  pendingCount: Float!
-  # 失败笔数
-  failCount: Float!
-  # 拒付笔数
-  declinedCount: Float!
-  # 平台类型
-  platformType: QbitCardProviderEnum!
+  PrivacyCard
 }
 
 enum QbitCardTypeEnum {
@@ -756,46 +427,2213 @@ enum QbitCardTypeEnum {
   Amex
 }
 
+type SystemConfig {
+  # createTime
+  createTime: DateTime
+
+  # updateTime
+  updateTime: DateTime
+
+  # deleteTime
+  deleteTime: DateTime
+
+  # version
+
+  # id
+  id: Float
+
+  # 字典key
+  key: String
+
+  # value
+  value: String
+
+  # 状态
+  status: ActivationStatusEnum
+}
+
+type AccountExtend {
+  id: String
+
+  createTime: DateTime
+  kycStatus: KyStatus
+  kybStatus: KyStatus
+  accountId: String
+  qbitCardCountLimit: Int
+  qbitCardAccountBalanceId: String
+
+  # 首次充值量子账户的时间
+  firstQbitAccDepositAt: DateTime
+
+  # 首次充值量子账户的transaction id
+  firstQbitAccDepositId: String
+
+  # 首次量子卡的花费时间
+  firstQbitCardSpendAt: DateTime
+
+  # 首次量子卡花费QbitCardTransaction id
+  firstQbitCardSpendId: String
+
+  # 全球账户是否可用
+  globalAccountAvailable: Boolean
+}
+
+enum KyStatus {
+  Pending
+  Request
+  Passed
+  Canceled
+  Blacklisted
+  Na
+}
+
+type QbitCardTransactionAuthorization {
+  id: String
+
+  createTime: DateTime
+
+  # 账户id
+  accountId: String!
+
+  # 卡类型
+  provider: QbitCardProviderEnum!
+
+  # 客户ID
+  customerHashId: String
+
+  # 卡token
+  cardId: String!
+
+  # 三方交易时间
+  transactionTime: DateTime!
+
+  # 业务类型
+  status: String!
+
+  # 金额
+  cost: Float!
+
+  # 三方的交易id
+  sourceId: String!
+
+  # systemTraceAuditNumber
+  systemTraceAuditNumber: String
+
+  # 认证的处理时间(毫秒)
+  handleTime: Float
+
+  # 币种
+  transactionCurrencyCode: String!
+
+  # 金额
+  billingAmount: Float!
+
+  # detail
+  detail: String!
+
+  # 账户信息
+  accounts: Account!
+}
+
+type QbitCardTransaction {
+  id: String
+
+  createTime: DateTime
+  accountId: String!
+
+  # 量子卡 id
+  cardId: String
+
+  # 币种：USD,CNY,EUR
+  currency: CurrencyEnum
+  displayStatus: TransactionDisplayStatusEnum
+
+  # 记录状态变化的时间
+  statusLog: [StatusLog!]
+
+  # 结算金额
+  provider: QbitCardProviderEnum
+
+  # 结算金额
+  settleAmount: Float
+
+  # 原始金额
+  originalAmount: Float
+
+  # 费用
+  fee: Float
+
+  # 详情
+  detail: String
+  businessType: QbitCardTransactionTypeEnum
+
+  # 三方订单Id
+  sourceId: String
+
+  # 交易时间
+  transactionTime: DateTime
+}
+
+enum TransactionDisplayStatusEnum {
+  Pending
+  Processing
+  Closed
+  Cancelled
+  Rejected
+}
+
+enum QbitCardTransactionTypeEnum {
+  Credit
+  Consumption
+  TransferIn
+  TransferOut
+  Refund
+  UnKnow
+  DeleteCardRefund
+  Fee_CreateCard
+  Fee_Credit
+}
+
+type QbitCardGroup {
+  id: String
+
+  createTime: DateTime
+
+  # 组钱包id
+  balanceId: String
+
+  # 分组名称
+  groupName: String!
+
+  # 有限期
+  expiryDate: DateTime!
+
+  # 组状态
+  status: ActivationStatusEnum!
+
+  # 组钱包
+  balanceInfo: Balance!
+
+  # 查询单组的交易统计
+  groupTxStatistics: StatisticsGroupTxRechargeStatisticsOutput
+}
+
+type Apply {
+  id: String
+
+  createTime: DateTime
+  accountId: String!
+  userId: String!
+  status: ApplyStatusEnum
+
+  # 最后处理人id
+  updateUserId: String
+
+  # 最后处理时间
+  handleTime: DateTime
+
+  # 失败原因
+  failReason: String
+
+  # 申请类型
+  type: ApplyTypeEnum!
+
+  # 申请单的数据
+  data: JSON!
+
+  # 数据修改日志
+  statusLog: JSON
+  accountInfo: Account
+  userInfo: User
+
+  # 最后更新申请单状态的管理者信息
+  updateUserInfo: User
+}
+
+enum ApplyStatusEnum {
+  Success
+  Pending
+  Fail
+}
+
+enum ApplyTypeEnum {
+  VirtualCard
+  QbitCardCountLimitIncr
+}
+
+type QbitCardCustomer {
+  id: String
+
+  createTime: DateTime
+  accountId: String!
+  userId: String!
+
+  # 平台类型
+  provider: QbitCardProviderEnum!
+
+  # 客户创建的唯一标志
+  apiCustomerToken: String!
+
+  # 邮箱
+  email: String!
+
+  # 手机号
+  phone: String!
+
+  # 三方的合规状态
+  complianceStatus: KyStatus
+
+  # 三方的合规状态
+  rfiDetails: JSON
+
+  # 账户信息
+  accountInfo: Account!
+}
+
+type QbitCardGroupTransaction {
+  id: String
+
+  createTime: DateTime
+  accountId: String!
+
+  # 组Id
+  groupId: String!
+
+  # qbitCard表的Id
+  cardId: String
+
+  # 交易的balanceId
+  balanceId: String
+
+  # 交易状态
+  status: TransactionStatusEnum
+
+  # 记录状态变化的时间
+  statusLog: [StatusLog!]
+
+  # 结算金额
+  settleAmount: Float
+
+  # 原始金额
+  originalAmount: Float
+
+  # 费用
+  fee: Float
+  businessType: QbitCardTransactionGroupTypeEnum
+
+  # 交易时间
+  transactionTime: DateTime
+
+  # 账户信息
+  accountInfo: Account!
+}
+
+enum TransactionStatusEnum {
+  Pending
+  Closed
+  Fail
+}
+
+enum QbitCardTransactionGroupTypeEnum {
+  TransferIn
+  TransferOut
+  CreateCardFee
+  Consumption
+  Refund
+}
+
+type IguideStepMeta {
+  # 新手引导 为您的Qbit账户充值 提示 true 已完成
+  guideStepDeposit: Boolean!
+
+  # 新手引导 创建您的第一张量子储值卡 提示 true 已完成
+  guideStepPrepaidCard: Boolean!
+
+  # 新手引导 创建您的第一个预算及额度卡 提示 true 已完成
+  guideStepBudgetCard: Boolean!
+
+  # 新手引导 查询您的交易记录 提示 true 已完成
+  guideStepTransaction: Boolean!
+}
+
+type UserExtend {
+  id: String
+
+  createTime: DateTime
+  userId: String
+
+  # 新手引导提示 true 已完成
+  guideStepMeta: IguideStepMeta!
+}
+
+type MessageData {
+  # 标题
+  title: String!
+
+  # 内容
+  content: String
+
+  # 消息类型
+  contentType: MessageCenterTypeEnum!
+}
+
+enum MessageCenterTypeEnum {
+  Html
+}
+
+type MessageCenter {
+  id: String
+
+  createTime: DateTime
+  accountId: String
+  userId: String
+  messageBatchNo: String
+
+  # 消息
+  data: MessageData!
+
+  # 是否已读
+  isRead: Boolean
+
+  # 是否收藏
+  isCollect: Boolean
+
+  # 已读时间
+  readTime: DateTime
+
+  # 消息种类
+  type: MessageClassEnum!
+
+  # 通知给用户的类型
+  notificationToAccountType: NotificationToAccountTypeEnum!
+
+  # 二级消息种类
+  subType: SubClassEnum!
+
+  # 接收平台
+  platform: PlatformEnum!
+}
+
+enum MessageClassEnum {
+  Other
+  Verify
+  Vacation
+  Activity
+  System
+  Code
+}
+
+enum NotificationToAccountTypeEnum {
+  User
+  Account
+  Broadcast
+}
+
+enum SubClassEnum {
+  cdd_kyc_verify
+  nium_code
+  create_nium_customer_success
+  message_center_is_online
+}
+
+enum PlatformEnum {
+  Admin
+  Web
+}
+
+type Transfer {
+  id: String
+
+  createTime: DateTime
+
+  # 所属账户id
+  accountId: String!
+
+  # 币种
+  currency: String
+
+  # 对手方名称
+  counterparty: String
+  originAmount: Float!
+  settlementAmount: Float!
+
+  # 三方订单号
+  sourceId: String
+  transactionDisplayId: String!
+  fee: Float!
+
+  # 生产者
+  provider: GlobalAccountProviderEnum
+
+  # 业务类型
+  businessType: GlobalAccountBusinessType
+
+  # 详细业务类型
+  businessTypeDetail: GlobalAccountBusinessTypeDetail
+
+  # 三方过来的原始数据
+  rawData: JSON
+
+  # 交易时间
+  transactionTime: DateTime
+
+  # 清算时间
+  settlesTime: DateTime
+
+  # 完成时间
+  completedTime: DateTime
+
+  # 审核时间
+  reviewTime: DateTime
+
+  # 记录状态变化的时间
+  statusLog: [StatusLog!]
+  transactionId: String!
+  account: Account
+  displayStatus: TransactionStatusEnum!
+  senderDetails: GlobalAccountCCSenderDetail
+  receivingDetails: BankAccount
+}
+
+enum GlobalAccountProviderEnum {
+  CurrencyCloud
+  EasyEuro
+}
+
+enum GlobalAccountBusinessType {
+  Inbound
+  Outbound
+  Fee
+}
+
+enum GlobalAccountBusinessTypeDetail {
+  CCInbound
+  TransferInToQbitCardWallet
+  TransferOutFromQbitCardWallet
+}
+
+type AccountOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [Account!]!
+}
+
+type QbitAccountStatisticsOutput {
+  # 所有储值卡的三方可用余额
+  cardAvailableApiBalance: Float!
+
+  # 组的可用余额
+  groupAvailableApiBalance: Float!
+
+  # 账户可用余额
+  qbitAccountAvailable: Float!
+
+  # 储值卡总转入/充值
+  prepaidCardTransferInAmount: Float!
+
+  # 储值卡累计消费
+  prepaidCardConsumptionAmount: Float!
+
+  # 额度卡总转入/充值
+  budgetCardTransferInAmount: Float!
+
+  # 额度卡累计消费
+  budgetCardConsumptionAmount: Float!
+
+  # 累计量子卡数量
+  allQbitCardCount: Float!
+
+  # 可用量子卡数量
+  availableQbitCardCount: Float!
+
+  # 最大卡数量上限
+  qbitCardCountLimit: Float!
+
+  # 当前使用中卡数量
+  activeQbitCardCount: Float!
+
+  # 冻结中卡数量
+  frozenQbitCardCount: Float!
+
+  # 已删除卡数量
+  inactiveQbitCardCount: Float!
+}
+
+type StatusCount {
+  # 使用中
+  Active: Float!
+
+  # 处理中
+  Pending: Float!
+
+  # 已删除
+  Inactive: Float!
+
+  # 冻结中
+  Frozen: Float!
+
+  # 删除后处理中(暂无)
+  Processing: Float!
+
+  # 其他(暂无)
+  Other: Float!
+}
+
+type CreateUserOnOldVersionSystemOutput {
+  # code
+  code: Float!
+
+  # 状态
+  status: Boolean!
+
+  # 说明
+  msg: String
+}
+
+type QbitCardGroupTransactionOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [QbitCardGroupTransaction!]!
+}
+
+type QbitCardOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [QbitCard!]!
+}
+
+type QbitCardGroupOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [QbitCardGroup!]!
+}
+
+type QbitCardTransactionOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [QbitCardTransaction!]!
+}
+
+type QbitCardTransactionStatisticsOutput {
+  # 分组字段
+  groupValue: String
+
+  # 资金转入
+  transferInAmountSum: Float!
+
+  # 资金转出
+  transferOutAmountSum: Float!
+
+  # 累计卡消费
+  consumptionSum: Float!
+
+  # 开卡费用
+  createCardFeeSum: Float!
+
+  # 卡消费总笔数
+  consumptionCount: Float!
+
+  # 已完成笔数
+  successCount: Float!
+
+  # 处理中笔数
+  pendingCount: Float!
+
+  # 失败笔数
+  failCount: Float!
+
+  # 拒付笔数
+  declinedCount: Float!
+
+  # 组名称
+  groupName: String
+
+  # 组有效期
+  groupExpiryDate: String
+
+  # 组状态
+  groupStatus: ActivationStatusEnum
+}
+
+type QbitCardCountStatisticsOutput {
+  # 激活的卡数量
+  activeCardsCount: Float!
+
+  # 关停的卡数量
+  inactiveCardsCount: Float!
+
+  # 冻结的卡数量
+  frozenCardsCount: Float!
+
+  # 删除处理中的卡数量
+  processingCardsCount: Float!
+
+  # 特殊情况的卡数量
+  otherCardsCount: Float!
+
+  # 所有卡数量
+  allCardsCount: Float!
+
+  # 账户剩余开卡数量
+  qbitCardCountAvailable: Float!
+
+  # 去重标签列表
+  labels: [String!]!
+
+  # 去重用户名列表
+  userNames: [String!]!
+
+  # 分组字段的返回结果
+  groupByColumn: String
+}
+
+type QbitCardPrivateInfoOutput {
+  # 卡号
+  qbitCardNo: String!
+
+  # cvv
+  cvv: String!
+
+  # 过期年
+  expYear: String!
+
+  # 过期月
+  expMonth: String!
+}
+
+# 批量开卡进度返回
+type BatchCreateQbitCardProcessOutput {
+  # 批量总数目
+  batchCount: Int!
+
+  # 当前开卡数目
+  currentCount: Int!
+
+  # 失败数目
+  failCount: Int!
+}
+
+type GetDailyCostOutput {
+  # 日期
+  date: String!
+
+  # 消费金额
+  cost: Float!
+}
+
+type QbitCardWalletStatisticsOutput {
+  # 资金存入
+  deposit: Float!
+
+  # 资金消费
+  consumption: Float!
+}
+
+type StatisticsOutputBase {
+  # 资金转入
+  transferInAmountSum: Float!
+
+  # 资金转出
+  transferOutAmountSum: Float!
+
+  # 累计卡消费
+  consumptionSum: Float!
+
+  # 开卡费用
+  createCardFeeSum: Float!
+
+  # 卡消费总笔数
+  consumptionCount: Float!
+
+  # 已完成笔数
+  successCount: Float!
+
+  # 处理中笔数
+  pendingCount: Float!
+
+  # 失败笔数
+  failCount: Float!
+
+  # 拒付笔数
+  declinedCount: Float!
+}
+
+type StatisticsGroupTxRechargeStatisticsOutput {
+  # 资金转入
+  transferInAmountSum: Float!
+
+  # 资金转出
+  transferOutAmountSum: Float!
+
+  # 累计卡消费
+  consumptionSum: Float!
+
+  # 开卡费用
+  createCardFeeSum: Float!
+
+  # 卡消费总笔数
+  consumptionCount: Float!
+
+  # 已完成笔数
+  successCount: Float!
+
+  # 处理中笔数
+  pendingCount: Float!
+
+  # 失败笔数
+  failCount: Float!
+
+  # 拒付笔数
+  declinedCount: Float!
+
+  # 组钱包总充值后的总额度
+  rechargeSum: Float!
+}
+
+type CardTxStatisticsOutput {
+  # 资金转入
+  transferInAmountSum: Float!
+
+  # 资金转出
+  transferOutAmountSum: Float!
+
+  # 累计卡消费
+  consumptionSum: Float!
+
+  # 开卡费用
+  createCardFeeSum: Float!
+
+  # 卡消费总笔数
+  consumptionCount: Float!
+
+  # 已完成笔数
+  successCount: Float!
+
+  # 处理中笔数
+  pendingCount: Float!
+
+  # 失败笔数
+  failCount: Float!
+
+  # 拒付笔数
+  declinedCount: Float!
+
+  # 卡ID
+  cardId: String!
+
+  # 退款费总和
+  creditAmountSum: Float
+
+  # 退款费笔数
+  creditCount: Float
+}
+
+type GroupCardsStatisticsOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [CardTxStatisticsOutput!]!
+}
+
+type AccountTxStatisticsOutput {
+  # 资金转入
+  transferInAmountSum: Float!
+
+  # 资金转出
+  transferOutAmountSum: Float!
+
+  # 累计卡消费
+  consumptionSum: Float!
+
+  # 开卡费用
+  createCardFeeSum: Float!
+
+  # 卡消费总笔数
+  consumptionCount: Float!
+
+  # 已完成笔数
+  successCount: Float!
+
+  # 处理中笔数
+  pendingCount: Float!
+
+  # 失败笔数
+  failCount: Float!
+
+  # 拒付笔数
+  declinedCount: Float!
+
+  # 账户ID
+  accountId: String!
+
+  # 卡内总余额
+  totalBalance: Float!
+}
+
+type QbitCardWalletRecordTxOutput {
+  # 账户Id
+  accountId: String!
+
+  # 交易时间
+  transactionTime: DateTime!
+
+  # 交易ID
+  transactionId: String!
+
+  # 交易类型名称
+  transactionTypeName: String!
+  cost: Float!
+  fee: Float!
+
+  # 交易状态类型
+  status: TransactionStatusEnum!
+
+  # 交易状态名称
+  statusName: String!
+
+  # 交易时的可用金额
+  currAvailableAmount: Float!
+
+  # 交易卡号后四位
+  qbitCardNoLastFour: String!
+
+  # 币种
+  currency: String!
+
+  # 账户认证名称
+  verifiedName: String!
+
+  # 出入账金额
+  drawDepositAmount: Float!
+
+  # 交易状态
+  transactionType: TransactionQbitWalletDisplayTypeEnum!
+
+  # 量子卡号/分组名称
+  qbitCardNoOrGroupName: String!
+}
+
+enum TransactionQbitWalletDisplayTypeEnum {
+  Recharge
+  Return
+  GlobalRecharge
+  GlobalReturn
+  QbitCardRecharge
+  QbitCardReturn
+  GroupRecharge
+  GroupReturn
+  CreateCardFee
+  Unknow
+}
+
+type QbitCardWalletRecordOutput {
+  # 账户Id
+  accountId: String!
+
+  # 交易时间
+  transactionTime: DateTime!
+
+  # 交易ID
+  transactionId: String!
+
+  # 交易类型名称
+  transactionTypeName: String!
+
+  # $0
+  cost: String!
+  fee: String!
+
+  # 交易状态类型
+  status: TransactionStatusEnum!
+
+  # 交易状态名称
+  statusName: String!
+
+  # 交易时的可用金额
+  currAvailableAmount: String!
+
+  # 交易卡号后四位
+  qbitCardNoLastFour: String!
+
+  # 币种
+  currency: String!
+
+  # 账户认证名称
+  verifiedName: String!
+
+  # 出入账金额
+  drawDepositAmount: String!
+
+  # 交易状态
+  transactionType: TransactionQbitWalletDisplayTypeEnum!
+
+  # 量子卡号/分组名称
+  qbitCardNoOrGroupName: String!
+}
+
+type QbitCardPrepaidCardTxRecordOutput {
+  # 账户Id
+  accountId: String!
+
+  # 交易时间
+  transactionTime: DateTime!
+
+  # 交易ID
+  transactionId: String!
+
+  # 交易类型名称
+  transactionTypeName: String!
+  cost: Float!
+  fee: Float!
+
+  # 交易状态类型
+  status: TransactionStatusEnum!
+
+  # 交易状态名称
+  statusName: String!
+
+  # 交易时的可用金额
+  currAvailableAmount: Float!
+
+  # 交易卡号后四位
+  qbitCardNoLastFour: String!
+
+  # 币种
+  currency: String!
+
+  # 交易状态
+  transactionType: TransactionQbitPrepaidCardDisplayTypeEnum!
+
+  # 交易详情
+  detail: String!
+
+  # 卡label
+  qbitCardLabel: String!
+
+  # 交易卡的持卡人姓名
+  qbitCardUserName: String!
+}
+
+enum TransactionQbitPrepaidCardDisplayTypeEnum {
+  Recharge
+  Return
+  Consumption
+  Refund
+  Unknow
+}
+
+type QbitCardPrepaidCardRecordOutput {
+  # 账户Id
+  accountId: String!
+
+  # 交易时间
+  transactionTime: DateTime!
+
+  # 交易ID
+  transactionId: String!
+
+  # 交易类型名称
+  transactionTypeName: String!
+
+  # $0
+  cost: String!
+  fee: String!
+
+  # 交易状态类型
+  status: TransactionStatusEnum!
+
+  # 交易状态名称
+  statusName: String!
+
+  # 交易时的可用金额
+  currAvailableAmount: String!
+
+  # 交易卡号后四位
+  qbitCardNoLastFour: String!
+
+  # 币种
+  currency: String!
+
+  # 交易状态
+  transactionType: TransactionQbitPrepaidCardDisplayTypeEnum!
+
+  # 交易详情
+  detail: String!
+
+  # 卡label
+  qbitCardLabel: String!
+
+  # 交易卡的持卡人姓名
+  qbitCardUserName: String!
+}
+
+type QbitCardBudgetCardTxRecordOutput {
+  # 账户Id
+  accountId: String!
+
+  # 交易时间
+  transactionTime: DateTime!
+
+  # 交易ID
+  transactionId: String!
+
+  # 交易类型名称
+  transactionTypeName: String!
+  cost: Float!
+  fee: Float!
+
+  # 交易状态类型
+  status: TransactionStatusEnum!
+
+  # 交易状态名称
+  statusName: String!
+
+  # 交易时的可用金额
+  currAvailableAmount: Float!
+
+  # 交易卡号后四位
+  qbitCardNoLastFour: String!
+
+  # 币种
+  currency: String!
+
+  # 交易状态
+  transactionType: TransactionQbitBudgetCardDisplayTypeEnum!
+
+  # 交易详情
+  detail: String!
+
+  # 卡label
+  qbitCardLabel: String!
+
+  # 预算名称
+  groupName: String!
+
+  # 交易卡的持卡人姓名
+  qbitCardUserName: String!
+}
+
+enum TransactionQbitBudgetCardDisplayTypeEnum {
+  Recharge
+  Return
+  Consumption
+  Refund
+  CreateCardFee
+  Unknow
+}
+
+type QbitCardBudgetCardRecordOutput {
+  # 账户Id
+  accountId: String!
+
+  # 交易时间
+  transactionTime: DateTime!
+
+  # 交易ID
+  transactionId: String!
+
+  # 交易类型名称
+  transactionTypeName: String!
+
+  # $0
+  cost: String!
+  fee: String!
+
+  # 交易状态类型
+  status: TransactionStatusEnum!
+
+  # 交易状态名称
+  statusName: String!
+
+  # 交易时的可用金额
+  currAvailableAmount: String!
+
+  # 交易卡号后四位
+  qbitCardNoLastFour: String!
+
+  # 币种
+  currency: String!
+
+  # 交易状态
+  transactionType: TransactionQbitBudgetCardDisplayTypeEnum!
+
+  # 交易详情
+  detail: String!
+
+  # 卡label
+  qbitCardLabel: String!
+
+  # 预算名称
+  groupName: String!
+
+  # 交易卡的持卡人姓名
+  qbitCardUserName: String!
+}
+
+type QbitCardWalletTxRecordPageOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [QbitCardWalletRecordTxOutput!]!
+}
+
+type QbitCardWalletRecordPageOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [QbitCardWalletRecordOutput!]!
+}
+
+type QbitCardPrepaidCardTxPageOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [QbitCardPrepaidCardTxRecordOutput!]!
+}
+
+type QbitCardPrepaidCardPageOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [QbitCardPrepaidCardRecordOutput!]!
+}
+
+type QbitCardBudgetCardTxPageOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [QbitCardBudgetCardTxRecordOutput!]!
+}
+
+type QbitCardBudgetCardPageOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [QbitCardBudgetCardRecordOutput!]!
+}
+
+type CurrencyAndBalance {
+  # 余额
+  balance: Float!
+
+  # 币种
+  currency: String!
+}
+
+type BusinessBalanceOutput {
+  # 合作方状态，true 正常
+  status: Boolean!
+
+  # 合作方名称
+  type: String!
+
+  # 币种信息和余额
+  list: [CurrencyAndBalance!]!
+}
+
+type GetQbitCardListResult {
+  # 卡ID
+  id: String!
+
+  # 创建时间
+  createTime: DateTime!
+
+  # user id
+  userId: String!
+
+  # accountId
+  accountId: String
+
+  # displayId
+  displayId: String
+
+  # 用户认证名
+  verifiedName: String
+
+  # 持卡人姓名
+  userName: String
+
+  # 卡类型
+  provider: QbitCardProviderEnum!
+
+  # 卡token
+  token: String!
+
+  # 卡号后四位
+  qbitCardNoLastFour: String!
+
+  # 卡标签
+  label: String
+
+  # 预算名称
+  groupName: String
+
+  # 卡的三方可用余额
+  apiBalance: Float
+
+  # 卡的我方可用余额
+  available: Float
+
+  # 累计转入金额
+  transferInAmountSum: Float
+
+  # 累计转出金额
+  transferOutAmountSum: Float
+
+  # 累计消费支出金额(总金额)
+  consumptionSum: Float
+
+  # 累计消费支出金额(已完成金额)
+  consumptionClosedSum: Float
+
+  # 累计交易退款金额(总金额)
+  totalCredit: Float
+
+  # 累计交易退款金额(已完成金额)
+  closedCredit: Float
+
+  # 卡状态
+  status: ActivationStatusEnum!
+}
+
+type GetQbitCardListOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [GetQbitCardListResult!]!
+}
+
+type QbitCardSettlementOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [QbitCardSettlementOut!]!
+}
+
+type QbitCardSettlementOut {
+  # 三方充值金额
+  thirdRechargeTotal: Float!
+
+  # 三方转出金额
+  thirdTransferOutTotal: Float!
+
+  # 三方余额
+  thirdBalance: Float!
+
+  # 三方退款总额
+  thirdRefundTotal: Float!
+
+  # 三方退款手续费
+  thirdRefundFee: Float!
+
+  # 三方消费总额
+  thirdTradeTotal: Float!
+
+  # 三方无消费记录总金额
+  thirdNoTradeTotal: Float!
+  localNoTradeTotal: Float!
+
+  # 我方充值总额
+  localRechargeTotal: Float!
+
+  # 我方卡余额
+  localBalance: Float!
+
+  # 我方转出总额
+  localTransferOutTotal: Float!
+
+  # 我方退款总额
+  localCreditTotal: Float!
+
+  # 我方消费总额
+  localCostTotal: Float!
+
+  # 删卡退款
+  deleteCardRefund: Float!
+
+  # 三分交易信息列表
+  thirdTransactionList: JSON!
+
+  # 三方的转入转出 在我方无记录
+  recordingList: JSON!
+
+  # 两方余额差值
+  diffBalanceTotal: Float!
+
+  # 两方消费差值
+  diffTradeTotal: Float!
+}
+
+type GetExportStatusOutput {
+  # 导出任务类型
+  exportFileType: ExportFileTypeEnum!
+
+  # 导出任务状态
+  status: ApplyStatusEnum!
+
+  # 导出文件地址
+  fileUrl: String
+
+  # 失败原因
+  errorMsg: String
+
+  # 是否已导出过
+  hasExported: Boolean!
+}
+
+enum ExportFileTypeEnum {
+  PrepaidCardList
+  BudgetCardList
+  QbitCardTxList
+  PrepaidCardTxList
+  BudgetCardTxList
+}
+
+type FirstAndLastNameSetOutput {
+  # firstName
+  firstName: String
+
+  # lastName
+  lastName: String
+}
+
+type CardSettleOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [CardSettleOut!]!
+}
+
+type CardSettleOut {
+  # 三方充值金额
+  thirdRechargeTotal: Float!
+
+  # 三方转出金额
+  thirdTransferOutTotal: Float!
+
+  # 三方余额
+  thirdBalance: Float!
+
+  # 三方退款总额
+  thirdRefundTotal: Float!
+
+  # 三方退款手续费
+  thirdRefundFee: Float!
+
+  # 三方消费总额
+  thirdTradeTotal: Float!
+
+  # 三方无消费记录总金额
+  thirdNoTradeTotal: Float!
+  localNoTradeTotal: Float!
+
+  # 我方充值总额
+  localRechargeTotal: Float!
+
+  # 我方卡余额
+  localBalance: Float!
+
+  # 我方转出总额
+  localTransferOutTotal: Float!
+
+  # 我方退款总额
+  localCreditTotal: Float!
+
+  # 我方消费总额
+  localCostTotal: Float!
+
+  # 删卡退款
+  deleteCardRefund: Float!
+
+  # 账户信息
+  # accountInfo: Account
+
+  # 两方余额差值
+  diffBalanceTotal: Float!
+
+  # 两方消费差值
+  diffTradeTotal: Float!
+}
+
+type GroupSettleOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [GroupSettle!]!
+}
+
+type QbitCardCustomerOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [QbitCardCustomer!]!
+}
+
+type GroupSettle {
+  # 组转入总和
+  transferInAmount: Float!
+
+  # 组转出总和
+  transferOutAmount: Float!
+
+  # 消费总和
+  consumptionAmount: Float!
+
+  # 组可用余额
+  available: Float!
+
+  # 退款总和
+  refundTotal: Float!
+
+  # 开卡费用
+  createCardFee: Float!
+
+  # 可用余额不平差额
+  diffAvailableBalanceTotal: Float!
+
+  # 冻结余额
+  pendingBalance: Float!
+
+  # 冻结余额不平差额
+  diffPendingBalanceTotal: Float!
+}
+
+type WalletSettleOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [WalletSettle!]!
+}
+
+type WalletSettle {
+  # 账户可用余额
+  available: Float!
+
+  # 账户总充值
+  rechargeAmount: Float!
+
+  # 组的净充值
+  rechargeGroupAmount: Float!
+
+  # 卡的净充值
+  rechargeQbitCardAmount: Float!
+
+  # 开卡费
+  createCardFeeAmount: Float!
+
+  # 余额不平差额
+  diffAvailableBalanceTotal: Float!
+
+  # 账户信息
+  accountInfo: Account
+}
+
+type QbitCardTransactionAuthorizationOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [QbitCardTransactionAuthorization!]!
+}
+
+type QbitCardLifeTimeAmountLimit {
+  cardId: String!
+
+  # 限额
+  limitValue: Float
+
+  # 可用(限额-总消费)
+  available: Float
+
+  # 卡的总消费(处理中+已完成)
+  consumptionSum: Float!
+}
+
+type BankAccountsOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [BankAccount!]!
+}
+
+type BalancesOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [Balance!]!
+}
+
+type MessageListOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [MessageCenter!]!
+}
+
+type SystemConfigOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [SystemConfig!]!
+}
+
+type UsersOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [User!]!
+}
+
+type ReferralCodeOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [ReferralCode!]!
+}
+
+type InboundTransfersOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [Transfer!]!
+}
+
+type OutboundTransfersOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [OutboundTransfer!]!
+}
+
+type OutboundTransfer {
+  id: String
+
+  createTime: DateTime
+
+  # 所属账户id
+  accountId: String!
+
+  # 源交易账号来源((Wallet, PayPal, 银行卡，银行账户的id))
+  sender: String!
+
+  # 源交易类型(Wallet, PayPal, 银行卡，银行账户)
+  senderType: String
+
+  # 源的余额id
+  senderBalanceId: String
+
+  # 目标交易id(Wallet, PayPal, 银行卡，银行账户的id)
+  recipient: String!
+
+  # 目标交易类型
+  recipientType: String
+
+  # 源币种
+  senderCurrency: String
+
+  # 目标的余额id
+  recipientBalanceId: String
+
+  # 目标币种
+  recipientCurrency: String
+  senderFee: Float!
+  recipientFee: Float!
+  recipientFeeType: String!
+  senderCost: Float!
+  recipientCost: Float!
+  status: String
+  displayStatus: String!
+
+  # 记录状态变化的时间
+  statusLog: [StatusLog!]
+
+  # 交易时间
+  transactionTime: DateTime
+
+  # 付款目的
+  reason: String
+
+  # 三方processor的名字
+  processor: String
+
+  # 三方processor的order id
+  processorOrderId: String
+  beneficiaries: [BankAccount!]
+  account: Account
+}
+
+type AccountFollowUpLogOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [AccountFollowUpLog!]!
+}
+
+type AccountFollowUpLog {
+  id: String
+
+  createTime: DateTime
+  accountId: String
+
+  # 客户状态
+  accountStatus: String
+
+  # 记录时间
+  recordingTime: DateTime
+
+  # 一级类型
+  businessModule: String
+
+  # 二级类型
+  secondType: String
+
+  # 三级类型
+  thirdType: String
+
+  # 备注
+  comments: String
+
+  # Qbit跟进用户Id
+  followUpUserId: String
+  accountInfo: Account!
+  followUpUserInfo: User!
+}
+
+type ApplyOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [Apply!]!
+}
+
+type GetUserStatisticsOutput {
+  # 今日注册数
+  today_registered: Float!
+
+  # 今年注册数
+  year_registered: Float!
+
+  # 今日累计已充值量子账户用户数
+  today_recharge: Float!
+
+  # 今年累计已充值量子账户用户数
+  year_recharge: Float!
+
+  # 今日当前已消费储值卡用户数
+  today_penny_consume: Float!
+
+  # 今年当前已消费储值卡用户数
+  year_penny_consume: Float!
+
+  # 今日已消费额度卡用户数
+  today_nium_consume: Float!
+
+  # 今年已消费额度卡用户数
+  year_nium_consume: Float!
+}
+
+type GetMyAmonutStatisticsOutput {
+  # 量子账户当前总余额
+  qbitCard_balance: Float!
+
+  # 今日量子账户累计充值金额
+  today_recharge_total: Float!
+
+  # 今年量子账户累计充值金额
+  year_recharge_total: Float!
+
+  # 今日新增量子账户累计充值金额
+  today_new_recharge_total: Float!
+
+  # 今年新增量子账户累计充值金额
+  year_new_recharge_total: Float!
+
+  # 量子储值卡当前总余额
+  penny_balance: Float!
+
+  # 今日量子储值卡累计已完成消费金额
+  today_penny_consumption_success: Float!
+
+  # 今年量子储值卡累计已完成消费金额
+  year_penny_consumption_success: Float!
+
+  # 今日量子储值卡累计处理中消费金额
+  today_penny_consumption_pending: Float!
+
+  # 今年量子储值卡累计处理中消费金额
+  year_penny_consumption_pending: Float!
+
+  # 组钱包余额
+  nium_balance: Float!
+
+  # 今日量子额度卡累计已完成消费金额
+  today_nium_consumption_success: Float!
+
+  # 今年量子额度卡累计已完成消费金额
+  year_nium_consumption_success: Float!
+
+  # 今日量子额度卡累计处理中消费金额
+  today_nium_consumption_pending: Float!
+
+  # 今年量子额度卡累计处理中消费金额
+  year_nium_consumption_pending: Float!
+}
+
+type GetQbitCardStatisticsOutput {
+  # 储值卡使用中卡总数
+  pennycard_active_count: Float!
+
+  # 储值卡新增使用中卡数
+  pennycard_new_active_count: Float!
+
+  # 储值卡冻结卡数
+  pennycard_frozen_count: Float!
+
+  # 储值卡删除中卡数
+  pennycard_processing_count: Float!
+
+  # 储值卡已删除卡数
+  pennycard_inactive_count: Float!
+
+  # 储值卡新增已删除卡数
+  pennycard_new_inactive_count: Float!
+
+  # 储值卡总数
+  pennycard_card_total: Float!
+
+  # 额度卡使用中卡数
+  niumcard_active_count: Float!
+
+  # 额度卡新增使用中卡数
+  niumcard_new_active_count: Float!
+
+  # 额度卡已冻结卡数
+  niumcard_frozen_count: Float!
+
+  # 额度卡删除中卡数
+  niumcard_processing_count: Float!
+
+  # 额度卡删除卡数
+  niumcard_inactive_count: Float!
+
+  # 额度卡新增已删除卡数
+  niumcard_new_inactive_count: Float!
+
+  # 额度卡总数
+  niumcard_card_total: Float!
+
+  # 使用中预算数
+  group_active_count: Float!
+
+  # 新增使用中预算数
+  new_group_active_count: Float!
+
+  # 已停用预算数
+  group_frozen_count: Float!
+
+  # 已删除预算数
+  group_inactive_count: Float!
+
+  # 新增删除预算数
+  new_group_inactive_count: Float!
+
+  # 总预算组数
+  group_total: Float!
+
+  # 删除后处理中
+  group_processing_count: Float!
+
+  # 预算其他情况
+  group_other_count: Float!
+}
+
+type GetQbitCardTransactionStatisticsOutput {
+  # 储值卡今日交易成功笔数
+  pennycard_today_transaction_closed_count: Float!
+
+  # 储值卡今年交易成功笔数
+  pennycard_year_transaction_closed_count: Float!
+
+  # 储值卡今日交易成功金额
+  pennycard_today_transaction_closed_sum: Float!
+
+  # 储值卡今年交易成功金额
+  pennycard_year_transaction_closed_sum: Float!
+
+  # 储值卡今日交易失败笔数
+  pennycard_today_transaction_fail_count: Float!
+
+  # 储值卡今年交易失败笔数
+  pennycard_year_transaction_fail_count: Float!
+
+  # 今日交易失败金额
+  pennycard_today_transaction_fail_sum: Float!
+
+  # 储值卡今年交易失败金额
+  pennycard_year_transaction_fail_sum: Float!
+
+  # 储值卡今日交易处理中笔数
+  pennycard_today_transaction_pending_count: Float!
+
+  # 储值卡今年交易处理中笔数
+  pennycard_year_transaction_pending_count: Float!
+
+  # 储值卡今日交易处理中金额
+  pennycard_today_transaction_pending_sum: Float!
+
+  # 储值卡今年交易处理中金额
+  pennycard_year_transaction_pending_sum: Float!
+
+  # 今日交易成功笔数
+  niumcard_today_transaction_closed_count: Float!
+
+  # 今年交易成功笔数
+  niumcard_year_transaction_closed_count: Float!
+
+  # 今日交易成功金额
+  niumcard_today_transaction_closed_sum: Float!
+
+  # 今年交易成功金额
+  niumcard_year_transaction_closed_sum: Float!
+
+  # 今日交易失败笔数
+  niumcard_today_transaction_fail_count: Float!
+
+  # 今年交易失败笔数
+  niumcard_year_transaction_fail_count: Float!
+
+  # 今日交易失败金额
+  niumcard_today_transaction_fail_sum: Float!
+
+  # 今年交易失败金额
+  niumcard_year_transaction_fail_sum: Float!
+
+  # 今日交易处理中笔数
+  niumcard_today_transaction_pending_count: Float!
+
+  # 今年交易处理中笔数
+  niumcard_year_transaction_pending_count: Float!
+
+  # 今日交易处理中金额
+  niumcard_today_transaction_pending_sum: Float!
+
+  # 今年交易处理中金额
+  niumcard_year_transaction_pending_sum: Float!
+}
+
+type QbitGlobalAccountOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [BankAccount!]!
+}
+
+type QbitGlobalTransferOutput {
+  # pageTotal
+  pageTotal: Float
+
+  # total
+  total: Float
+  data: [Transfer!]!
+}
+
+input AttachmentInput {
+  # 文件名
+  filename: String!
+
+  # 链接
+  fileUrl: String!
+}
+
+input AddressInput {
+  # 地址栏第一行
+  addressLine1: String!
+
+  # 地址栏第二行
+  addressLine2: String
+
+  # 城市
+  city: String!
+
+  # 州或省
+  state: String!
+
+  # ISO_3166-1 二位字母代码， 如CN, US等
+  country: String!
+
+  # 邮编
+  postalCode: String
+}
+
+input PageInput {
+  # 页
+  page: Float = 0
+
+  # 条数
+  limit: Float = 10
+}
+
 type Query {
-  # 查询银行账户列表
-  bankAccounts(queryParams: QueryParams!): BankAccountsOutput!
-  # accounts 列表
-  accounts(queryParams: QueryParams!): AccountOutput!
-  # 查询Balance 列表
-  balances(queryParams: QueryParams!): BalancesOutput!
-  # 查询用户列表
-  users(queryParams: QueryParams!): UsersOutput!
-  # 后台查询用户列表
-  getAdmins(queryParams: QueryParams!): UsersOutput!
-  # 查询用户手机号或者邮箱是否存在
-  isUserIn(phoneOrEmail: String!): Boolean!
-  # 查询邀请码列表
-  referralCodes(queryParams: QueryParams!): ReferralCodeOutput!
-  # 查询入账的交易列表
-  InboundTransfers(queryParams: QueryParams!): InboundTransfersOutput!
-  # 查询出账的交易列表
-  outboundTransfers(queryParams: QueryParams!): OutboundTransfersOutput!
-  # 查询出账费率
-  outboundTransfersFee(data: OutboundTransfersFeeDto!): String!
   # 获取量子卡列表
   qbitCardList(queryParams: QueryParams!): QbitCardOutput!
+
+  # 获取对账列表
+  getReconciliationList(queryParams: QueryParams!): QbitCardSettlementOutput!
+
+  # 根据条件筛选量子卡及获取量子卡统计信息
+  getQbitCardMsgListByConditions(queryParams: GetQbitCardListInput!): GetQbitCardListOutput
+
   # 获取量子卡平台条款
   getTermsAndConditions(data: GetTermsAndConditionsInput!): JSON!
+
   # 获取量子私密信息
   getQbitCardPrivateInfo(
     # 卡的数据库id
     cardId: String!
   ): QbitCardPrivateInfoOutput!
+
   # 获取批量开卡进度
   getBatchCreateQbitCardProcess(data: BatchCreateQbitCardProcessInput!): BatchCreateQbitCardProcessOutput!
+
+  # 查询量子储值卡交易列表
+  getQbitCardPrepaidCardList(queryParams: QueryParams!): QbitCardPrepaidCardPageOutput
+
+  # 查询量子储值卡交易列表
+  getQbitCardPrepaidCard(queryParams: QueryParams!): QbitCardPrepaidCardTxPageOutput
+
+  # 查询量子额度卡交易列表
+  getQbitCardBudgetTransactionList(queryParams: QueryParams!): QbitCardBudgetCardPageOutput
+
+  # 查询量子额度卡交易列表
+  getQbitCardBudgetTransaction(queryParams: QueryParams!): QbitCardBudgetCardTxPageOutput
+
+  # 查询合作方的余额
+  getBusinessBalance: [BusinessBalanceOutput!]!
+
+  # 获取当前用户可用的免费开卡次数
+  getFreeOpenCardCount(accountId: String!): Float!
+
+  # 组交易列表
+  getQbitCardGroupTransactionList(queryParams: QueryParams!): QbitCardGroupTransactionOutput!
+
   # 获取量子卡交易列表
-  qbitCardTransactionList(queryParams: QueryParams!): QbitCardTransactionOutput!
-  # 获取量子卡余额和卡数量
-  getQbitCardStatistics(data: QbitCardStatisticsInput!): [QbitCardStatisticsOutput!]!
-  # 获取账户交易信息
-  getQbitCardTransactionStatistics(data: QbitCardTransactionStatisticsInput!): [QbitCardTransactionStatisticsOutput!]!
+  getQbitCardTransactionList(queryParams: QueryParams!): QbitCardTransactionOutput!
+
+  # 获取自定义天数的每日消费金额
+  getDailyCost(queryParams: GetDailyCostInput!): [GetDailyCostOutput!]!
+
+  # 刷新交易
+  refreshTransaction(data: RefreshTransactionDto!): Boolean!
+
+  # 刷新交易
+  refreshTransactionReMath(data: RefreshTransactionDto!): Boolean!
+
+  # 获取账户的充值和消费统计
+  getQbitCardWalletStatistics(queryParams: AccountSingleStatisticsInput!): QbitCardWalletStatisticsOutput!
+
+  # 查询量子账户交易列表
+  getQbitCardWalletRecordList(queryParams: QueryParams!): QbitCardWalletRecordPageOutput!
+
+  # 查询量子账户交易列表
+  getQbitCardWalletRecord(queryParams: QueryParams!): QbitCardWalletTxRecordPageOutput!
+
+  # 获取账户下的卡数量
+  getQbitCardStatistics(queryParams: StatisticsParams!): [QbitCardCountStatisticsOutput!]!
+
+  # 获取储值卡交易信息
+  getPrepaidCardTxStatistics(accountId: String!): AccountTxStatisticsOutput
+
+  # 查询组下所有卡的交易统计
+  getGroupCardsTxStatistics(queryParams: GroupCardsStatisticsInput!): GroupCardsStatisticsOutput
+
+  # 模糊查询账户下QbitCard表字段的去重列表
+  getQbitCardFieldSetByAccountId(queryParams: GetQbitCardFieldSetInput!): [String!]!
+
+  # 模糊查询账户下QbitCardGroup表字段的去重列表
+  getQbitCardGroupFieldSetByAccountId(queryParams: GetQbitCardGroupFieldSetInput!): [String!]!
+
+  # 量子卡交易数据
+  getQbitCardTransactionStatistics(data: StatisticsInput!): GetQbitCardTransactionStatisticsOutput!
+
+  # 根据平台类型查询账户下的去重姓和名
+  getFirstNameAndLastNameSet(queryParams: FirstAndLastNameSetInput!): [FirstAndLastNameSetOutput!]!
+
+  # 卡对账
+  cardSettle(queryParams: QueryParams!): CardSettleOutput!
+
+  # 组对账
+  groupSettle(queryParams: QueryParams!): GroupSettleOutput!
+
+  # 账户对账
+  walletSettle(queryParams: QueryParams!): WalletSettleOutput!
+
+  # 获取导出的任务进度
+  getExportStatus(queryParams: GetExportStatusInput!): GetExportStatusOutput
+
+  # 导出储值卡列表
+  exportPrepaidCardList(queryParams: ExportParams!): Boolean!
+
+  # 导出额度卡列表
+  exportBudgetCardList(queryParams: ExportParams!): Boolean!
+
+  # 量子账户交易明细
+  exportQbitCardTxDetail(queryParams: ExportParams!): Boolean!
+
+  # 量子储值卡交易明细
+  exportPrepaidCardTxList(queryParams: ExportParams!): Boolean!
+
+  # 量子额度卡交易明细
+  exportBudgetCardTxList(queryParams: ExportParams!): Boolean!
+
+  # Admin导出文件,filter中传入exportType以区分导出文件
+  exportFile(queryParams: ExportParams!): String!
+
+  # 查询卡组
+  getQbitCardGroupList(queryParams: QueryParams!): QbitCardGroupOutput
+
+  # 查询Customer
+  getQbitCardCustomer(queryParams: QueryParams!): JSON!
+
+  # nium 开户情况
+  getQbitCardCustomerList(queryParams: QueryParams!): QbitCardCustomerOutput!
+
+  # 查询三方未开户的账号列表
+  getThirdPartyNoCustomerList(queryParams: QueryParams!): [Account!]!
+
+  # Nium认证订单列表
+  getQbitCardTransactionAuthorizationList(queryParams: QueryParams!): QbitCardTransactionAuthorizationOutput!
+
+  # 查询Balance 列表
+  balances(queryParams: QueryParams!): BalancesOutput!
+
   # 查询用户可见配置表数据
   systemConfigs(queryParams: QueryParams!): SystemConfigOutput!
+
+  # 查询客户跟进数据
+  getAccountFollowUpLogList(queryParams: QueryParams!): AccountFollowUpLogOutput!
+
+  # 查询入账的交易列表
+  inboundTransfers(queryParams: QueryParams!): InboundTransfersOutput!
+
+  # 查询出账的交易列表
+  outboundTransfers(queryParams: QueryParams!): OutboundTransfersOutput!
+
+  # 查询出账费率
+  outboundTransfersFee(data: OutboundTransfersFeeDto!): String!
+
+  # 查询用户列表
+  users(queryParams: QueryParams!): UsersOutput!
+
+  # 后台查询用户列表
+  getAdmins(queryParams: QueryParams!): UsersOutput!
+
+  # 是否是2.0用户
+  isV2User(phone: String!): Boolean!
+
+  # 获取单个用户的权限
+  getAdminRoleList(userId: String!): [String!]!
+
+  # 获取不同类型的管理员
+  getAdminRoleUsers(queryParams: AdminRoleUsersDto!): UsersOutput!
+
+  # 查询用户手机号或者邮箱是否存在
+  isUserIn(phoneOrEmail: String!): Boolean!
+
+  # 查询邀请码列表
+  referralCodes(queryParams: QueryParams!): ReferralCodeOutput!
+
+  # 查询银行账户列表
+  bankAccounts(queryParams: QueryParams!): BankAccountsOutput!
+
+  # accounts 列表
+  accounts(queryParams: QueryParams!): AccountOutput!
+
+  # 客户端消息列表
+  messageList(queryParams: MessageListInput!): MessageListOutput!
+
+  # 用户维度(含注册用户数和重要操作用户数)
+  getUserStatistics(data: StatisticsInput!): GetUserStatisticsOutput!
+
+  # 我方金额统计
+  getMyAmonutStatistics(data: StatisticsInput!): GetMyAmonutStatisticsOutput!
+
+  # 量子卡数量数据
+  getCardStatistics(data: StatisticsInput!): GetQbitCardStatisticsOutput!
+
+  # 查询申请
+  getApply(queryParams: QueryParams!): ApplyOutput!
+  testStr: String!
+  testDb: JSON!
+
+  # 获取全球账户列表
+  globalAccount(queryParams: QueryParams!): QbitGlobalAccountOutput!
+
+  # 全球账户交易列表
+  qbitGlobalTransferList(queryParams: QueryParams!): QbitGlobalTransferOutput!
 }
 
 input QueryParams {
@@ -804,43 +2642,731 @@ input QueryParams {
   pagination: PageInput = { page: 0, limit: 10 }
 }
 
-enum ReduceTypeEnum {
-  Balance
-  Transfer
+input GetQbitCardListInput {
+  pagination: PageInput = { page: 0, limit: 10 }
+
+  # 用户id或displayId
+  accountOrDisplayId: String
+
+  # 用户名
+  verifiedName: String
+
+  # 卡号后四位
+  qbitCardNoLastFour: String
+
+  # 卡类型
+  provider: QbitCardProviderEnum
+
+  # 卡状态
+  status: ActivationStatusEnum
+
+  # 卡创建时间查询起始时间(小)
+  createTimeFrom: DateTime
+
+  # 卡创建时间查询结束时间(大)
+  createTimeTo: DateTime
+
+  # 排序字段
+  orderByColumn: String
+
+  # 升序还是降序
+  order: OrderEnum = ASC
 }
 
-type ReferralCode {
-  id: String
-  # 备注
-  remarks: String
-  createTime: DateTime
-  updateTime: DateTime
-  deleteTime: DateTime
-  version: Float
-  # 用户userid或者渠道方userId
+enum OrderEnum {
+  ASC
+  DESC
+}
+
+input GetTermsAndConditionsInput {
+  # 平台(pennyCard/niumCard)
+  provider: QbitCardProviderEnum!
+}
+
+# 批量开卡进度
+input BatchCreateQbitCardProcessInput {
+  # 卡的拥有者id
+  accountId: String!
+
+  # 平台(pennyCard/niumCard)
+  provider: QbitCardProviderEnum!
+}
+
+# 获取自定义天数的每日消费金额
+input GetDailyCostInput {
+  # accountId
+  accountId: String!
+
+  # 计算从这一天起(小)
+  dayFrom: DateTime!
+
+  # 计算到这一天起结束(大)
+  dayTo: DateTime!
+}
+
+input RefreshTransactionDto {
+  # 卡ID
+  cardId: String!
+
+  # 账户ID
+  accountId: String!
+}
+
+input AccountSingleStatisticsInput {
+  # 账户ID
+  accountId: String!
+}
+
+input StatisticsParams {
+  filter: JSON
+  order: JSON
+
+  # 分组字段
+  groupByColumn: GroupByColumnEnum = Provider
+}
+
+enum GroupByColumnEnum {
+  GroupId
+  Provider
+}
+
+input GroupCardsStatisticsInput {
+  # 卡的提供者，不传默认为所有提供者
+  providers: [QbitCardProviderEnum!]
+  groupId: String!
+  pagination: PageInput = { page: 0, limit: 10 }
+}
+
+input GetQbitCardFieldSetInput {
+  accountId: String!
+
+  # QbitCard的查询字段
+  field: QbitCardFieldEnum!
+
+  # 模糊查询的字段值
+  value: String
+}
+
+enum QbitCardFieldEnum {
+  userName
+  label
+}
+
+input GetQbitCardGroupFieldSetInput {
+  accountId: String!
+
+  # QbitCardGroup的查询字段
+  field: QbitCardGroupFieldEnum!
+
+  # 模糊查询的字段值
+  value: String
+}
+
+enum QbitCardGroupFieldEnum {
+  GroupName
+}
+
+input StatisticsInput {
+  # 查询时间
+  time: [String!]!
+}
+
+input FirstAndLastNameSetInput {
+  accountId: String!
+
+  # 平台类型
+  provider: QbitCardProviderEnum
+}
+
+input GetExportStatusInput {
+  accountId: String!
+
+  # 导出任务类型
+  exportType: ExportFileTypeEnum!
+}
+
+input ExportParams {
+  filter: JSON
+  order: JSON
+}
+
+# 费率参数
+input OutboundTransfersFeeDto {
+  senderCurrency: String!
+  recipientCurrency: String!
+  senderCost: Float!
+}
+
+input AdminRoleUsersDto {
+  filter: JSON
+  order: JSON
+  pagination: PageInput = { page: 0, limit: 10 }
+  roleName: String!
+}
+
+input MessageListInput {
+  filter: MessageListFilter
+  order: JSON
+  pagination: PageInput = { page: 0, limit: 10 }
+}
+
+input MessageListFilter {
+  # 关键词
+  keywords: String
+
+  # 是否已读
+  isRead: Boolean
+
+  # 是否收藏
+  isCollect: Boolean
+
+  # 已读时间
+  readTime: [String!]
+
+  # 创建时间
+  createTime: [String!]
+
+  # 消息种类
+  type: MessageClassEnum
+
+  # 二级消息种类
+  subType: SubClassEnum
+
+  # 接收平台
+  platform: PlatformEnum = Web
+
+  # accountId
+  accountId: String
+
+  # userId
   userId: String
-  # 邀请码所属管理员(销售id)
-  adminId: String
-  code: String
-  # 状态
-  status: String
-  # 销售/用户
-  type: String
-  user: User
-  admin: User
+
+  # 消息批量号
+  messageBatchNo: String
 }
 
-type ReferralCodeOutput {
-  # pageTotal
-  pageTotal: Float
-  # total
-  total: Float
-  data: [ReferralCode!]!
+type Mutation {
+  # 批量新开量子卡,接口商户和admin都能访问
+  batchCreateQbitCard(data: BatchCreateQbitCardInput!): Boolean!
+
+  # 手动调整转入转出
+  manualAdjustmentTransfer(data: ManualAdjustmentTransferInput!): Boolean!
+
+  # 增加额度,共享的卡额度不需要
+  increaseQbitCardLimit(data: IncreaseQbitCarLimitInput!): Boolean!
+
+  # 减少额度
+  decreaseQbitCardLimit(data: DecreaseQbitCarLimitInput!): Boolean!
+
+  # 冻结卡
+  suspendQbitCard(data: SuspendQbitCardInput!): Boolean!
+
+  # 解冻卡
+  enableQbitCard(data: EnableQbitCarLimitInput!): Boolean!
+
+  # 删除量子卡
+  deleteQbitCard(qbitCardId: String!): Boolean!
+
+  # 更新量子卡
+  updateQbitCard(data: UpdateQbitCardInput!): QbitCard!
+
+  # 更新量子卡平台条款
+  updateTermsAndConditions(data: UpdateTermsAndConditionsInput!): Boolean!
+
+  # 修改卡的消费限额
+  updateLifeTimeAmountLimit(data: UpdateQbitCardLifeTimeAmountLimitInput!): Boolean!
+
+  # 更新量子卡平台条款
+  createBalanceTransfer(data: BalanceTransferDto!): Boolean!
+
+  # 手动调整量子账户的转入转出
+  manualQbitCardWalletTransfer(data: ManualQbitCardWalletTransferInput!): Boolean!
+
+  # 新增卡组
+  addQbitCardGroup(data: AddQbitCardGroupInput!): QbitCardGroup!
+
+  # 修改卡组
+  updateQbitCardGroup(data: UpdateQbitCardGroupInput!): Boolean!
+
+  # 删除卡组
+  deleteQbitCardGroup(data: DeleteQbitCardGroupInput!): Boolean!
+
+  # 停用卡组
+  suspendQbitCardGroup(data: SuspendQbitCardGroupInput!): Boolean!
+
+  # 启用卡组
+  enableQbitCardGroup(data: EnableQbitCardGroupInput!): Boolean!
+
+  # 修改组预算
+  updateBudget(data: UpdateBudgetInput!): Boolean!
+
+  # 后台开户
+  createCustomer(data: createCustomerParams!): Boolean!
+
+  # 开户失败,重新提交身份证照片 base64格式
+  uploadRfiDocument(data: UploadRfiDocumentInput!): Boolean!
+
+  # 更新用户KY状态
+  updateKyInfo: Boolean!
+
+  # 增加客户跟进数据
+  addAccountFollowUpLog(data: AccountFollowUpLogInput!): AccountFollowUpLog!
+
+  # 创建出账交易记录
+  outboundTransfer(data: CreateOutboundTransferInput!): OutboundTransfer!
+
+  # 注册
+  register(data: SignUpDto!): User!
+
+  # 登出
+  logout: Boolean!
+
+  # 更新用户部分字段
+  updateUser(data: UserInputUpdate!): Boolean!
+
+  # 更新用户部分字段
+  updateUserNoId(data: UserInput!): User!
+
+  # 发送注册验证码
+  sendVerifCode(data: VerCodeBase!): Boolean!
+
+  # 验证验证码
+  checkVerifCode(data: CheckVerCode!): Boolean!
+
+  # 设置交易密码
+  setPayPwd(data: SetPayPwdDto!): Boolean!
+
+  # 修改交易密码
+  updatePayPwd(data: UpdatePayPwdDto!): Boolean!
+
+  # 新增操作员
+  addUser(data: AddUserDto!): Boolean!
+
+  # 修改权限
+  updateUserRoleList(data: UpdateUserDto!): Boolean!
+
+  # 修改用户扩展表, 需要改那个字段就传那个
+  updateUserExtend(params: UpdateUserExtendInput!): Boolean!
+
+  # 创建邀请码
+  creatInviteCode(data: InputInviteCode!): Boolean!
+
+  # 删除指定邀请码
+  deleteInviteCode(codeId: String!): Boolean!
+
+  # 修改邀请码管理员
+  updateCodeAdministrator(params: IUpdateCodeAdministratorInput!): Boolean!
+
+  # 为客户分配管理员
+  customerDistributionAdministrator(params: ICustomerDistributionAdministratorInput!): Boolean!
+
+  # 指定管理员创建邀请码
+  createAdminInviteCode(data: CreateAdminInviteCodeDto!): Boolean!
+
+  # 创建收款人的银行账号
+  bankAccount(data: CreateBankAccountInput!): BankAccount!
+
+  # 提交收款方审核状态
+  updateBankAccountStatus(data: UpdateStatusDto!): Boolean!
+
+  # 增加额度,共享的卡额度不需要
+  createUserOnOldVersionSystem(data: CreateUserOnOldVersionSystemInput!): CreateUserOnOldVersionSystemOutput!
+
+  # 修改消息
+  updateMessage(data: UpdateMessageReadInput!): Boolean!
+
+  # 删除消息
+  deleteMessage(data: DeleteMessageReadInput!): Boolean!
+
+  # 发送消息
+  sendMessage(data: SendMessageInput!): Boolean!
+
+  # 登录
+  login(data: LoginDto!): User!
+
+  # 添加申请
+  apply(data: ApplyInput!): Boolean!
+
+  # 处理申请
+  processApplication(data: ProcessApplicationInput!): Boolean!
+  reviewInbound(data: ReviewInboundInput!): Boolean!
+
+  # 全球账户和量子账户之间的划转
+  globalAccountWithQbitAccountPendingTransfer(data: GlobalAccountWithQbitAccountTransferInput!): Boolean!
+
+  # 转化所有数据
+  transferAll: Boolean!
+
+  # amlAccount表的数据转化
+  amlAccountTransfer(accountId: String): Boolean!
+
+  # amlQbitCardWallet表的数据转化
+  amlQbitCardWalletTransfer(accountId: String): Boolean!
+
+  # amlQbitCardGroup表的数据转化
+  amlQbitCardGroupTransfer(accountId: String): Boolean!
+
+  # amlQbitCardNiumCard表的数据转化
+  amlQbitCardNiumCardTransfer(accountId: String): Boolean!
+
+  # amlQbitCardPennyCard表的数据转化
+  amlQbitCardPennyCardTransfer(accountId: String): Boolean!
 }
 
-input SetPayPwdDto {
-  code: String!
-  password: String!
+input BatchCreateQbitCardInput {
+  # 批量的数量
+  batchCount: Float!
+
+  # 卡的拥有者id
+  accountId: String!
+
+  # 开卡金额，卡类型需要，共用额度的不需要用到此字段
+  cost: Float
+
+  # 平台(pennyCard/niumCard)
+  provider: QbitCardProviderEnum!
+
+  # 卡的自身验证地址
+  cardAddress: AddressInput
+
+  # 持卡人名
+  firstName: String!
+
+  # 持卡人姓
+  lastName: String!
+
+  # 标签
+  label: String
+
+  # 使用类别
+  useType: String!
+
+  # nium持卡人信息
+  nium: CardholderInfo
+
+  # 组Id(nium 必须要传组id)
+  groupId: String
+}
+
+input CardholderInfo {
+  # email
+  email: String!
+
+  # countryCode
+  countryCode: String = "CN"
+
+  # mobile
+  mobile: String!
+}
+
+input ManualAdjustmentTransferInput {
+  # 卡ID
+  cardId: String!
+
+  # 金额
+  amount: Float!
+
+  # 是转入还是转出 true转入
+  isInCrease: Boolean!
+}
+
+input IncreaseQbitCarLimitInput {
+  # 卡token
+  cardId: String!
+
+  # 金额，卡类型需要，共用额度的不需要用到此字段
+  cost: Float!
+}
+
+input DecreaseQbitCarLimitInput {
+  # 卡token列表
+  cardId: String!
+
+  # 金额，卡类型需要，共用额度的不需要用到此字段
+  cost: Float!
+}
+
+input SuspendQbitCardInput {
+  # 卡ID
+  cardId: String!
+}
+
+input EnableQbitCarLimitInput {
+  # 卡id
+  cardId: String!
+}
+
+input UpdateQbitCardInput {
+  # 卡的用户id
+  qbitCardId: String!
+
+  # 卡的自身验证地址
+  cardAddress: AddressInput
+
+  # 用户自定义的标签
+  label: String
+}
+
+input UpdateTermsAndConditionsInput {
+  # 平台(pennyCard/niumCard)
+  provider: QbitCardProviderEnum!
+
+  # 账户ID
+  accountId: String!
+}
+
+input UpdateQbitCardLifeTimeAmountLimitInput {
+  # 账户ID
+  accountId: String!
+
+  # 卡ID
+  cardId: String!
+
+  # 限额的值(一般为金额)
+  value: Float
+
+  # 是否启用
+  status: CardAmountLimitStatusEnum = Active
+}
+
+enum CardAmountLimitStatusEnum {
+  Active
+  Inactive
+}
+
+input BalanceTransferDto {
+  # 源订单id
+  sourceId: String!
+
+  # 账户id
+  accountId: String!
+
+  # 币种
+  currency: String!
+
+  # 余额id
+  balanceId: String!
+
+  # 金额
+  cost: Float!
+}
+
+input ManualQbitCardWalletTransferInput {
+  # 操作类型
+  type: QbitCardTransactionWalletTypeEnum!
+
+  # 卡ID
+  accountId: String!
+
+  # 金额
+  amount: Float!
+
+  # fee
+  fee: Float!
+}
+
+enum QbitCardTransactionWalletTypeEnum {
+  Deposit
+  CreateCardFee
+  CreditFee
+  RechargeGroup
+  ReturnGroup
+  RechargeCard
+  ReturnCard
+  TransferIn
+  TransferOut
+  ClearOut
+  TransferInFromQbitGlobal
+  TransferOutToQbitGlobal
+}
+
+# 量子卡组
+input AddQbitCardGroupInput {
+  accountId: String!
+  userId: String!
+
+  # 币种
+  currency: CurrencyEnum
+
+  # 分组名称
+  groupName: String!
+
+  # 有限期
+  expiryDate: DateTime!
+
+  # 向新建卡组划转的金额
+  amountTransfer: Float = 0
+}
+
+input UpdateQbitCardGroupInput {
+  # accountId
+  accountId: String!
+
+  # groupId
+  groupId: String!
+
+  # userId
+  userId: String
+
+  # 分组名称
+  groupName: String
+
+  # 有限期
+  expiryDate: DateTime
+}
+
+input DeleteQbitCardGroupInput {
+  accountId: String!
+
+  # 组id
+  groupId: String!
+}
+
+input SuspendQbitCardGroupInput {
+  # 组id
+  groupId: String!
+}
+
+input EnableQbitCardGroupInput {
+  # 组id
+  groupId: String!
+}
+
+input UpdateBudgetInput {
+  # accountId
+  accountId: String!
+
+  # 组id
+  groupId: String!
+
+  # 修改后的组预算
+  budget: Float!
+}
+
+input createCustomerParams {
+  # 开户信息
+  nium: CreateCustomerInput!
+
+  # accountId
+  accountId: String!
+
+  # userId
+  userId: String
+}
+
+input CreateCustomerInput {
+  # 法人firstName
+  firstName: String = ""
+
+  # 法人LastName
+  lastName: String = ""
+
+  # 企业名
+  preferredName: String = ""
+
+  # 法人生日
+  dateOfBirth: String = ""
+
+  # 国籍
+  nationality: String = ""
+
+  # 国家代码
+  countryCode: String = ""
+
+  # 手机
+  mobile: String = ""
+
+  # email
+  email: String = ""
+
+  # 邮寄地址1
+  deliveryAddress1: String = ""
+
+  # 邮寄地址2
+  deliveryAddress2: String = ""
+
+  # 邮寄城市
+  deliveryCity: String = ""
+
+  # 邮寄省/州
+  deliveryState: String = ""
+
+  # 邮寄邮编
+  deliveryZipCode: String = ""
+
+  # 账单地址1
+  billingAddress1: String = ""
+
+  # 账单地址2
+  billingAddress2: String = ""
+
+  # 账单城市
+  billingCity: String = ""
+
+  # 账单省/州
+  billingState: String = ""
+
+  # 账单邮编
+  billingZipCode: String = ""
+}
+
+input UploadRfiDocumentInput {
+  # 身份证正面 base64
+  IDCardFront: String!
+
+  # 身份证反面 base64
+  IDCardBack: String!
+
+  # 客户API中收到的唯一UUID
+  rfiHashId: String!
+
+  # 客户创建的唯一标志
+  customerHashId: String!
+}
+
+input AccountFollowUpLogInput {
+  accountId: String
+
+  # 客户状态
+  accountStatus: String
+
+  # 记录时间
+  recordingTime: DateTime
+
+  # 一级类型
+  businessModule: String
+
+  # 二级类型
+  secondType: String
+
+  # 三级类型
+  thirdType: String
+
+  # 备注
+  comments: String
+
+  # Qbit跟进用户Id
+  followUpUserId: String
+}
+
+input CreateOutboundTransferInput {
+  # 所属账户id
+  accountId: String!
+
+  # 源交易账号来源((Wallet, PayPal, 银行卡，银行账户的id))
+  sender: String!
+
+  # 目标交易id(Wallet, PayPal, 银行卡，银行账户的id)
+  recipient: String!
+
+  # 源币种
+  senderCurrency: String
+
+  # 目标币种
+  recipientCurrency: String
+  senderCost: Float!
+  recipientCost: Float!
+  payPassword: String!
 }
 
 input SignUpDto {
@@ -849,6 +3375,38 @@ input SignUpDto {
   password: String
   userSource: String
   inviteCode: String
+}
+
+input UserInputUpdate {
+  id: String
+  password: String
+  oldPassword: String
+
+  # 手机号验证码
+  verifyCodePhone: String
+
+  # 邮箱验证码
+  verifyCodeEmail: String
+  email: String
+  manageUserId: String
+}
+
+input UserInput {
+  id: String
+  phone: String
+  password: String
+  oldPassword: String
+  paymentPassword: String
+  role: Float
+  verifyCode: String!
+  email: String
+  manageUserId: String
+  remarks: String
+}
+
+input VerCodeBase {
+  emailPhone: String!
+  codeType: SmsCodeEnum!
 }
 
 enum SmsCodeEnum {
@@ -861,41 +3419,15 @@ enum SmsCodeEnum {
   UpdatePayPwd
 }
 
-type StatusLog {
-  # 状态名
-  status: String!
-  # 更新时间
-  updatedAt: DateTime!
+input CheckVerCode {
+  emailPhone: String!
+  codeType: SmsCodeEnum!
+  code: String!
 }
 
-input SuspendQbitCardInput {
-  # 卡ID
-  cardIdList: [String!]!
-}
-
-type SystemConfig {
-  # createTime
-  createTime: DateTime
-  # updateTime
-  updateTime: DateTime
-  # deleteTime
-  deleteTime: DateTime
-  # version
-  version: Float
-  # 备注
-  remarks: String
-  # id
-  id: Float
-  # 状态
-  status: String
-}
-
-type SystemConfigOutput {
-  # pageTotal
-  pageTotal: Float
-  # total
-  total: Float
-  data: [SystemConfig!]!
+input SetPayPwdDto {
+  code: String!
+  password: String!
 }
 
 input UpdatePayPwdDto {
@@ -904,98 +3436,236 @@ input UpdatePayPwdDto {
   password: String!
 }
 
-input UpdateQbitCardInput {
-  # 卡的用户id
-  qbitCardId: String!
-  # 卡的自身验证地址
-  cardAddress: JSON
-  # 用户自定义的标签
-  label: String
+input AddUserDto {
+  accountId: String!
+  nickname: String!
+  phone: String!
+  email: String
+  password: String!
+  roleName: String!
+  roles: [String!]
+}
+
+input UpdateUserDto {
+  userId: String!
+  roles: [String!]!
+}
+
+input UpdateUserExtendInput {
+  # 用户id
+  userId: String!
+
+  # 新手引导 为您的Qbit账户充值 提示 true 已完成
+  guideStepDeposit: Boolean
+
+  # 新手引导 创建您的第一张量子储值卡 提示 true 已完成
+  guideStepPrepaidCard: Boolean
+
+  # 新手引导 创建您的第一个预算及额度卡 提示 true 已完成
+  guideStepBudgetCard: Boolean
+
+  # 新手引导 查询您的交易记录 提示 true 已完成
+  guideStepTransaction: Boolean
+}
+
+input InputInviteCode {
+  id: String
+
+  # 手机号
+  phone: String!
+
+  # 姓名
+  nickname: String!
+
+  # 邀请码
+  code: String
+
+  # 管理人
+  admin: String!
+}
+
+input IUpdateCodeAdministratorInput {
+  # 新管理人id(销售id)
+  newSalesId: String!
+
+  # 邀请码
+  code: String!
+}
+
+input ICustomerDistributionAdministratorInput {
+  # 用户id
+  accountId: String!
+
+  # 新管理人id(销售id)
+  newSalesId: String!
+}
+
+input CreateAdminInviteCodeDto {
+  # 新管理人id(销售id)
+  salesId: String!
+
+  # 邀请码
+  code: String
+}
+
+input CreateBankAccountInput {
+  # 全球账户的account id
+  accountId: String!
+
+  # 账户持有人姓名
+  accountName: String!
+
+  # 账号
+  accountNo: String!
+
+  # 银行名称
+  bankName: String
+
+  # SWIFT/BIC
+  swift: String
+
+  # Routing number
+  routingNumber: String
+
+  # 支行名称
+  branchName: String
+
+  # 支行代码
+  branchCode: String
+
+  # 收款人地址
+  accountAddress: AddressInput
+
+  # 币种
+  currency: String!
+
+  # 账户类型（对公、对私）
+  type: String
+
+  # 身份证号码
+  idNumber: String
+
+  # 用途种类，如用于提现withdraw, 还是付款payout
+  category: String
+
+  # 附件
+  attachments: [AttachmentInput!]
+
+  # 该银行账户和账户所有者的关系
+  relationship: String
 }
 
 input UpdateStatusDto {
   bankAccountId: String!
   status: String!
-  # 备注
-  remarks: String!
 }
 
-input UpdateTermsAndConditionsInput {
-  # 平台(pennyCard/niumCard)
-  provider: QbitCardProviderEnum!
-  # 账户ID
+input CreateUserOnOldVersionSystemInput {
+  # accountId
   accountId: String!
 }
 
-type User {
-  id: String
-  # 备注
-  remarks: String
-  createTime: DateTime
-  updateTime: DateTime
-  deleteTime: DateTime
-  version: Float
-  phone: String
-  nickname: String
-  email: String
-  userConfig: UserConfig
-  # 是否有交易密码
-  hasPaymentPwd: Boolean
-  # 是否可以支付，修改支付密码后需要限制24小时
-  canPay: Boolean
+input UpdateMessageReadInput {
+  id: String!
+
+  # 是否已读
+  isRead: Boolean
+
+  # 是否收藏
+  isCollect: Boolean
+
+  # 已读时间
+  readTime: DateTime
 }
 
-type UserConfig {
-  id: String
-  # 备注
-  remarks: String
-  createTime: DateTime
-  updateTime: DateTime
-  deleteTime: DateTime
-  version: Float
+input DeleteMessageReadInput {
+  id: String!
 }
 
-input UserInput {
-  id: String
-  phone: String
+input SendMessageInput {
+  accountId: String
+  userId: String
+
+  # 消息
+  data: MessageDataInput!
+
+  # 消息种类
+  type: MessageClassEnum!
+
+  # 通知给用户的类型
+  notificationToAccountType: NotificationToAccountTypeEnum!
+
+  # 二级消息种类
+  subType: SubClassEnum!
+
+  # 接收平台
+  platform: PlatformEnum = Web
+}
+
+input MessageDataInput {
+  # 标题
+  title: String!
+
+  # 内容
+  content: String
+
+  # 消息类型
+  contentType: MessageCenterTypeEnum = Html
+}
+
+input LoginDto {
+  account: String
   password: String
-  oldPassword: String
-  paymentPassword: String
-  role: Float
-  verifyCode: String
-  email: String
-  manageUserId: String
-  remarks: String
 }
 
-input UserInputUpdate {
-  id: String
-  password: String
-  oldPassword: String
-  # 手机号验证码
-  verifyCodePhone: String
-  # 邮箱验证码
-  verifyCodeEmail: String
-  email: String
-  manageUserId: String
+input ApplyInput {
+  # accountId
+  accountId: String!
+
+  # 申请单创建人
+  userId: String!
+
+  # 申请类型
+  applyType: ApplyTypeEnum!
+
+  # 申请参数
+  data: ApplyDataInput!
 }
 
-type UsersOutput {
-  # pageTotal
-  pageTotal: Float
-  # total
-  total: Float
-  data: [User!]!
+input ApplyDataInput {
+  # 申请卡数量上限的增量
+  qbitCardCountLimitIncr: Float
 }
 
-input VerCodeBase {
-  emailPhone: String!
-  codeType: SmsCodeEnum!
+input ProcessApplicationInput {
+  # 申请单ID
+  applyId: String!
+
+  # 处理人ID
+  userId: String!
+
+  # 是否通过申请
+  applyStatus: ApplyStatusEnum!
+
+  # 失败原因
+  failReason: String
+
+  # 申请参数，当管理员通过申请时如果需要修改申请单的参数时，可以传入此字段
+  data: ApplyDataInput
 }
 
-enum WalletTypeEnum {
-  EasyEuro
-  QbitCardWallet
-  PennyCardWallet
-  QbitWallet
+input ReviewInboundInput {
+  id: String!
+  status: TransactionDisplayStatusEnum!
+}
+
+input GlobalAccountWithQbitAccountTransferInput {
+  # 增加钱的balance的id
+  addBalanceId: String!
+
+  # 减少钱的balance的id
+  subBalanceId: String!
+
+  # 转账金额
+  amount: Float!
 }
